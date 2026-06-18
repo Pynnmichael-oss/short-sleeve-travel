@@ -3,7 +3,7 @@ import Link from 'next/link'
 interface ButtonProps {
   href?: string
   onClick?: () => void
-  variant?: 'primary' | 'outline'
+  variant?: 'primary' | 'outline' | 'outline-light'
   children: React.ReactNode
   className?: string
 }
@@ -12,6 +12,7 @@ const base = 'inline-block px-8 py-3 text-sm tracking-wide transition-colors dur
 const variants = {
   primary: 'bg-burnt text-warmwhite hover:bg-burnt/90',
   outline: 'border border-forest text-forest hover:bg-forest hover:text-warmwhite',
+  'outline-light': 'border border-offwhite text-offwhite hover:bg-offwhite hover:text-charcoal',
 }
 
 export function Button({
