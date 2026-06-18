@@ -9,3 +9,8 @@
   --color-burnt: #D4622A;
   --color-warmwhite: #FAFAF7;
 }
+
+@keyframes sst-kenburns {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
+}
