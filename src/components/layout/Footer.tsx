@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 const navLinks = [
+  { href: '/', label: 'Home' },
   { href: '/experiences', label: 'Experiences' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
@@ -9,63 +10,49 @@ const navLinks = [
 export function Footer() {
   return (
     <footer className="bg-charcoal text-warmwhite">
-      <div className="max-w-7xl mx-auto px-6 py-14">
-        <div className="flex flex-col md:flex-row justify-between gap-10">
-          {/* Brand */}
-          <div className="max-w-xs">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          {/* Logo */}
+          <div className="md:w-48 shrink-0">
             <Link
               href="/"
-              className="font-display text-2xl text-sand hover:text-offwhite transition-colors"
+              className="font-display text-xl text-offwhite hover:text-sand transition-colors duration-200"
             >
               Short Sleeve Travel
             </Link>
-            <p className="mt-3 text-sm text-warmwhite/50 leading-relaxed">
-              Adventure is better together. Small groups, big landscapes, real
-              connections.
-            </p>
           </div>
 
-          {/* Nav */}
-          <nav aria-label="Footer navigation" className="flex flex-col gap-3">
-            <p className="text-xs uppercase tracking-widest text-warmwhite/40 mb-1">
-              Explore
-            </p>
+          {/* Centered nav */}
+          <nav
+            aria-label="Footer navigation"
+            className="flex flex-wrap gap-x-8 gap-y-3 md:justify-center md:flex-1"
+          >
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className="text-sm text-warmwhite/70 hover:text-sand transition-colors"
+                className="text-sm text-warmwhite/60 hover:text-warmwhite transition-colors duration-200"
               >
                 {label}
               </Link>
             ))}
           </nav>
 
-          {/* Contact */}
-          <div className="flex flex-col gap-3">
-            <p className="text-xs uppercase tracking-widest text-warmwhite/40 mb-1">
-              Get in touch
-            </p>
-            <Link
-              href="/contact"
-              className="text-sm text-warmwhite/70 hover:text-sand transition-colors"
-            >
-              Contact us
-            </Link>
+          {/* Instagram */}
+          <div className="md:w-48 md:text-right shrink-0">
             <a
               href="https://instagram.com"
-              className="text-sm text-warmwhite/70 hover:text-sand transition-colors"
               target="_blank"
               rel="noopener noreferrer"
+              className="text-sm text-warmwhite/60 hover:text-sand transition-colors duration-200"
             >
-              Instagram
+              Follow the adventure →
             </a>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-warmwhite/10 pt-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs text-warmwhite/30">
-          <span>© {new Date().getFullYear()} Short Sleeve Travel</span>
-          <span>Built for people who actually go.</span>
+        <div className="mt-10 border-t border-warmwhite/10 pt-6 text-xs text-warmwhite/30 text-center">
+          © 2025 Short Sleeve Travel. All rights reserved.
         </div>
       </div>
     </footer>

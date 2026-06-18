@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const navLinks = [
   { href: '/experiences', label: 'Experiences' },
@@ -10,17 +10,28 @@ const navLinks = [
 ]
 
 export function Navbar() {
+  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-forest">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        scrolled ? 'bg-forest shadow-md' : 'bg-transparent'
+      }`}
+    >
       <nav
         className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16"
         aria-label="Main navigation"
       >
         <Link
           href="/"
-          className="font-display text-xl text-sand tracking-wide hover:text-offwhite transition-colors"
+          className="font-display text-xl text-warmwhite hover:text-sand transition-colors duration-200"
         >
           Short Sleeve Travel
         </Link>
@@ -31,16 +42,16 @@ export function Navbar() {
             <Link
               key={href}
               href={href}
-              className="text-sm text-warmwhite/80 hover:text-sand transition-colors"
+              className="text-sm text-warmwhite/80 hover:text-warmwhite transition-colors duration-200"
             >
               {label}
             </Link>
           ))}
           <Link
             href="/experiences"
-            className="text-sm bg-burnt text-warmwhite px-5 py-2 hover:bg-sand hover:text-charcoal transition-colors"
+            className="text-sm bg-burnt text-warmwhite px-5 py-2 hover:bg-burnt/90 transition-colors duration-200"
           >
-            Join a Trip
+            View Trips
           </Link>
         </div>
 
@@ -73,7 +84,7 @@ export function Navbar() {
             <Link
               key={href}
               href={href}
-              className="text-base text-warmwhite/80 hover:text-sand transition-colors"
+              className="text-base text-warmwhite/80 hover:text-warmwhite transition-colors"
               onClick={() => setOpen(false)}
             >
               {label}
@@ -81,10 +92,10 @@ export function Navbar() {
           ))}
           <Link
             href="/experiences"
-            className="text-sm bg-burnt text-warmwhite px-5 py-3 text-center hover:bg-sand hover:text-charcoal transition-colors"
+            className="text-sm bg-burnt text-warmwhite px-5 py-3 text-center hover:bg-burnt/90 transition-colors"
             onClick={() => setOpen(false)}
           >
-            Join a Trip
+            View Trips
           </Link>
         </div>
       )}
