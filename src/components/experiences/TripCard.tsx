@@ -59,7 +59,7 @@ export function TripCard({ trip }: { trip: Trip }) {
         </div>
 
         <Link
-          href="/contact"
+          href={`/experiences/${trip.slug}`}
           className="mt-1 self-start bg-burnt text-warmwhite px-6 py-3 text-sm tracking-wide hover:bg-burnt/90 transition-colors duration-200"
         >
           View Experience
