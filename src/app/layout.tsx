@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   title: "Short Sleeve Travel",
   description:
     "Adventure group travel for young professionals. Small groups, big landscapes, real connections.",
+  icons: {
+    icon: "/short-sleeve-travel/favicon.ico",
+  },
 };
 
 export default function RootLayout({
