@@ -2,7 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+<<<<<<< Updated upstream
 # Short Sleeve Travel — Project Brief
+=======
+## Commands
+
+```bash
+npm run dev      # local dev server
+npm run build    # static export → ./out/
+npm run lint     # ESLint
+```
+
+Build artifact is `./out/` — deployed via GitHub Actions on push to `main`.
+
+> **Next.js version note:** This project uses Next.js 16.2.9. APIs and conventions may differ from training data. Check `node_modules/next/dist/docs/` before writing code if uncertain.
+>>>>>>> Stashed changes
 
 ## What This Is
 A complete redesign of shortsleeveltravel.com. Modern adventure group travel
