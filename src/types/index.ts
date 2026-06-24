@@ -1,4 +1,4 @@
-export type TripCategory = 'Hiking' | 'Cultural' | 'Beach & Islands'
+export type TripCategory = 'Adventure' | 'Cultural'
 export type Difficulty = 'Easy' | 'Moderate' | 'Challenging'
 
 export interface ItineraryDay {

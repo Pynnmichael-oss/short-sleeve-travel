@@ -7,7 +7,7 @@ import type { TripCategory } from '@/types'
 
 type Filter = 'All' | TripCategory
 
-const filters: Filter[] = ['All', 'Hiking', 'Cultural', 'Beach & Islands']
+const filters: Filter[] = ['All', 'Adventure', 'Cultural']
 
 export function FilteredTrips() {
   const [active, setActive] = useState<Filter>('All')

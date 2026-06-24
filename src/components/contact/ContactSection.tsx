@@ -52,14 +52,14 @@ export function ContactSection() {
                       <option value="" disabled>
                         Select a trip…
                       </option>
-                      <option value="patagonia">
-                        Edge of the World — Patagonia
+                      <option value="new-zealand-adventure">
+                        New Zealand Adventure
                       </option>
-                      <option value="oaxaca">
-                        Culture, Mezcal &amp; Mountains — Oaxaca
+                      <option value="spirit-of-japan">
+                        Spirit of Japan
                       </option>
-                      <option value="azores">
-                        Atlantic Wild — The Azores
+                      <option value="morocco-uncovered">
+                        Morocco Uncovered
                       </option>
                       <option value="exploring">
                         Not sure yet — just exploring
