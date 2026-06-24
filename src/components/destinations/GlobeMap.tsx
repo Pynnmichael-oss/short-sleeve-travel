@@ -130,9 +130,10 @@ export function GlobeMap() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !containerRef.current) return
+    const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+    if (typeof window === 'undefined' || !containerRef.current || !token) return
 
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ''
+    mapboxgl.accessToken = token
 
     const styleEl = document.createElement('style')
     styleEl.id = 'sst-globe-styles'
@@ -141,67 +142,76 @@ export function GlobeMap() {
 
     const isMobile = window.innerWidth < 768
 
-    const map = new mapboxgl.Map({
-      container: containerRef.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
-      center: [0, 20],
-      zoom: 1.8,
-      scrollZoom: false,
-      dragRotate: !isMobile,
-      pitchWithRotate: false,
-      projection: { name: 'globe' },
-    })
+    let map: mapboxgl.Map | null = null
 
-    map.on('load', () => {
-      map.setFog({
-        color: 'rgb(20, 20, 20)',
-        'high-color': 'rgb(44, 74, 62)',
-        'horizon-blend': 0.025,
-        'space-color': 'rgb(6, 6, 6)',
-        'star-intensity': 0.55,
+    try {
+      map = new mapboxgl.Map({
+        container: containerRef.current,
+        style: 'mapbox://styles/mapbox/dark-v11',
+        center: [0, 20],
+        zoom: 1.8,
+        scrollZoom: false,
+        dragRotate: !isMobile,
+        pitchWithRotate: false,
+        projection: { name: 'globe' },
       })
 
-      DESTINATIONS.forEach((dest) => {
-        const el = document.createElement('div')
-        el.className = 'sst-marker'
-        el.innerHTML = `
-          <div class="sst-marker-outer"></div>
-          <div class="sst-marker-inner"></div>
-        `
-
-        const popup = new mapboxgl.Popup({
-          closeButton: true,
-          closeOnClick: false,
-          offset: 18,
-          maxWidth: '300px',
-          anchor: 'bottom',
-        }).setHTML(`
-          <div class="sst-popup">
-            <h3 class="sst-popup-title">${dest.name}</h3>
-            <p class="sst-popup-dest">${dest.destination}</p>
-            <p class="sst-popup-meta">${dest.duration} &middot; ${dest.price}</p>
-            <a class="sst-popup-link" href="${BASE_PATH}/experiences/${dest.slug}">View Trip &rarr;</a>
-          </div>
-        `)
-
-        el.addEventListener('click', () => {
-          map.flyTo({
-            center: dest.coordinates,
-            zoom: 5,
-            duration: 1800,
-            essential: true,
-          })
+      map.on('load', () => {
+        if (!map) return
+        map.setFog({
+          color: 'rgb(20, 20, 20)',
+          'high-color': 'rgb(44, 74, 62)',
+          'horizon-blend': 0.025,
+          'space-color': 'rgb(6, 6, 6)',
+          'star-intensity': 0.55,
         })
 
-        new mapboxgl.Marker({ element: el })
-          .setLngLat(dest.coordinates)
-          .setPopup(popup)
-          .addTo(map)
+        DESTINATIONS.forEach((dest) => {
+          if (!map) return
+          const el = document.createElement('div')
+          el.className = 'sst-marker'
+          el.innerHTML = `
+            <div class="sst-marker-outer"></div>
+            <div class="sst-marker-inner"></div>
+          `
+
+          const popup = new mapboxgl.Popup({
+            closeButton: true,
+            closeOnClick: false,
+            offset: 18,
+            maxWidth: '300px',
+            anchor: 'bottom',
+          }).setHTML(`
+            <div class="sst-popup">
+              <h3 class="sst-popup-title">${dest.name}</h3>
+              <p class="sst-popup-dest">${dest.destination}</p>
+              <p class="sst-popup-meta">${dest.duration} &middot; ${dest.price}</p>
+              <a class="sst-popup-link" href="${BASE_PATH}/experiences/${dest.slug}">View Trip &rarr;</a>
+            </div>
+          `)
+
+          el.addEventListener('click', () => {
+            map?.flyTo({
+              center: dest.coordinates,
+              zoom: 5,
+              duration: 1800,
+              essential: true,
+            })
+          })
+
+          new mapboxgl.Marker({ element: el })
+            .setLngLat(dest.coordinates)
+            .setPopup(popup)
+            .addTo(map)
+        })
       })
-    })
+    } catch {
+      document.getElementById('sst-globe-styles')?.remove()
+      return
+    }
 
     return () => {
-      map.remove()
+      map?.remove()
       document.getElementById('sst-globe-styles')?.remove()
     }
   }, [])
