@@ -15,7 +15,7 @@ export const trips: Trip[] = [
     image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800',
     heroImage: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920',
     galleryImages: [
-      'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=1200',
+      'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200',
       'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1200',
       'https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=1200',
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200',

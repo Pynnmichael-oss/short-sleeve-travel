@@ -4,13 +4,16 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import type { Trip } from '@/types'
 
+const NZ_VIDEO_SRC = '/short-sleeve-travel/videos/new-zealand-hero.mp4'
+
 export function HeroSection({ trip }: { trip: Trip }) {
-  const imageWrapperRef = useRef<HTMLDivElement>(null)
+  const mediaWrapperRef = useRef<HTMLDivElement>(null)
+  const isVideo = trip.slug === 'new-zealand-adventure'
 
   useEffect(() => {
     const onScroll = () => {
-      if (imageWrapperRef.current) {
-        imageWrapperRef.current.style.transform = `translateY(${window.scrollY * 0.5}px)`
+      if (mediaWrapperRef.current) {
+        mediaWrapperRef.current.style.transform = `translateY(${window.scrollY * 0.5}px)`
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -19,18 +22,31 @@ export function HeroSection({ trip }: { trip: Trip }) {
 
   return (
     <section className="relative h-screen overflow-hidden">
-      {/* Parallax image */}
+      {/* Parallax media */}
       <div
-        ref={imageWrapperRef}
+        ref={mediaWrapperRef}
         style={{ position: 'absolute', top: '-18%', left: 0, right: 0, bottom: '-18%' }}
       >
-        <Image
-          src={trip.heroImage}
-          alt={`${trip.destination}, ${trip.country}`}
-          fill
-          className="object-cover"
-          priority
-        />
+        {isVideo ? (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={trip.heroImage}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          >
+            <source src={NZ_VIDEO_SRC} type="video/mp4" />
+          </video>
+        ) : (
+          <Image
+            src={trip.heroImage}
+            alt={`${trip.destination}, ${trip.country}`}
+            fill
+            className="object-cover"
+            priority
+          />
+        )}
       </div>
 
       {/* Dark overlay */}
