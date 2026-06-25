@@ -1,0 +1,273 @@
+[
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "title",
+        "type": "string",
+        "title": "Trip Name"
+      },
+      {
+        "options": {
+          "source": "title"
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "rows": 2,
+        "name": "tagline",
+        "type": "text"
+      },
+      {
+        "rows": 6,
+        "name": "description",
+        "type": "text",
+        "title": "Full Description"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "heroImage",
+        "type": "image"
+      },
+      {
+        "name": "durationDays",
+        "type": "number",
+        "title": "Duration (Days)"
+      },
+      {
+        "name": "priceFrom",
+        "type": "number",
+        "title": "Price From (USD)"
+      },
+      {
+        "name": "deposit",
+        "type": "number",
+        "title": "Deposit (USD)"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "name": "bookingUrl",
+        "type": "url",
+        "title": "TruTravels Booking URL"
+      },
+      {
+        "name": "destination",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            "Asia",
+            "Oceania",
+            "Africa",
+            "Europe",
+            "Americas"
+          ]
+        },
+        "name": "region",
+        "type": "string"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "startDate",
+                "type": "string"
+              },
+              {
+                "name": "endDate",
+                "type": "string"
+              },
+              {
+                "name": "price",
+                "type": "number",
+                "title": "Price (USD)"
+              },
+              {
+                "name": "spotsRemaining",
+                "type": "number"
+              },
+              {
+                "initialValue": true,
+                "name": "available",
+                "type": "boolean"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "departureDates",
+        "type": "array"
+      },
+      {
+        "fields": [
+          {
+            "of": [
+              {
+                "type": "string"
+              }
+            ],
+            "name": "activities",
+            "type": "array"
+          },
+          {
+            "name": "accommodation",
+            "type": "string"
+          },
+          {
+            "of": [
+              {
+                "type": "string"
+              }
+            ],
+            "name": "transport",
+            "type": "array"
+          },
+          {
+            "of": [
+              {
+                "type": "string"
+              }
+            ],
+            "name": "meals",
+            "type": "array"
+          }
+        ],
+        "name": "inclusions",
+        "type": "object",
+        "title": "What's Included"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "🟡 Coming Soon — show in \"Where We're Going Next\"",
+              "value": "upcoming"
+            },
+            {
+              "title": "🟢 Active — show in Experiences, bookable now",
+              "value": "active"
+            },
+            {
+              "title": "⚫ Past — show in Recent Destinations",
+              "value": "past"
+            }
+          ],
+          "layout": "radio"
+        },
+        "initialValue": "active",
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "upcoming",
+                  "active",
+                  "past"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "status",
+        "type": "string",
+        "title": "Trip Status"
+      },
+      {
+        "options": {
+          "layout": "grid"
+        },
+        "description": "Upload multiple photos for this trip. These appear in the trip detail page gallery.",
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "name": "caption",
+                "type": "string"
+              },
+              {
+                "name": "alt",
+                "type": "string",
+                "title": "Alt Text"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "gallery",
+        "type": "array",
+        "title": "Photo Gallery"
+      },
+      {
+        "initialValue": false,
+        "name": "featured",
+        "type": "boolean",
+        "title": "Featured on Homepage"
+      },
+      {
+        "name": "order",
+        "type": "number",
+        "title": "Display Order"
+      }
+    ],
+    "name": "trip",
+    "type": "document"
+  }
+]

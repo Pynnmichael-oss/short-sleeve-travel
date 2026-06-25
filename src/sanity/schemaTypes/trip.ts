@@ -38,6 +38,36 @@ export const trip = defineType({
         defineField({ name: 'meals', title: 'Meals', type: 'array', of: [{ type: 'string' }] }),
       ]
     }),
+    defineField({
+      name: 'status',
+      title: 'Trip Status',
+      type: 'string',
+      options: {
+        list: [
+          { title: '🟡 Coming Soon — show in "Where We\'re Going Next"', value: 'upcoming' },
+          { title: '🟢 Active — show in Experiences, bookable now', value: 'active' },
+          { title: '⚫ Past — show in Recent Destinations', value: 'past' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'active',
+      validation: R => R.required(),
+    }),
+    defineField({
+      name: 'gallery',
+      title: 'Photo Gallery',
+      description: 'Upload multiple photos for this trip. These appear in the trip detail page gallery.',
+      type: 'array',
+      of: [{
+        type: 'image',
+        options: { hotspot: true },
+        fields: [
+          defineField({ name: 'caption', title: 'Caption', type: 'string' }),
+          defineField({ name: 'alt', title: 'Alt Text', type: 'string' }),
+        ]
+      }],
+      options: { layout: 'grid' },
+    }),
     defineField({ name: 'featured', title: 'Featured on Homepage', type: 'boolean', initialValue: false }),
     defineField({ name: 'order', title: 'Display Order', type: 'number' }),
   ],

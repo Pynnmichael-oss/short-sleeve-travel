@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { GlobeMapWrapper } from '@/components/destinations/GlobeMapWrapper'
 import { DestStatsBar } from '@/components/destinations/DestStatsBar'
 import { DestTripCards } from '@/components/destinations/DestTripCards'
+import { getPastTrips } from '@/lib/queries'
 
 export const metadata = {
   title: 'Recent Destinations | Short Sleeve Travel',
@@ -9,7 +10,9 @@ export const metadata = {
     'Three trips. Thirty-three travelers. Stories that are still being told.',
 }
 
-export default function RecentDestinationsPage() {
+export default async function RecentDestinationsPage() {
+  const pastTrips = await getPastTrips()
+
   return (
     <main>
       {/* Section 1 — Page Header */}
@@ -33,7 +36,7 @@ export default function RecentDestinationsPage() {
       <DestStatsBar />
 
       {/* Section 4 — Past Trip Cards */}
-      <DestTripCards />
+      <DestTripCards trips={pastTrips} />
 
       {/* Section 5 — Bottom CTA */}
       <section className="bg-sst-navy py-24 px-6 text-center">

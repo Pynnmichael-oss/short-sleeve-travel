@@ -14,6 +14,15 @@ export interface TripInclusions {
   meals: string[]
 }
 
+export interface GalleryImage {
+  _key: string
+  asset: any
+  hotspot?: any
+  crop?: any
+  caption?: string
+  alt?: string
+}
+
 export interface Trip {
   _id: string
   title: string
@@ -31,4 +40,6 @@ export interface Trip {
   inclusions: TripInclusions
   featured: boolean
   order: number
+  status?: 'active' | 'upcoming' | 'past'
+  gallery?: GalleryImage[]
 }
