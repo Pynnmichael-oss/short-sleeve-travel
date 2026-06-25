@@ -29,9 +29,9 @@ function TripCard({ trip, index }: { trip: PastTrip; index: number }) {
   const imageRight = index % 2 !== 0
   const darkBg = index % 2 === 0
 
-  const imgSrc = trip.heroImage
+  const imgSrc = trip.heroImage?.asset
     ? urlFor(trip.heroImage).width(1200).url()
-    : (FALLBACK_IMAGES[trip.slug.current] ?? '')
+    : (FALLBACK_IMAGES[trip.slug.current] ?? '/short-sleeve-travel/images/placeholder.jpg')
 
   useEffect(() => {
     const el = ref.current

@@ -10,9 +10,9 @@ const FALLBACK_IMAGES: Record<string, string> = {
 }
 
 export function TripCard({ trip }: { trip: Trip }) {
-  const imgSrc = trip.heroImage
+  const imgSrc = trip.heroImage?.asset
     ? urlFor(trip.heroImage).width(800).height(576).url()
-    : (FALLBACK_IMAGES[trip.slug.current] ?? '')
+    : (FALLBACK_IMAGES[trip.slug.current] ?? '/short-sleeve-travel/images/placeholder.jpg')
 
   const highlights = trip.inclusions?.activities?.slice(0, 4) ?? []
 

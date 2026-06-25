@@ -17,9 +17,9 @@ export function HeroSection({ trip }: { trip: Trip }) {
   const mediaWrapperRef = useRef<HTMLDivElement>(null)
   const isVideo = trip.slug.current === 'new-zealand-adventure'
 
-  const heroSrc = trip.heroImage
+  const heroSrc = trip.heroImage?.asset
     ? urlFor(trip.heroImage).width(1920).url()
-    : (FALLBACK_IMAGES[trip.slug.current] ?? '')
+    : (FALLBACK_IMAGES[trip.slug.current] ?? '/short-sleeve-travel/images/placeholder.jpg')
 
   useEffect(() => {
     const onScroll = () => {
