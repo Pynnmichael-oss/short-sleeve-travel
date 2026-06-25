@@ -95,7 +95,7 @@ export function IntroAnimation() {
       {/* Centered brand text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6 text-center">
         <p
-          className="font-display text-offwhite"
+          className="font-display text-sst-white"
           style={{
             fontSize: 'clamp(1.8rem, 5.5vw, 4.5rem)',
             letterSpacing: '0.1em',
@@ -107,7 +107,7 @@ export function IntroAnimation() {
         </p>
 
         <p
-          className="font-body text-sand uppercase"
+          className="font-body text-sst-sand uppercase"
           style={{
             fontSize: '0.7rem',
             letterSpacing: '0.32em',

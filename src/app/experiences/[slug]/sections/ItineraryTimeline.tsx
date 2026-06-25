@@ -13,7 +13,7 @@ function DayContent({
   return (
     <div className={`relative ${alignRight ? 'text-right' : ''}`}>
       <div
-        className="absolute font-display text-charcoal/6 select-none pointer-events-none leading-none"
+        className="absolute font-display text-sst-navy/6 select-none pointer-events-none leading-none"
         style={{
           fontSize: 'clamp(4rem, 8vw, 6rem)',
           top: '-1rem',
@@ -23,11 +23,11 @@ function DayContent({
       >
         {String(day.day).padStart(2, '0')}
       </div>
-      <p className="font-body text-xs uppercase tracking-widest text-sand mb-2">
+      <p className="font-body text-xs uppercase tracking-widest text-sst-sand mb-2">
         Day {day.day}
       </p>
-      <h3 className="font-display text-xl text-charcoal leading-snug">{day.title}</h3>
-      <p className="font-body text-sm text-charcoal/55 mt-2 leading-relaxed">
+      <h3 className="font-display text-xl text-sst-navy leading-snug">{day.title}</h3>
+      <p className="font-body text-sm text-sst-navy/55 mt-2 leading-relaxed">
         {day.description}
       </p>
     </div>
@@ -65,22 +65,22 @@ export function ItineraryTimeline({ trip }: { trip: Trip }) {
   }, [])
 
   return (
-    <section className="bg-offwhite py-24">
+    <section className="bg-sst-white py-24">
       <div className="max-w-4xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-20">
-          <p className="font-body text-xs uppercase tracking-widest text-charcoal/40 mb-4">
+          <p className="font-body text-xs uppercase tracking-widest text-sst-navy/40 mb-4">
             The Journey
           </p>
-          <h2 className="font-display text-4xl md:text-5xl text-charcoal">Day by day.</h2>
+          <h2 className="font-display text-4xl md:text-5xl text-sst-navy">Day by day.</h2>
         </div>
 
         {/* Timeline */}
         <div className="relative">
           {/* Desktop center line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-charcoal/12 -translate-x-1/2" />
+          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-sst-navy/12 -translate-x-1/2" />
           {/* Mobile left line */}
-          <div className="md:hidden absolute left-5 top-0 bottom-0 w-px bg-charcoal/12" />
+          <div className="md:hidden absolute left-5 top-0 bottom-0 w-px bg-sst-navy/12" />
 
           {trip.itinerary.map((day, i) => {
             const isLeft = i % 2 === 0
@@ -96,7 +96,7 @@ export function ItineraryTimeline({ trip }: { trip: Trip }) {
               >
                 {/* Mobile layout */}
                 <div className="md:hidden flex gap-6 pl-14">
-                  <div className="absolute left-[15px] top-6 w-2.5 h-2.5 bg-sand rounded-full flex-shrink-0" />
+                  <div className="absolute left-[15px] top-6 w-2.5 h-2.5 bg-sst-sand rounded-full flex-shrink-0" />
                   <DayContent day={day} alignRight={false} />
                 </div>
 
@@ -108,7 +108,7 @@ export function ItineraryTimeline({ trip }: { trip: Trip }) {
                   </div>
 
                   {/* Center dot */}
-                  <div className="absolute left-1/2 top-6 w-3 h-3 bg-sand rounded-full -translate-x-1/2 flex-shrink-0" />
+                  <div className="absolute left-1/2 top-6 w-3 h-3 bg-sst-sand rounded-full -translate-x-1/2 flex-shrink-0" />
 
                   {/* Right half */}
                   <div className="w-1/2 pl-12">

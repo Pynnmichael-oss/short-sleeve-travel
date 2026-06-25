@@ -30,7 +30,7 @@ export function DestStatsBar() {
   }, [])
 
   return (
-    <section ref={ref} className="bg-forest py-16 px-6">
+    <section ref={ref} className="bg-sst-nav py-16 px-6">
       <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-0">
         {STATS.map((stat, i) => (
           <div
@@ -40,10 +40,10 @@ export function DestStatsBar() {
             }`}
             style={{ transitionDelay: `${i * 100}ms` }}
           >
-            <p className="font-display text-5xl md:text-6xl text-sand leading-none mb-3">
+            <p className="font-display text-5xl md:text-6xl text-sst-sand leading-none mb-3">
               {stat.number}
             </p>
-            <p className="font-body text-xs tracking-widest uppercase text-offwhite/70">
+            <p className="font-body text-xs tracking-widest uppercase text-sst-white/70">
               {stat.label}
             </p>
           </div>

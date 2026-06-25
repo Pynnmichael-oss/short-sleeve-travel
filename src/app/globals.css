@@ -2,12 +2,14 @@
 @config "../../tailwind.config.ts";
 
 @theme {
-  --color-forest: #2C4A3E;
-  --color-sand: #C8A97E;
-  --color-offwhite: #F5F0E8;
-  --color-charcoal: #2A2A2A;
-  --color-burnt: #D4622A;
-  --color-warmwhite: #FAFAF7;
+  --color-sst-nav:     #2E4A5A;
+  --color-sst-navy:    #1A2B3C;
+  --color-sst-amber:   #E8A020;
+  --color-sst-body:    #2D2D2D;
+  --color-sst-white:   #FFFFFF;
+  --color-sst-surface: #F7F8FA;
+  --color-sst-sand:    #C8A97E;
+  --color-sst-map:     #4AABE8;
 }
 
 @keyframes sst-kenburns {

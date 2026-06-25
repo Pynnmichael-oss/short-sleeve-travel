@@ -18,7 +18,7 @@ export function FilteredTrips() {
   return (
     <>
       {/* Filter bar */}
-      <div className="bg-offwhite border-b border-charcoal/8 sticky top-16 z-40">
+      <div className="bg-sst-white border-b border-sst-navy/8 sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4 flex gap-3 flex-wrap">
           {filters.map((f) => (
             <button
@@ -26,8 +26,8 @@ export function FilteredTrips() {
               onClick={() => setActive(f)}
               className={
                 active === f
-                  ? 'px-5 py-2 text-sm font-body bg-burnt text-warmwhite transition-colors duration-200'
-                  : 'px-5 py-2 text-sm font-body border border-charcoal text-charcoal hover:border-burnt hover:text-burnt transition-colors duration-200'
+                  ? 'px-5 py-2 text-sm font-body bg-sst-amber text-white transition-colors duration-200'
+                  : 'px-5 py-2 text-sm font-body border border-sst-navy text-sst-navy hover:border-sst-amber hover:text-sst-amber transition-colors duration-200'
               }
             >
               {f}
@@ -37,7 +37,7 @@ export function FilteredTrips() {
       </div>
 
       {/* Trip grid */}
-      <section className="bg-warmwhite py-16 md:py-24">
+      <section className="bg-sst-surface py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6">
           {visible.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -46,7 +46,7 @@ export function FilteredTrips() {
               ))}
             </div>
           ) : (
-            <p className="text-center font-body text-charcoal/50 py-20">
+            <p className="text-center font-body text-sst-navy/50 py-20">
               No trips in this category yet — check back soon.
             </p>
           )}

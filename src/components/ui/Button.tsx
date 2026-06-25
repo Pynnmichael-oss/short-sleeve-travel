@@ -10,9 +10,9 @@ interface ButtonProps {
 
 const base = 'inline-block px-8 py-3 text-sm tracking-wide transition-colors duration-200'
 const variants = {
-  primary: 'bg-burnt text-warmwhite hover:bg-burnt/90',
-  outline: 'border border-forest text-forest hover:bg-forest hover:text-warmwhite',
-  'outline-light': 'border border-offwhite text-offwhite hover:bg-offwhite hover:text-charcoal',
+  primary: 'bg-sst-amber text-white hover:bg-amber-600',
+  outline: 'border border-sst-nav text-sst-nav hover:bg-sst-nav hover:text-sst-white',
+  'outline-light': 'border border-sst-white text-sst-white hover:bg-sst-white hover:text-sst-navy',
 }
 
 export function Button({

@@ -218,13 +218,13 @@ export function GlobeMap() {
 
   return (
     <div className="relative bg-[#1a1a1a]">
-      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-charcoal to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-sst-navy to-transparent z-10 pointer-events-none" />
       <div
         ref={containerRef}
         className="h-[400px] md:h-[600px] w-full"
         aria-label="Interactive globe showing past trip destinations"
       />
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-forest to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-sst-nav to-transparent z-10 pointer-events-none" />
     </div>
   )
 }

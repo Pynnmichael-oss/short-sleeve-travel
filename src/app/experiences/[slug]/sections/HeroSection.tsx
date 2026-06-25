@@ -54,28 +54,28 @@ export function HeroSection({ trip }: { trip: Trip }) {
 
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-        <p className="font-body text-sand/80 text-xs uppercase tracking-[0.35em] mb-6">
+        <p className="font-body text-sst-sand/80 text-xs uppercase tracking-[0.35em] mb-6">
           {trip.destination}, {trip.country}
         </p>
 
         <h1
-          className="font-display text-offwhite leading-none"
+          className="font-display text-sst-white leading-none"
           style={{ fontSize: 'clamp(3.5rem, 8vw, 6rem)' }}
         >
           {trip.tagline}
         </h1>
 
-        <div className="flex items-center gap-4 mt-8 font-body text-offwhite/50 text-sm">
+        <div className="flex items-center gap-4 mt-8 font-body text-sst-white/50 text-sm">
           <span>{trip.duration} days</span>
-          <span className="text-offwhite/20">·</span>
+          <span className="text-sst-white/20">·</span>
           <span>Group of {trip.groupSize}</span>
-          <span className="text-offwhite/20">·</span>
-          <span className="text-sand">From ${trip.price.toLocaleString()}</span>
+          <span className="text-sst-white/20">·</span>
+          <span className="text-sst-sand">From ${trip.price.toLocaleString()}</span>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-offwhite/40">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-sst-white/40">
         <svg
           width="24"
           height="24"

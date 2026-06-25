@@ -4,12 +4,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        forest: '#2C4A3E',
-        sand: '#C8A97E',
-        offwhite: '#F5F0E8',
-        charcoal: '#2A2A2A',
-        burnt: '#D4622A',
-        warmwhite: '#FAFAF7',
+        'sst-nav':     '#2E4A5A',
+        'sst-navy':    '#1A2B3C',
+        'sst-amber':   '#E8A020',
+        'sst-body':    '#2D2D2D',
+        'sst-white':   '#FFFFFF',
+        'sst-surface': '#F7F8FA',
+        'sst-sand':    '#C8A97E',
+        'sst-map':     '#4AABE8',
       },
       fontFamily: {
         display: ['var(--font-playfair)', 'Georgia', 'serif'],

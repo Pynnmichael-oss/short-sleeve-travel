@@ -39,11 +39,11 @@ const rightImages = [
 
 export function CommunityGrid() {
   return (
-    <section className="bg-offwhite py-24 md:py-32">
+    <section className="bg-sst-white py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col gap-4 mb-14">
-          <SectionLabel className="text-sand">Our People</SectionLabel>
-          <h2 className="font-display text-4xl md:text-5xl text-charcoal">
+          <SectionLabel className="text-sst-sand">Our People</SectionLabel>
+          <h2 className="font-display text-4xl md:text-5xl text-sst-navy">
             The faces behind the adventures.
           </h2>
         </div>

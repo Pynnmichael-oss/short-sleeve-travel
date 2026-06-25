@@ -31,11 +31,11 @@ export function StatsBar({ trip }: { trip: Trip }) {
   ]
 
   return (
-    <div ref={ref} className="bg-forest py-14">
+    <div ref={ref} className="bg-sst-nav py-14">
       <div
         className={`
           max-w-5xl mx-auto px-6
-          grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-0 md:divide-x md:divide-offwhite/10
+          grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-0 md:divide-x md:divide-sst-white/10
           transition-all duration-700 ease-out
           ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
         `}
@@ -43,12 +43,12 @@ export function StatsBar({ trip }: { trip: Trip }) {
         {stats.map((stat) => (
           <div key={stat.unit} className="flex flex-col items-center text-center md:px-8">
             <span
-              className="font-display text-sand leading-none"
+              className="font-display text-sst-sand leading-none"
               style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
             >
               {stat.value}
             </span>
-            <span className="font-body text-offwhite/50 text-xs uppercase tracking-widest mt-2">
+            <span className="font-body text-sst-white/50 text-xs uppercase tracking-widest mt-2">
               {stat.unit}
             </span>
           </div>

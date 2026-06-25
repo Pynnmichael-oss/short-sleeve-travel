@@ -7,15 +7,15 @@ const stats = [
 
 export function ByTheNumbers() {
   return (
-    <section className="bg-sand py-20 md:py-28">
+    <section className="bg-sst-sand py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6">
           {stats.map(({ value, label }) => (
             <div key={label} className="flex flex-col items-center text-center gap-3">
-              <span className="font-display text-6xl md:text-7xl text-charcoal leading-none">
+              <span className="font-display text-6xl md:text-7xl text-sst-navy leading-none">
                 {value}
               </span>
-              <span className="font-body text-sm text-charcoal/60 leading-snug max-w-[140px]">
+              <span className="font-body text-sm text-sst-navy/60 leading-snug max-w-[140px]">
                 {label}
               </span>
             </div>

@@ -36,23 +36,23 @@ export function StickyHook({ trip }: { trip: Trip }) {
   }, [])
 
   return (
-    <section className="bg-warmwhite overflow-hidden">
+    <section className="bg-sst-surface overflow-hidden">
       <div className="flex flex-col md:flex-row">
         {/* Sticky left panel */}
         <div className="md:w-2/5 flex-shrink-0">
           <div className="md:sticky md:top-0 md:h-screen flex flex-col justify-center px-8 md:px-14 py-20 md:py-0">
-            <p className="font-body text-xs uppercase tracking-widest text-charcoal/40 mb-8">
+            <p className="font-body text-xs uppercase tracking-widest text-sst-navy/40 mb-8">
               The Experience
             </p>
             <span
-              className="font-display text-sand/30 leading-none select-none"
+              className="font-display text-sst-sand/30 leading-none select-none"
               style={{ fontSize: 'clamp(4rem, 8vw, 7rem)' }}
               aria-hidden="true"
             >
               &#8220;
             </span>
             <p
-              className="font-display text-charcoal -mt-4 leading-snug"
+              className="font-display text-sst-navy -mt-4 leading-snug"
               style={{ fontSize: 'clamp(1.15rem, 2vw, 1.4rem)' }}
             >
               {trip.hook}

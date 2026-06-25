@@ -25,30 +25,30 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section className="bg-charcoal py-20 md:py-28">
+    <section className="bg-sst-navy py-20 md:py-28">
       <div className="max-w-3xl mx-auto px-6">
         <div className="flex flex-col gap-4 mb-12">
-          <SectionLabel className="text-sand">Common Questions</SectionLabel>
-          <h2 className="font-display text-4xl md:text-5xl text-offwhite">
+          <SectionLabel className="text-sst-sand">Common Questions</SectionLabel>
+          <h2 className="font-display text-4xl md:text-5xl text-sst-white">
             Things people usually ask us.
           </h2>
         </div>
 
-        <div className="flex flex-col divide-y divide-offwhite/10">
+        <div className="flex flex-col divide-y divide-sst-white/10">
           {faqs.map(({ question, answer }) => (
             <details key={question} className="group py-1">
               <summary className="flex items-center justify-between py-5 cursor-pointer list-none gap-4">
-                <span className="font-display text-lg md:text-xl text-offwhite">
+                <span className="font-display text-lg md:text-xl text-sst-white">
                   {question}
                 </span>
                 <span
-                  className="shrink-0 text-sand text-2xl leading-none transition-transform duration-200 group-open:rotate-45"
+                  className="shrink-0 text-sst-sand text-2xl leading-none transition-transform duration-200 group-open:rotate-45"
                   aria-hidden="true"
                 >
                   +
                 </span>
               </summary>
-              <p className="pb-6 font-body text-sm text-offwhite/60 leading-relaxed pr-10">
+              <p className="pb-6 font-body text-sm text-sst-white/60 leading-relaxed pr-10">
                 {answer}
               </p>
             </details>

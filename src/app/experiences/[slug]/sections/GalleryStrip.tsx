@@ -43,10 +43,10 @@ export function GalleryStrip({ trip }: { trip: Trip }) {
   }
 
   return (
-    <section className="bg-charcoal py-16">
+    <section className="bg-sst-navy py-16">
       {/* Header row */}
       <div className="px-8 md:px-12 mb-8 flex items-end justify-between">
-        <p className="font-body text-xs uppercase tracking-widest text-sand/70">
+        <p className="font-body text-xs uppercase tracking-widest text-sst-sand/70">
           The Experience
         </p>
         <div className="flex gap-2">
@@ -54,7 +54,7 @@ export function GalleryStrip({ trip }: { trip: Trip }) {
             onClick={() => scrollBy(-window.innerWidth * 0.65)}
             disabled={!canScrollLeft}
             aria-label="Scroll gallery left"
-            className="w-10 h-10 flex items-center justify-center border border-warmwhite/20 text-warmwhite/60 hover:text-warmwhite hover:border-warmwhite/40 transition-colors duration-200 disabled:opacity-20 disabled:cursor-default"
+            className="w-10 h-10 flex items-center justify-center border border-sst-white/20 text-sst-white/60 hover:text-sst-white hover:border-sst-white/40 transition-colors duration-200 disabled:opacity-20 disabled:cursor-default"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
@@ -64,7 +64,7 @@ export function GalleryStrip({ trip }: { trip: Trip }) {
             onClick={() => scrollBy(window.innerWidth * 0.65)}
             disabled={!canScrollRight}
             aria-label="Scroll gallery right"
-            className="w-10 h-10 flex items-center justify-center border border-warmwhite/20 text-warmwhite/60 hover:text-warmwhite hover:border-warmwhite/40 transition-colors duration-200 disabled:opacity-20 disabled:cursor-default"
+            className="w-10 h-10 flex items-center justify-center border border-sst-white/20 text-sst-white/60 hover:text-sst-white hover:border-sst-white/40 transition-colors duration-200 disabled:opacity-20 disabled:cursor-default"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="9 18 15 12 9 6" />

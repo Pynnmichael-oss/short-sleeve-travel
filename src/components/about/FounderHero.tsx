@@ -16,13 +16,13 @@ export function FounderHero() {
       </div>
 
       {/* Content */}
-      <div className="bg-forest flex items-center px-10 md:px-16 py-20">
+      <div className="bg-sst-nav flex items-center px-10 md:px-16 py-20">
         <div className="flex flex-col gap-7 max-w-md">
-          <SectionLabel className="text-sand">Our Founder</SectionLabel>
-          <h1 className="font-display text-4xl md:text-5xl text-offwhite leading-tight">
+          <SectionLabel className="text-sst-sand">Our Founder</SectionLabel>
+          <h1 className="font-display text-4xl md:text-5xl text-sst-white leading-tight">
             Built by someone who needed this trip too.
           </h1>
-          <p className="font-body text-offwhite/70 leading-relaxed">
+          <p className="font-body text-sst-white/70 leading-relaxed">
             Kat Shortsleeve started Short Sleeve Travel after one too many solo
             trips that felt lonelier than they should have. She believed there
             was a better way to see the world — and the right people to see it
@@ -30,7 +30,7 @@ export function FounderHero() {
           </p>
           <a
             href="#kats-story"
-            className="self-start bg-burnt text-warmwhite px-6 py-3 text-sm tracking-wide hover:bg-burnt/90 transition-colors duration-200"
+            className="self-start bg-sst-amber text-white px-6 py-3 text-sm tracking-wide hover:bg-amber-600 transition-colors duration-200"
           >
             Read Kat's Story
           </a>

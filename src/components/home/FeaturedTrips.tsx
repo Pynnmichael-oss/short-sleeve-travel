@@ -5,11 +5,11 @@ import { trips } from '@/lib/trips'
 
 export function FeaturedTrips() {
   return (
-    <section className="bg-warmwhite py-24 md:py-32">
+    <section className="bg-sst-surface py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col gap-4 mb-14">
-          <SectionLabel className="text-sand">Upcoming Experiences</SectionLabel>
-          <h2 className="font-display text-4xl md:text-5xl text-charcoal">
+          <SectionLabel className="text-sst-sand">Upcoming Experiences</SectionLabel>
+          <h2 className="font-display text-4xl md:text-5xl text-sst-navy">
             Where are we going next?
           </h2>
         </div>
@@ -26,22 +26,22 @@ export function FeaturedTrips() {
                 />
                 {/* Destination tag */}
                 <div className="absolute top-4 left-4">
-                  <span className="bg-forest text-warmwhite text-xs uppercase tracking-widest px-3 py-1 font-body">
+                  <span className="bg-sst-nav text-sst-white text-xs uppercase tracking-widest px-3 py-1 font-body">
                     {trip.country}
                   </span>
                 </div>
               </div>
 
               <div className="flex flex-col gap-3 pt-6">
-                <h3 className="font-display text-2xl text-charcoal leading-snug">
+                <h3 className="font-display text-2xl text-sst-navy leading-snug">
                   {trip.destination} — {trip.tagline}
                 </h3>
-                <p className="text-sm text-charcoal/50 font-body">
+                <p className="text-sm text-sst-navy/50 font-body">
                   {trip.duration} days · Group of {trip.groupSize} · From ${trip.price.toLocaleString()}
                 </p>
                 <Link
                   href="/experiences"
-                  className="text-sm text-forest underline underline-offset-4 hover:text-burnt transition-colors duration-200 mt-1"
+                  className="text-sm text-sst-nav underline underline-offset-4 hover:text-sst-amber transition-colors duration-200 mt-1"
                 >
                   See This Trip →
                 </Link>
@@ -53,7 +53,7 @@ export function FeaturedTrips() {
         <div className="mt-14 text-center">
           <Link
             href="/experiences"
-            className="text-sm text-charcoal underline underline-offset-4 hover:text-burnt transition-colors duration-200"
+            className="text-sm text-sst-navy underline underline-offset-4 hover:text-sst-amber transition-colors duration-200"
           >
             View All Experiences
           </Link>

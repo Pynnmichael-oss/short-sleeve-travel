@@ -9,14 +9,14 @@ const navLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-charcoal text-warmwhite">
+    <footer className="bg-sst-navy text-sst-white">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           {/* Logo */}
           <div className="md:w-48 shrink-0">
             <Link
               href="/"
-              className="font-display text-xl text-offwhite hover:text-sand transition-colors duration-200"
+              className="font-display text-xl text-sst-white hover:text-sst-sand transition-colors duration-200"
             >
               Short Sleeve Travel
             </Link>
@@ -31,7 +31,7 @@ export function Footer() {
               <Link
                 key={href}
                 href={href}
-                className="text-sm text-warmwhite/60 hover:text-warmwhite transition-colors duration-200"
+                className="text-sm text-sst-white/60 hover:text-sst-white transition-colors duration-200"
               >
                 {label}
               </Link>
@@ -44,14 +44,14 @@ export function Footer() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-warmwhite/60 hover:text-sand transition-colors duration-200"
+              className="text-sm text-sst-white/60 hover:text-sst-sand transition-colors duration-200"
             >
               Follow the adventure →
             </a>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-warmwhite/10 pt-6 text-xs text-warmwhite/30 text-center">
+        <div className="mt-10 border-t border-sst-white/10 pt-6 text-xs text-sst-white/30 text-center">
           © 2025 Short Sleeve Travel. All rights reserved.
         </div>
       </div>

@@ -1,11 +1,11 @@
 const inputClass =
-  'w-full border border-charcoal/20 bg-white px-4 py-3 text-sm font-body text-charcoal placeholder:text-charcoal/30 focus:outline-none focus:border-forest transition-colors duration-200'
+  'w-full border border-sst-navy/20 bg-white px-4 py-3 text-sm font-body text-sst-navy placeholder:text-sst-navy/30 focus:outline-none focus:border-sst-nav transition-colors duration-200'
 
-const labelClass = 'block text-sm font-body text-charcoal/70 mb-2'
+const labelClass = 'block text-sm font-body text-sst-navy/70 mb-2'
 
 export function ContactSection() {
   return (
-    <section className="bg-offwhite py-16 md:py-24">
+    <section className="bg-sst-white py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 items-stretch">
           {/* Form — 60% */}
@@ -65,7 +65,7 @@ export function ContactSection() {
                         Not sure yet — just exploring
                       </option>
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-charcoal/40">
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-sst-navy/40">
                       <svg width="10" height="6" viewBox="0 0 10 6" fill="currentColor" aria-hidden="true">
                         <path d="M5 6L0 0h10L5 6z" />
                       </svg>
@@ -88,11 +88,11 @@ export function ContactSection() {
                 <div className="flex flex-col gap-3">
                   <button
                     type="submit"
-                    className="w-full bg-burnt text-warmwhite py-4 text-sm tracking-wide hover:bg-burnt/90 transition-colors duration-200"
+                    className="w-full bg-sst-amber text-white py-4 text-sm tracking-wide hover:bg-amber-600 transition-colors duration-200"
                   >
                     Send It →
                   </button>
-                  <p className="text-xs font-body text-charcoal/40 text-center">
+                  <p className="text-xs font-body text-sst-navy/40 text-center">
                     We reply to every message within 24 hours.
                   </p>
                 </div>
@@ -101,12 +101,12 @@ export function ContactSection() {
           </div>
 
           {/* Details — 40% */}
-          <div className="lg:col-span-2 bg-forest px-10 py-12 flex flex-col gap-8">
+          <div className="lg:col-span-2 bg-sst-nav px-10 py-12 flex flex-col gap-8">
             <div className="flex flex-col gap-3">
-              <h2 className="font-display text-2xl text-offwhite">
+              <h2 className="font-display text-2xl text-sst-white">
                 We'd love to hear from you
               </h2>
-              <p className="font-body text-sm text-offwhite/65 leading-relaxed">
+              <p className="font-body text-sm text-sst-white/65 leading-relaxed">
                 Whether you have questions about a specific trip, want to know if
                 group travel is right for you, or just want to say hello — drop
                 us a message.
@@ -115,40 +115,40 @@ export function ContactSection() {
 
             <div className="flex flex-col gap-7">
               <div className="flex flex-col gap-1.5">
-                <span className="text-xs uppercase tracking-widest font-body text-sand">
+                <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
                   Response Time
                 </span>
-                <p className="font-body text-sm text-offwhite/80">
+                <p className="font-body text-sm text-sst-white/80">
                   Within 24 hours, always.
                 </p>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <span className="text-xs uppercase tracking-widest font-body text-sand">
+                <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
                   No Pressure
                 </span>
-                <p className="font-body text-sm text-offwhite/80">
+                <p className="font-body text-sm text-sst-white/80">
                   Ask us anything. We're not here to hard sell you on anything.
                 </p>
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <span className="text-xs uppercase tracking-widest font-body text-sand">
+                <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
                   Follow Along
                 </span>
                 <a
                   href="https://instagram.com/shortsleeveltravel"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-body text-sm text-offwhite/80 hover:text-sand transition-colors duration-200"
+                  className="font-body text-sm text-sst-white/80 hover:text-sst-sand transition-colors duration-200"
                 >
                   @shortsleeveltravel
                 </a>
               </div>
             </div>
 
-            <div className="mt-auto pt-8 border-t border-offwhite/10">
-              <p className="font-display text-xl text-offwhite/80 italic">
+            <div className="mt-auto pt-8 border-t border-sst-white/10">
+              <p className="font-display text-xl text-sst-white/80 italic">
                 "Looking forward to hearing from you. — Kat"
               </p>
             </div>

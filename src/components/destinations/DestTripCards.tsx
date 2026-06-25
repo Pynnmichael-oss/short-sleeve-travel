@@ -105,12 +105,12 @@ function TripCard({ card, index }: { card: CardData; index: number }) {
   const contentEl = (
     <div
       className={`md:flex-1 flex flex-col justify-center px-10 py-12 md:py-16 ${
-        card.contentForest ? 'bg-forest' : 'bg-offwhite'
+        card.contentForest ? 'bg-sst-nav' : 'bg-sst-white'
       }`}
     >
       <p
         className={`font-body text-xs tracking-widest mb-5 ${
-          card.contentForest ? 'text-sand/70' : 'text-charcoal/50'
+          card.contentForest ? 'text-sst-sand/70' : 'text-sst-navy/50'
         }`}
       >
         {card.label}
@@ -118,7 +118,7 @@ function TripCard({ card, index }: { card: CardData; index: number }) {
 
       <h3
         className={`font-display text-3xl md:text-4xl leading-tight mb-2 ${
-          card.contentForest ? 'text-warmwhite' : 'text-charcoal'
+          card.contentForest ? 'text-sst-white' : 'text-sst-navy'
         }`}
       >
         {card.title}
@@ -126,7 +126,7 @@ function TripCard({ card, index }: { card: CardData; index: number }) {
 
       <p
         className={`font-body text-sm mb-6 ${
-          card.contentForest ? 'text-sand' : 'text-charcoal/60'
+          card.contentForest ? 'text-sst-sand' : 'text-sst-navy/60'
         }`}
       >
         {card.destination}
@@ -134,7 +134,7 @@ function TripCard({ card, index }: { card: CardData; index: number }) {
 
       <p
         className={`font-body text-base leading-relaxed mb-8 max-w-md ${
-          card.contentForest ? 'text-offwhite/80' : 'text-charcoal/80'
+          card.contentForest ? 'text-sst-white/80' : 'text-sst-navy/80'
         }`}
       >
         {card.description}
@@ -146,8 +146,8 @@ function TripCard({ card, index }: { card: CardData; index: number }) {
             key={h}
             className={`font-body text-xs px-3 py-1 border ${
               card.contentForest
-                ? 'border-sand/40 text-sand'
-                : 'border-sand text-charcoal/70'
+                ? 'border-sst-sand/40 text-sst-sand'
+                : 'border-sst-sand text-sst-navy/70'
             }`}
           >
             {h}
@@ -158,14 +158,14 @@ function TripCard({ card, index }: { card: CardData; index: number }) {
       <blockquote
         className={`font-display italic text-base leading-relaxed border-l-2 pl-4 mb-8 max-w-sm ${
           card.contentForest
-            ? 'border-sand text-offwhite/70'
-            : 'border-burnt text-charcoal/70'
+            ? 'border-sst-sand text-sst-white/70'
+            : 'border-sst-amber text-sst-navy/70'
         }`}
       >
         &ldquo;{card.quote}&rdquo;
         <footer
           className={`font-body not-italic text-xs mt-2 ${
-            card.contentForest ? 'text-sand/60' : 'text-charcoal/50'
+            card.contentForest ? 'text-sst-sand/60' : 'text-sst-navy/50'
           }`}
         >
           — {card.quoteAuthor}
@@ -174,7 +174,7 @@ function TripCard({ card, index }: { card: CardData; index: number }) {
 
       <Link
         href={card.link}
-        className="font-body text-sm text-burnt hover:text-burnt/80 transition-colors duration-200 tracking-wide uppercase"
+        className="font-body text-sm text-sst-amber hover:text-sst-amber/80 transition-colors duration-200 tracking-wide uppercase"
       >
         Read About This Trip &rarr;
       </Link>
@@ -197,12 +197,12 @@ function TripCard({ card, index }: { card: CardData; index: number }) {
 
 export function DestTripCards() {
   return (
-    <section className="bg-offwhite">
+    <section className="bg-sst-white">
       <div className="max-w-7xl mx-auto px-6 pt-20 pb-8 text-center">
-        <p className="font-body text-xs tracking-widest uppercase text-charcoal/50 mb-4">
+        <p className="font-body text-xs tracking-widest uppercase text-sst-navy/50 mb-4">
           The Trips
         </p>
-        <h2 className="font-display text-4xl md:text-5xl text-charcoal">
+        <h2 className="font-display text-4xl md:text-5xl text-sst-navy">
           Every one of these changed someone.
         </h2>
       </div>

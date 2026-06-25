@@ -10,14 +10,14 @@ export function ExperiencesHero() {
         className="object-cover"
         priority
       />
-      <div className="absolute inset-0 bg-forest/50" />
+      <div className="absolute inset-0 bg-sst-nav/50" />
       <div className="relative z-10 max-w-3xl mx-auto px-6 flex flex-col items-center gap-5">
-        <h1 className="font-display text-4xl md:text-6xl text-warmwhite leading-tight">
+        <h1 className="font-display text-4xl md:text-6xl text-sst-white leading-tight">
           Every trip, a story.
           <br />
           Every group, a reason to go.
         </h1>
-        <p className="font-body text-lg text-warmwhite/80">
+        <p className="font-body text-lg text-sst-white/80">
           Three curated adventures. Unlimited possibilities.
         </p>
       </div>

@@ -2,11 +2,11 @@ import { SectionLabel } from '@/components/ui/SectionLabel'
 
 export function KatsStory() {
   return (
-    <section id="kats-story" className="bg-offwhite py-24 md:py-32">
+    <section id="kats-story" className="bg-sst-white py-24 md:py-32">
       <div className="max-w-[680px] mx-auto px-6 flex flex-col gap-8">
-        <SectionLabel className="text-sand">Kat's Story</SectionLabel>
+        <SectionLabel className="text-sst-sand">Kat's Story</SectionLabel>
 
-        <div className="flex flex-col gap-6 font-body text-lg text-charcoal/75 leading-relaxed">
+        <div className="flex flex-col gap-6 font-body text-lg text-sst-navy/75 leading-relaxed">
           <p>
             I grew up with maps on my bedroom wall and a list of places I
             couldn't wait to reach. When I finally took my first solo trip at

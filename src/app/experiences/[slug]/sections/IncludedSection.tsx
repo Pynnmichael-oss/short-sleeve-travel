@@ -24,7 +24,7 @@ export function IncludedSection({ trip }: { trip: Trip }) {
   }, [])
 
   return (
-    <section ref={ref} className="bg-forest py-24">
+    <section ref={ref} className="bg-sst-nav py-24">
       <div
         className={`
           max-w-4xl mx-auto px-6
@@ -35,13 +35,13 @@ export function IncludedSection({ trip }: { trip: Trip }) {
         <div className="grid md:grid-cols-2 gap-12 md:gap-16">
           {/* Included */}
           <div>
-            <h3 className="font-display text-2xl text-offwhite mb-8">
+            <h3 className="font-display text-2xl text-sst-white mb-8">
               {"What's included"}
             </h3>
             <ul className="space-y-4">
               {trip.included.map((item) => (
-                <li key={item} className="flex items-start gap-3 font-body text-sm text-offwhite/70">
-                  <span className="text-sand mt-0.5 flex-shrink-0">✓</span>
+                <li key={item} className="flex items-start gap-3 font-body text-sm text-sst-white/70">
+                  <span className="text-sst-sand mt-0.5 flex-shrink-0">✓</span>
                   {item}
                 </li>
               ))}
@@ -50,10 +50,10 @@ export function IncludedSection({ trip }: { trip: Trip }) {
 
           {/* Not included */}
           <div>
-            <h3 className="font-display text-2xl text-offwhite mb-8">Not included</h3>
+            <h3 className="font-display text-2xl text-sst-white mb-8">Not included</h3>
             <ul className="space-y-4">
               {trip.notIncluded.map((item) => (
-                <li key={item} className="flex items-start gap-3 font-body text-sm text-offwhite/40">
+                <li key={item} className="flex items-start gap-3 font-body text-sm text-sst-white/40">
                   <span className="mt-0.5 flex-shrink-0">—</span>
                   {item}
                 </li>
