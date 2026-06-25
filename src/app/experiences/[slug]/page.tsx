@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation'
-import { trips } from '@/lib/trips'
+import { client } from '@/lib/sanity'
+import { getTripBySlug } from '@/lib/queries'
 import { ExperiencePage } from './ExperiencePage'
 
-export function generateStaticParams() {
-  return trips.map((t) => ({ slug: t.slug }))
+export async function generateStaticParams() {
+  const trips = await client.fetch(`*[_type == "trip"]{ "slug": slug.current }`)
+  return trips.map((t: any) => ({ slug: t.slug }))
 }
 
 export async function generateMetadata({
@@ -12,11 +14,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const trip = trips.find((t) => t.slug === slug)
+  const trip = await getTripBySlug(slug)
   if (!trip) return {}
   return {
-    title: `${trip.tagline} — ${trip.destination}, ${trip.country} | Short Sleeve Travel`,
-    description: trip.hook.slice(0, 160),
+    title: `${trip.tagline} — ${trip.destination} | Short Sleeve Travel`,
+    description: trip.description?.slice(0, 160),
   }
 }
 
@@ -26,7 +28,7 @@ export default async function Page({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const trip = trips.find((t) => t.slug === slug)
+  const trip = await getTripBySlug(slug)
   if (!trip) notFound()
   return <ExperiencePage trip={trip} />
 }

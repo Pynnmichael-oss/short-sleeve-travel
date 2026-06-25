@@ -1,6 +1,7 @@
 import { ExperiencesHero } from '@/components/experiences/ExperiencesHero'
 import { FilteredTrips } from '@/components/experiences/FilteredTrips'
 import { CustomRequest } from '@/components/experiences/CustomRequest'
+import { getAllTrips } from '@/lib/queries'
 
 export const metadata = {
   title: 'Experiences — Short Sleeve Travel',
@@ -8,11 +9,12 @@ export const metadata = {
     'Browse our curated group adventures. New Zealand, Japan, Morocco — find the trip that calls to you.',
 }
 
-export default function ExperiencesPage() {
+export default async function ExperiencesPage() {
+  const trips = await getAllTrips()
   return (
     <>
       <ExperiencesHero />
-      <FilteredTrips />
+      <FilteredTrips trips={trips} />
       <CustomRequest />
     </>
   )

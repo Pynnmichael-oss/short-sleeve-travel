@@ -8,34 +8,22 @@ export function BookingCTA({ trip }: { trip: Trip }) {
           Ready for {trip.destination}?
         </h2>
         <p className="font-body text-sst-white/50 mt-4 text-sm leading-relaxed">
-          Spots are limited to {trip.groupSize} people. Reserve yours before they&apos;re gone.
+          Spots fill fast. Secure your place with a ${trip.deposit?.toLocaleString() ?? '280'} deposit.
         </p>
 
-        <form
-          className="mt-10 flex flex-col gap-4"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <input
-            type="text"
-            placeholder="Your name"
-            className="w-full bg-white/10 border border-sst-white/20 text-sst-white placeholder:text-sst-white/30 px-5 py-4 font-body text-sm focus:outline-none focus:border-sst-sand/60 transition-colors duration-200"
-          />
-          <input
-            type="email"
-            placeholder="Your email"
-            className="w-full bg-white/10 border border-sst-white/20 text-sst-white placeholder:text-sst-white/30 px-5 py-4 font-body text-sm focus:outline-none focus:border-sst-sand/60 transition-colors duration-200"
-          />
-          <button
-            type="submit"
-            className="w-full bg-sst-amber text-white py-4 font-body text-sm uppercase tracking-widest hover:bg-amber-600 transition-colors duration-200 mt-2"
+        <div className="mt-10 flex flex-col items-center gap-4">
+          <a
+            href={trip.bookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full max-w-sm bg-sst-amber text-white py-4 font-body text-sm uppercase tracking-widest hover:bg-amber-600 transition-colors duration-200 text-center block"
           >
-            Reserve My Spot
-          </button>
-        </form>
-
-        <p className="font-body text-xs text-sst-white/25 mt-6 leading-relaxed">
-          No payment required to reserve. We&apos;ll be in touch within 24 hours.
-        </p>
+            Check Dates &amp; Book
+          </a>
+          <p className="font-body text-xs text-sst-white/25 leading-relaxed">
+            You&apos;ll be taken to our booking partner TruTravels to complete your reservation.
+          </p>
+        </div>
       </div>
     </section>
   )

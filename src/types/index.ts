@@ -1,36 +1,34 @@
-export type TripCategory = 'Adventure' | 'Cultural'
-export type Difficulty = 'Easy' | 'Moderate' | 'Challenging'
-
-export interface ItineraryDay {
-  day: number
-  title: string
-  description: string
+export interface DepartureDate {
+  _key: string
+  startDate: string
+  endDate: string
+  price: number
+  spotsRemaining?: number
+  available: boolean
 }
 
-export interface PersonaCard {
-  type: string
-  description: string
+export interface TripInclusions {
+  activities: string[]
+  accommodation: string
+  transport: string[]
+  meals: string[]
 }
 
 export interface Trip {
-  id: string
-  slug: string
-  destination: string
-  country: string
+  _id: string
+  title: string
+  slug: { current: string }
   tagline: string
-  category: TripCategory
-  duration: number
-  groupSize: number
-  price: number
-  difficulty: Difficulty
-  image: string
-  heroImage: string
-  galleryImages: string[]
   description: string
-  hook: string
-  highlights: string[]
-  itinerary: ItineraryDay[]
-  included: string[]
-  notIncluded: string[]
-  whoItsFor: PersonaCard[]
+  heroImage: any
+  durationDays: number
+  priceFrom: number
+  deposit: number
+  bookingUrl: string
+  destination: string
+  region: string
+  departureDates: DepartureDate[]
+  inclusions: TripInclusions
+  featured: boolean
+  order: number
 }

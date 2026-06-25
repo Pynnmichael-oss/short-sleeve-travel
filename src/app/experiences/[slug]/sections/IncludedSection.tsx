@@ -3,6 +3,12 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Trip } from '@/types'
 
+const NOT_INCLUDED = [
+  'International flights',
+  'Travel insurance',
+  'Personal spending',
+]
+
 export function IncludedSection({ trip }: { trip: Trip }) {
   const ref = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
@@ -23,6 +29,14 @@ export function IncludedSection({ trip }: { trip: Trip }) {
     return () => obs.disconnect()
   }, [])
 
+  const inc = trip.inclusions ?? {}
+  const included: string[] = [
+    ...(inc.accommodation ? [inc.accommodation] : []),
+    ...(inc.transport ?? []),
+    ...(inc.meals ?? []),
+    ...(inc.activities ?? []),
+  ]
+
   return (
     <section ref={ref} className="bg-sst-nav py-24">
       <div
@@ -33,13 +47,10 @@ export function IncludedSection({ trip }: { trip: Trip }) {
         `}
       >
         <div className="grid md:grid-cols-2 gap-12 md:gap-16">
-          {/* Included */}
           <div>
-            <h3 className="font-display text-2xl text-sst-white mb-8">
-              {"What's included"}
-            </h3>
+            <h3 className="font-display text-2xl text-sst-white mb-8">{"What's included"}</h3>
             <ul className="space-y-4">
-              {trip.included.map((item) => (
+              {included.map((item) => (
                 <li key={item} className="flex items-start gap-3 font-body text-sm text-sst-white/70">
                   <span className="text-sst-sand mt-0.5 flex-shrink-0">✓</span>
                   {item}
@@ -48,11 +59,10 @@ export function IncludedSection({ trip }: { trip: Trip }) {
             </ul>
           </div>
 
-          {/* Not included */}
           <div>
             <h3 className="font-display text-2xl text-sst-white mb-8">Not included</h3>
             <ul className="space-y-4">
-              {trip.notIncluded.map((item) => (
+              {NOT_INCLUDED.map((item) => (
                 <li key={item} className="flex items-start gap-3 font-body text-sm text-sst-white/40">
                   <span className="mt-0.5 flex-shrink-0">—</span>
                   {item}

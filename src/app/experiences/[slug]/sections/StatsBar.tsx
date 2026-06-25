@@ -24,10 +24,10 @@ export function StatsBar({ trip }: { trip: Trip }) {
   }, [])
 
   const stats = [
-    { value: `${trip.duration}`, unit: 'Days' },
-    { value: `${trip.groupSize}`, unit: 'People max' },
-    { value: `$${trip.price.toLocaleString()}`, unit: 'Starting from' },
-    { value: trip.difficulty, unit: 'Difficulty' },
+    { value: `${trip.durationDays}`, unit: 'Days' },
+    { value: trip.region, unit: 'Region' },
+    { value: `$${trip.priceFrom.toLocaleString()}`, unit: 'Starting from' },
+    { value: `$${trip.deposit.toLocaleString()}`, unit: 'Deposit' },
   ]
 
   return (

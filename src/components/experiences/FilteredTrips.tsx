@@ -1,19 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { trips } from '@/lib/trips'
 import { TripCard } from './TripCard'
-import type { TripCategory } from '@/types'
+import type { Trip } from '@/types'
 
-type Filter = 'All' | TripCategory
+const REGIONS = ['All', 'Asia', 'Oceania', 'Africa', 'Europe', 'Americas']
 
-const filters: Filter[] = ['All', 'Adventure', 'Cultural']
+export function FilteredTrips({ trips }: { trips: Trip[] }) {
+  const [active, setActive] = useState('All')
 
-export function FilteredTrips() {
-  const [active, setActive] = useState<Filter>('All')
+  const visible = active === 'All' ? trips : trips.filter((t) => t.region === active)
 
-  const visible =
-    active === 'All' ? trips : trips.filter((t) => t.category === active)
+  const usedRegions = ['All', ...Array.from(new Set(trips.map((t) => t.region))).sort()]
+  const filters = REGIONS.filter((r) => usedRegions.includes(r))
 
   return (
     <>
@@ -42,12 +41,12 @@ export function FilteredTrips() {
           {visible.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {visible.map((trip) => (
-                <TripCard key={trip.id} trip={trip} />
+                <TripCard key={trip._id} trip={trip} />
               ))}
             </div>
           ) : (
             <p className="text-center font-body text-sst-navy/50 py-20">
-              No trips in this category yet — check back soon.
+              No trips in this region yet — check back soon.
             </p>
           )}
         </div>

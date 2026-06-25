@@ -3,12 +3,23 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import type { Trip } from '@/types'
+import { urlFor } from '@/lib/sanity'
 
 const NZ_VIDEO_SRC = '/short-sleeve-travel/videos/new-zealand-hero.mp4'
 
+const FALLBACK_IMAGES: Record<string, string> = {
+  'new-zealand-adventure': 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920',
+  'spirit-of-japan': 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1920',
+  'morocco-uncovered': 'https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=1920',
+}
+
 export function HeroSection({ trip }: { trip: Trip }) {
   const mediaWrapperRef = useRef<HTMLDivElement>(null)
-  const isVideo = trip.slug === 'new-zealand-adventure'
+  const isVideo = trip.slug.current === 'new-zealand-adventure'
+
+  const heroSrc = trip.heroImage
+    ? urlFor(trip.heroImage).width(1920).url()
+    : (FALLBACK_IMAGES[trip.slug.current] ?? '')
 
   useEffect(() => {
     const onScroll = () => {
@@ -33,20 +44,20 @@ export function HeroSection({ trip }: { trip: Trip }) {
             muted
             loop
             playsInline
-            poster={trip.heroImage}
+            poster={heroSrc}
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           >
             <source src={NZ_VIDEO_SRC} type="video/mp4" />
           </video>
-        ) : (
+        ) : heroSrc ? (
           <Image
-            src={trip.heroImage}
-            alt={`${trip.destination}, ${trip.country}`}
+            src={heroSrc}
+            alt={trip.destination}
             fill
             className="object-cover"
             priority
           />
-        )}
+        ) : null}
       </div>
 
       {/* Dark overlay */}
@@ -55,7 +66,7 @@ export function HeroSection({ trip }: { trip: Trip }) {
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
         <p className="font-body text-sst-sand/80 text-xs uppercase tracking-[0.35em] mb-6">
-          {trip.destination}, {trip.country}
+          {trip.destination}
         </p>
 
         <h1
@@ -66,26 +77,17 @@ export function HeroSection({ trip }: { trip: Trip }) {
         </h1>
 
         <div className="flex items-center gap-4 mt-8 font-body text-sst-white/50 text-sm">
-          <span>{trip.duration} days</span>
+          <span>{trip.durationDays} days</span>
           <span className="text-sst-white/20">·</span>
-          <span>Group of {trip.groupSize}</span>
+          <span>{trip.region}</span>
           <span className="text-sst-white/20">·</span>
-          <span className="text-sst-sand">From ${trip.price.toLocaleString()}</span>
+          <span className="text-sst-sand">From ${trip.priceFrom.toLocaleString()}</span>
         </div>
       </div>
 
       {/* Scroll indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-sst-white/40">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <polyline points="6 9 12 15 18 9" />
         </svg>
       </div>
