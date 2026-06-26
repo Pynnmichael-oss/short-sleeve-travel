@@ -1,20 +1,21 @@
 const steps = [
   {
     number: '01',
-    title: 'Pick a trip',
+    title: 'Who joins us',
     description:
-      'Browse our curated experiences and find one that calls to you.',
+      'Our travelers come from all walks of life — consultants, entrepreneurs, doctors, lawyers, nurses, finance professionals, and creatives. Most join solo, but we\'ve had friends, siblings, and couples join too. What unites everyone is the desire to explore the world in ways that are truly out of the ordinary.',
   },
   {
     number: '02',
-    title: 'We handle it',
+    title: 'Why we\'re different',
     description:
-      'Flights, accommodation, and logistics are all taken care of.',
+      'Unlike typical group trips, Shortsleeve Travel focuses on high-end adventure and unique experiences. It\'s about meeting like-minded people and creating authentic, life-changing experiences.',
   },
   {
     number: '03',
-    title: 'You show up',
-    description: 'Arrive ready to explore. We handle the rest.',
+    title: 'Pricing',
+    description:
+      'Our trips range from $1k to $3k per person, with everything taken care of — from accommodations to itinerary planning. All you have to do is relax and enjoy.',
   },
 ]
 

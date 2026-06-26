@@ -9,7 +9,7 @@ export function Pricing() {
           Our trips range from{' '}
           <span className="text-sst-amber font-medium">$1,000 to $3,000 per person</span>,
           with everything taken care of — from accommodations to itinerary planning.
-          All you have to do is show up.
+          All you have to do is relax and enjoy.
         </p>
       </div>
     </section>
