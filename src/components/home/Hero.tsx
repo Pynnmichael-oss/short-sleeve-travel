@@ -29,7 +29,7 @@ export function Hero() {
           Adventure is better together.
         </h1>
         <p className="font-body text-lg md:text-xl text-sst-white/80 max-w-xl leading-relaxed">
-          Group travel for people who want to actually show up.
+          The travel club for your 20s and 30s. Small groups. Big adventures. Lifelong friends.
         </p>
         <Link
           href="/trips"

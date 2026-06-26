@@ -6,6 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 const BASE_PATH = '/short-sleeve-travel'
 
+// Active trips — full popup with link
 const DESTINATIONS = [
   {
     coordinates: [172.6362, -40.9006] as [number, number],
@@ -31,6 +32,17 @@ const DESTINATIONS = [
     price: 'From $1,195',
     slug: 'morocco-uncovered',
   },
+]
+
+// Past destinations Kat has visited with the club — amber dot + hover tooltip
+const PAST_DESTINATIONS: { name: string; coordinates: [number, number] }[] = [
+  { name: 'Prague, Czech Republic', coordinates: [14.4378, 50.0755] },
+  { name: 'Jaipur, India',          coordinates: [75.7873, 26.9124] },
+  { name: 'Croatia',                coordinates: [16.4402, 45.5511] },
+  { name: 'Colombia',               coordinates: [-74.0721, 4.7110] },
+  { name: 'Morocco',                coordinates: [-7.0926, 31.7917] },
+  { name: 'Japan',                  coordinates: [138.2529, 36.2048] },
+  { name: 'New Zealand',            coordinates: [174.8860, -40.9006] },
 ]
 
 const INJECTED_STYLES = `
@@ -61,6 +73,23 @@ const INJECTED_STYLES = `
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 0 2px rgba(212, 98, 42, 0.5);
+  }
+  .sst-past-marker {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    cursor: default;
+  }
+  .sst-past-marker-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #E8A020;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 3px rgba(232, 160, 32, 0.25);
   }
   .mapboxgl-popup-content {
     background: transparent !important;
@@ -124,6 +153,17 @@ const INJECTED_STYLES = `
   .sst-popup-link:hover {
     color: #e8733b;
   }
+  .sst-tooltip {
+    background: rgba(26, 43, 60, 0.92);
+    color: #C8A97E;
+    font-size: 11px;
+    font-family: system-ui, -apple-system, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 5px 10px;
+    border: 1px solid rgba(200, 169, 126, 0.35);
+    white-space: nowrap;
+  }
 `
 
 export function GlobeMap() {
@@ -158,6 +198,7 @@ export function GlobeMap() {
 
       map.on('load', () => {
         if (!map) return
+
         map.setFog({
           color: 'rgb(20, 20, 20)',
           'high-color': 'rgb(44, 74, 62)',
@@ -166,6 +207,7 @@ export function GlobeMap() {
           'star-intensity': 0.55,
         })
 
+        // Active trip markers — pulsing + popup with link
         DESTINATIONS.forEach((dest) => {
           if (!map) return
           const el = document.createElement('div')
@@ -191,17 +233,39 @@ export function GlobeMap() {
           `)
 
           el.addEventListener('click', () => {
-            map?.flyTo({
-              center: dest.coordinates,
-              zoom: 5,
-              duration: 1800,
-              essential: true,
-            })
+            map?.flyTo({ center: dest.coordinates, zoom: 5, duration: 1800, essential: true })
           })
 
           new mapboxgl.Marker({ element: el })
             .setLngLat(dest.coordinates)
             .setPopup(popup)
+            .addTo(map)
+        })
+
+        // Past destination markers — amber dot + hover tooltip
+        PAST_DESTINATIONS.forEach((dest) => {
+          if (!map) return
+
+          const el = document.createElement('div')
+          el.className = 'sst-past-marker'
+          el.innerHTML = `<div class="sst-past-marker-dot"></div>`
+
+          const tooltip = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 12,
+            anchor: 'bottom',
+          }).setHTML(`<div class="sst-tooltip">${dest.name}</div>`)
+
+          el.addEventListener('mouseenter', () => {
+            tooltip.setLngLat(dest.coordinates).addTo(map!)
+          })
+          el.addEventListener('mouseleave', () => {
+            tooltip.remove()
+          })
+
+          new mapboxgl.Marker({ element: el })
+            .setLngLat(dest.coordinates)
             .addTo(map)
         })
       })

@@ -1,6 +1,7 @@
 import { Hero } from '@/components/home/Hero'
 import { SocialProofStrip } from '@/components/home/SocialProofStrip'
 import { WhyWeExist } from '@/components/home/WhyWeExist'
+import { Pricing } from '@/components/home/Pricing'
 import { FeaturedTrips } from '@/components/home/FeaturedTrips'
 import { UpcomingTrips } from '@/components/home/UpcomingTrips'
 import { HowItWorks } from '@/components/home/HowItWorks'
@@ -17,6 +18,7 @@ export default async function Home() {
       <Hero />
       <SocialProofStrip />
       <WhyWeExist />
+      <Pricing />
       <FeaturedTrips />
       <UpcomingTrips trips={upcomingTrips} />
       <HowItWorks />
