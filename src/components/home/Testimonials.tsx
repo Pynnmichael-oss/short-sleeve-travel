@@ -2,8 +2,8 @@ import { SectionLabel } from '@/components/ui/SectionLabel'
 
 export function Testimonials() {
   return (
-    <section className="bg-sst-white py-24 md:py-32">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="bg-sst-white py-16 md:py-20">
+      <div className="max-w-3xl mx-auto px-6">
         <SectionLabel className="text-sst-sand mb-12 block">
           From the community
         </SectionLabel>

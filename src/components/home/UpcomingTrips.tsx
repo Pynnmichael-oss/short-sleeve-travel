@@ -24,7 +24,7 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
   if (!trips || trips.length === 0) return null
 
   return (
-    <section className="bg-sst-nav py-24 md:py-32">
+    <section className="bg-sst-navy py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col gap-4 mb-14">
           <p className="font-body text-xs uppercase tracking-widest text-sst-sand/70">
@@ -42,7 +42,7 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
               : (FALLBACK_IMAGES[trip.slug.current] ?? '/short-sleeve-travel/images/placeholder.jpg')
 
             return (
-              <article key={trip._id} className="flex flex-col bg-sst-navy">
+              <article key={trip._id} className="flex flex-col bg-sst-nav">
                 <div className="relative h-60 overflow-hidden">
                   {imgSrc && (
                     <Image

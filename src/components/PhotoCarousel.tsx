@@ -63,13 +63,13 @@ export function PhotoCarousel({ photos, caption }: { photos: Photo[]; caption: s
     'absolute top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-black/30 hover:bg-black/50 text-white transition-colors duration-200'
 
   return (
-    <section className="bg-sst-white py-12 md:py-16">
+    <section className="bg-sst-surface py-16 md:py-24">
       <div className="max-w-3xl mx-auto px-6">
 
         {/* ── Desktop: 3-photo depth carousel ─────────────────── */}
         <div className="hidden md:block">
           {/* overflow-hidden clips the peeking side photos */}
-          <div className="relative aspect-square overflow-hidden">
+          <div className="relative aspect-[4/3] overflow-hidden">
             {photos.map(({ src, alt }, i) => {
               const d = slot(i, active, n)
               return (

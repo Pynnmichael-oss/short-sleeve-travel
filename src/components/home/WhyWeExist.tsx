@@ -29,12 +29,6 @@ export function WhyWeExist() {
             siblings, and couples join too. What unites everyone is the desire to explore the world in
             ways that are truly out of the ordinary.
           </p>
-          {/* Amber stat callout */}
-          <div className="border-l-4 border-sst-amber pl-6 py-1">
-            <p className="font-display text-xl text-sst-amber leading-snug">
-              A couple who met on one of our trips recently got engaged.
-            </p>
-          </div>
         </div>
 
       </div>
