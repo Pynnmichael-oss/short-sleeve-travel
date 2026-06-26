@@ -1,2 +1,3 @@
 import { trip } from './trip'
-export const schemaTypes = [trip]
+import { homeGallery } from './homeGallery'
+export const schemaTypes = [trip, homeGallery]

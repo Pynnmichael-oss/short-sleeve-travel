@@ -48,6 +48,15 @@ export async function getPastTrips() {
   `)
 }
 
+export async function getHomeGallery() {
+  return client.fetch(`
+    *[_type == "homeGallery"][0] {
+      photos[] { asset, caption, alt },
+      caption
+    }
+  `)
+}
+
 export async function getFeaturedTrips() {
   return client.fetch(`
     *[_type == "trip" && featured == true] | order(order asc) {
