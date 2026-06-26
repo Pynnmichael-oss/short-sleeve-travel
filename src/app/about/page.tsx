@@ -9,15 +9,6 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main>
-      {/* Full-width hero */}
-      <div style={{ width: '100%', height: '70vh', overflow: 'hidden' }}>
-        <img
-          src="/short-sleeve-travel/images/kat-hero.jpg"
-          alt="Kat Shortsleeve on yacht deck at sunset"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
-        />
-      </div>
-
       {/* Bio — two column */}
       <section className="bg-sst-white py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-6">
@@ -26,8 +17,8 @@ export default function AboutPage() {
             <div className="w-full overflow-hidden" style={{ maxHeight: '620px' }}>
               <img
                 src="/short-sleeve-travel/images/kat-hero.jpg"
-                alt="Kat Shortsleeve, founder of Short Sleeve Travel"
-                style={{ width: '100%', height: '620px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
+                alt="Kat Shortsleeve on a yacht at sunset"
+                style={{ width: '100%', height: '600px', objectFit: 'cover', objectPosition: 'center 60%' }}
               />
             </div>
 
