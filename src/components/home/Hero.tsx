@@ -1,18 +1,27 @@
-import Image from 'next/image'
+'use client'
+
 import Link from 'next/link'
+
+const VIDEO_SRC = '/short-sleeve-travel/videos/sweden-hero.mp4'
+const POSTER_SRC = '/short-sleeve-travel/images/group-boat.jpg'
 
 export function Hero() {
   return (
-    <section className="relative h-screen flex items-center justify-center text-center">
-      <Image
-        src="/short-sleeve-travel/images/group-boat.jpg"
-        alt="Group of travellers on a boat deck"
-        fill
-        className="object-cover"
-        priority
-      />
+    <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+      {/* Full-bleed video background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster={POSTER_SRC}
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+      >
+        <source src={VIDEO_SRC} type="video/mp4" />
+      </video>
 
-      <div className="absolute inset-0 bg-sst-nav/55" />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40" />
 
       {/* Content */}
       <div className="relative z-10 max-w-3xl mx-auto px-6 flex flex-col items-center gap-6">
@@ -30,9 +39,10 @@ export function Hero() {
         </Link>
       </div>
 
+      {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1">
         <div className="w-5 h-8 border border-sst-white/40 rounded-full flex items-start justify-center pt-1.5">
-          <div className="w-1 h-1.5 bg-sst-surface/70 rounded-full animate-bounce" />
+          <div className="w-1 h-1.5 bg-sst-white/50 rounded-full animate-bounce" />
         </div>
       </div>
     </section>
