@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 
@@ -22,65 +22,87 @@ const FALLBACK_PHOTOS = [
   { src: '/short-sleeve-travel/images/vineyard-girls.jpg', alt: 'Girls at a vineyard' },
 ]
 
+function resolvePhotos(gallery?: HomeGallery | null): { src: string; alt: string }[] {
+  if (gallery?.photos?.length) {
+    return gallery.photos
+      .filter((p) => p?.asset)
+      .map((p, i) => ({
+        src: urlFor(p).width(800).height(800).url(),
+        alt: p.alt ?? `Trip photo ${i + 1}`,
+      }))
+  }
+  return FALLBACK_PHOTOS
+}
+
 export function SocialProofStrip({ gallery }: { gallery?: HomeGallery | null }) {
-  const hasSanityPhotos = gallery?.photos && gallery.photos.length > 0
+  const photos = resolvePhotos(gallery)
   const caption = gallery?.caption ?? 'Real trips. Real people. Real memories.'
 
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const idxRef = useRef(0)
+  const [active, setActive] = useState(0)
 
-  // Auto-advance only on mobile
   useEffect(() => {
-    const el = scrollRef.current
-    if (!el) return
-    const isMobile = window.innerWidth < 768
-    if (!isMobile) return
-
-    const items = el.querySelectorAll<HTMLElement>('.sst-carousel-item')
-    if (items.length < 2) return
-
-    const interval = setInterval(() => {
-      idxRef.current = (idxRef.current + 1) % items.length
-      items[idxRef.current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [hasSanityPhotos])
-
-  const renderPhoto = (src: string, alt: string, key: string) => (
-    <div
-      key={key}
-      className="sst-carousel-item relative flex-shrink-0 w-[80vw] md:w-auto aspect-square overflow-hidden"
-      style={{ scrollSnapAlign: 'start' }}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className="object-cover"
-        sizes="(max-width: 768px) 80vw, 25vw"
-      />
-    </div>
-  )
-
-  const renderSanityPhoto = (photo: GalleryPhoto, i: number) => {
-    if (!photo?.asset) return null
-    const src = urlFor(photo).width(800).height(800).url()
-    const alt = photo.alt ?? `Trip photo ${i + 1}`
-    return renderPhoto(src, alt, `sanity-${i}`)
-  }
+    if (photos.length < 2) return
+    const id = setInterval(() => {
+      setActive((prev) => (prev + 1) % photos.length)
+    }, 3500)
+    return () => clearInterval(id)
+  }, [photos.length])
 
   return (
-    <section className="bg-sst-white py-12 md:py-16 overflow-hidden">
-      <div
-        ref={scrollRef}
-        className="flex gap-3 overflow-x-auto scrollbar-hide px-6 md:px-0 md:grid md:grid-cols-4 md:max-w-7xl md:mx-auto md:gap-4"
-        style={{ scrollSnapType: 'x mandatory' }}
-      >
-        {hasSanityPhotos
-          ? gallery!.photos!.map((p, i) => renderSanityPhoto(p, i))
-          : FALLBACK_PHOTOS.map(({ src, alt }) => renderPhoto(src, alt, src))}
+    <section className="bg-sst-white py-12 md:py-16">
+
+      {/* ── Mobile: fade carousel ─────────────────────────────── */}
+      <div className="relative md:hidden mx-6 aspect-square overflow-hidden">
+        {photos.map(({ src, alt }, i) => (
+          <div
+            key={src}
+            className="absolute inset-0 transition-all duration-700"
+            style={{
+              opacity: i === active ? 1 : 0,
+              transform: i === active ? 'translateY(0)' : 'translateY(12px)',
+              pointerEvents: i === active ? 'auto' : 'none',
+            }}
+          >
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              className="object-cover"
+              sizes="calc(100vw - 3rem)"
+              priority={i === 0}
+            />
+          </div>
+        ))}
       </div>
+
+      {/* Dot indicators (mobile only) */}
+      <div className="flex md:hidden justify-center gap-2 mt-4">
+        {photos.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            aria-label={`Go to photo ${i + 1}`}
+            className="w-1.5 h-1.5 rounded-full transition-colors duration-300"
+            style={{ background: i === active ? '#E8A020' : '#2E4A5A33' }}
+          />
+        ))}
+      </div>
+
+      {/* ── Desktop: static 4-col grid ───────────────────────── */}
+      <div className="hidden md:grid md:grid-cols-4 md:max-w-7xl md:mx-auto md:gap-4 md:px-0">
+        {photos.map(({ src, alt }) => (
+          <div key={src} className="relative aspect-square overflow-hidden">
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              className="object-cover"
+              sizes="25vw"
+            />
+          </div>
+        ))}
+      </div>
+
       <p className="text-center font-body text-sm text-sst-navy/40 mt-6 tracking-wide">
         {caption}
       </p>
