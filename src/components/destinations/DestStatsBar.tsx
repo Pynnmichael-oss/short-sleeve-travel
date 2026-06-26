@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from 'react'
 
 const STATS = [
-  { number: '3', label: 'Destinations' },
-  { number: '3', label: 'Continents' },
-  { number: '33', label: 'Travelers' },
-  { number: '100%', label: 'Would Return' },
+  { number: '50+', label: 'Countries. One Founder.' },
+  { number: 'Small Groups', label: 'Big Adventures' },
+  { number: 'Zero', label: 'Boring Trips' },
+  { number: 'One', label: 'Couple Got Engaged (looking for more)' },
 ]
 
 export function DestStatsBar() {

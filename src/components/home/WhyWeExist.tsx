@@ -32,7 +32,7 @@ export function WhyWeExist() {
           {/* Amber stat callout */}
           <div className="border-l-4 border-sst-amber pl-6 py-1">
             <p className="font-display text-xl text-sst-amber leading-snug">
-              A couple who met on one of our trips recently got engaged. 💍
+              A couple who met on one of our trips recently got engaged.
             </p>
           </div>
         </div>
