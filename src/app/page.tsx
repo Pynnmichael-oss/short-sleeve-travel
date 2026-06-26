@@ -39,10 +39,10 @@ export default async function Home() {
       <Hero />
       <WhyWeExist />
       <PhotoCarousel photos={photos} caption={caption} />
-      <Pricing />
-      <UpcomingTrips trips={upcomingTrips} />
-      <HowItWorks />
       <Testimonials />
+      <HowItWorks />
+      <UpcomingTrips trips={upcomingTrips} />
+      <Pricing />
       <CommunityCloser />
       <FooterCTA />
     </>
