@@ -11,7 +11,7 @@ export function FooterCTA() {
           Your next adventure — and your next group of friends — is waiting.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-4">
-          <Button href="/experiences" variant="primary">
+          <Button href="/trips" variant="primary">
             See Experiences
           </Button>
           <Button href="/about" variant="outline">

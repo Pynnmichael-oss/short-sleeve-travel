@@ -12,7 +12,7 @@ export function AboutCTA() {
           yet.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 mt-4">
-          <Button href="/experiences" variant="primary">
+          <Button href="/trips" variant="primary">
             See Experiences
           </Button>
           <Button href="/contact" variant="outline-light">

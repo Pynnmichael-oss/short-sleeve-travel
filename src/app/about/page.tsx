@@ -1,7 +1,9 @@
 import { FounderHero } from '@/components/about/FounderHero'
 import { KatsStory } from '@/components/about/KatsStory'
+import { PhotoBannerIndia } from '@/components/about/PhotoBannerIndia'
 import { Values } from '@/components/about/Values'
 import { ByTheNumbers } from '@/components/about/ByTheNumbers'
+import { PhotoBannerPrague } from '@/components/about/PhotoBannerPrague'
 import { CommunityGrid } from '@/components/about/CommunityGrid'
 import { AboutCTA } from '@/components/about/AboutCTA'
 
@@ -16,8 +18,10 @@ export default function AboutPage() {
     <>
       <FounderHero />
       <KatsStory />
+      <PhotoBannerIndia />
       <Values />
       <ByTheNumbers />
+      <PhotoBannerPrague />
       <CommunityGrid />
       <AboutCTA />
     </>

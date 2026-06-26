@@ -18,7 +18,7 @@ export function CommunityCloser() {
           group chat."
         </p>
         <Link
-          href="/experiences"
+          href="/trips"
           className="bg-sst-amber text-white px-8 py-4 text-sm tracking-wide hover:bg-amber-600 transition-colors duration-200"
         >
           See What's Coming Up

@@ -43,7 +43,7 @@ export async function getPastTrips() {
   return client.fetch(`
     *[_type == "trip" && status == "past"] | order(order desc) {
       _id, title, slug, tagline, heroImage,
-      durationDays, priceFrom, destination, region
+      durationDays, priceFrom, destination, region, departureDates
     }
   `)
 }

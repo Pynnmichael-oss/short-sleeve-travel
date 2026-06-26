@@ -55,7 +55,7 @@ export async function FeaturedTrips() {
                     {trip.durationDays} days · From ${trip.priceFrom.toLocaleString()}
                   </p>
                   <Link
-                    href={`/experiences/${trip.slug.current}`}
+                    href={`/trips/${trip.slug.current}`}
                     className="text-sm text-sst-nav underline underline-offset-4 hover:text-sst-amber transition-colors duration-200 mt-1"
                   >
                     See This Trip →
@@ -68,7 +68,7 @@ export async function FeaturedTrips() {
 
         <div className="mt-14 text-center">
           <Link
-            href="/experiences"
+            href="/trips"
             className="text-sm text-sst-navy underline underline-offset-4 hover:text-sst-amber transition-colors duration-200"
           >
             View All Experiences

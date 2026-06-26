@@ -10,7 +10,7 @@ export function ContactCTA() {
         <p className="font-body text-sst-navy/60 leading-relaxed">
           That's okay. Keep exploring and come back when you're ready.
         </p>
-        <Button href="/experiences" variant="primary" className="mt-2">
+        <Button href="/trips" variant="primary" className="mt-2">
           Browse Experiences
         </Button>
       </div>

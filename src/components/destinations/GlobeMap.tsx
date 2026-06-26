@@ -186,7 +186,7 @@ export function GlobeMap() {
               <h3 class="sst-popup-title">${dest.name}</h3>
               <p class="sst-popup-dest">${dest.destination}</p>
               <p class="sst-popup-meta">${dest.duration} &middot; ${dest.price}</p>
-              <a class="sst-popup-link" href="${BASE_PATH}/experiences/${dest.slug}">View Trip &rarr;</a>
+              <a class="sst-popup-link" href="${BASE_PATH}/trips/${dest.slug}">View Trip &rarr;</a>
             </div>
           `)
 

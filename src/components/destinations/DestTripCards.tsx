@@ -79,7 +79,7 @@ function TripCard({ trip, index }: { trip: PastTrip; index: number }) {
       </p>
 
       <Link
-        href={`/experiences/${trip.slug.current}`}
+        href={`/trips/${trip.slug.current}`}
         className="font-body text-sm text-sst-amber hover:text-amber-600 transition-colors duration-200 tracking-wide uppercase"
       >
         Read About This Trip &rarr;

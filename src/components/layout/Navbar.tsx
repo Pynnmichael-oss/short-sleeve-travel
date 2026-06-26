@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const navLinks = [
-  { href: '/experiences', label: 'Experiences' },
-  { href: '/recent-destinations', label: 'Destinations' },
+  { href: '/trips', label: 'Trips' },
+  { href: '/where-we-ve-been', label: "Where We've Been" },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ]
@@ -48,14 +48,14 @@ export function Navbar() {
             </Link>
           ))}
           <Link
-            href="/experiences"
+            href="/trips"
             className="flex items-center gap-1.5 text-xs font-body uppercase tracking-widest text-white/80 hover:text-white transition-colors duration-200"
           >
             <UserIcon />
             Login
           </Link>
           <Link
-            href="/experiences"
+            href="/trips"
             className="text-xs font-body uppercase tracking-widest bg-sst-amber text-white px-5 py-2.5 hover:bg-amber-600 transition-colors duration-200"
           >
             View Trips
@@ -98,7 +98,7 @@ export function Navbar() {
             </Link>
           ))}
           <Link
-            href="/experiences"
+            href="/trips"
             className="flex items-center gap-1.5 text-xs font-body uppercase tracking-widest text-white/80 hover:text-white transition-colors"
             onClick={() => setOpen(false)}
           >
@@ -106,7 +106,7 @@ export function Navbar() {
             Login
           </Link>
           <Link
-            href="/experiences"
+            href="/trips"
             className="text-xs font-body uppercase tracking-widest bg-sst-amber text-white px-5 py-3 text-center hover:bg-amber-600 transition-colors"
             onClick={() => setOpen(false)}
           >
