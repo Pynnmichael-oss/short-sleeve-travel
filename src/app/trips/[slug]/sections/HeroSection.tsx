@@ -5,7 +5,6 @@ import Image from 'next/image'
 import type { Trip } from '@/types'
 import { urlFor } from '@/lib/sanity'
 
-const NZ_VIDEO_SRC = '/short-sleeve-travel/videos/new-zealand-hero.mp4'
 
 const FALLBACK_IMAGES: Record<string, string> = {
   'new-zealand-adventure': 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920',
@@ -44,11 +43,10 @@ export function HeroSection({ trip }: { trip: Trip }) {
             muted
             loop
             playsInline
+            src="/short-sleeve-travel/videos/new-zealand-hero.mp4"
             poster={heroSrc}
             style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-          >
-            <source src={NZ_VIDEO_SRC} type="video/mp4" />
-          </video>
+          />
         ) : heroSrc ? (
           <Image
             src={heroSrc}

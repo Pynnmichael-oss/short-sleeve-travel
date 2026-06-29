@@ -2,9 +2,6 @@
 
 import Link from 'next/link'
 
-const VIDEO_SRC = '/short-sleeve-travel/videos/sweden-hero.mp4'
-const POSTER_SRC = '/short-sleeve-travel/images/group-boat.jpg'
-
 export function Hero() {
   return (
     <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
@@ -14,11 +11,10 @@ export function Hero() {
         muted
         loop
         playsInline
-        poster={POSTER_SRC}
+        src="/short-sleeve-travel/videos/sweden-hero.mp4"
+        poster="/short-sleeve-travel/images/group-boat.jpg"
         style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-      >
-        <source src={VIDEO_SRC} type="video/mp4" />
-      </video>
+      />
 
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/40" />
