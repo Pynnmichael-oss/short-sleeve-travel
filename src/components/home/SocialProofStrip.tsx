@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { urlFor } from '@/lib/sanity'
 
 interface GalleryPhoto {
-  asset: any
+  image: any
   caption?: string
   alt?: string
 }
@@ -25,9 +25,9 @@ const FALLBACK_PHOTOS = [
 function resolvePhotos(gallery?: HomeGallery | null): { src: string; alt: string }[] {
   if (gallery?.photos?.length) {
     return gallery.photos
-      .filter((p) => p?.asset)
+      .filter((p) => p?.image?.asset)
       .map((p, i) => ({
-        src: urlFor(p).width(800).height(800).url(),
+        src: urlFor(p.image).width(800).height(800).url(),
         alt: p.alt ?? `Trip photo ${i + 1}`,
       }))
   }

@@ -48,21 +48,13 @@ export const trip = defineType({
       ],
     }),
     defineField({
-      name: 'heroImage', title: 'Hero Image', type: 'image', group: 'media',
-      options: { hotspot: true },
+      name: 'heroImage', title: 'Hero Image', type: 'reference', to: [{ type: 'photo' }], group: 'media',
       description: 'Main image shown at the top of the trip detail page and on cards. Use a high quality landscape photo.',
     }),
     defineField({
       name: 'gallery', title: 'Photo Gallery', type: 'array', group: 'media',
-      description: 'Upload multiple photos for this trip. These appear in the gallery section on the detail page.',
-      of: [{
-        type: 'image',
-        options: { hotspot: true },
-        fields: [
-          defineField({ name: 'caption', title: 'Caption', type: 'string', description: 'Optional caption shown below the photo.' }),
-          defineField({ name: 'alt', title: 'Alt Text', type: 'string', description: 'Describe the image for accessibility and SEO.' }),
-        ],
-      }],
+      description: 'Pick photos from the pool for this trip. These appear in the gallery section on the detail page.',
+      of: [{ type: 'reference', to: [{ type: 'photo' }] }],
       options: { layout: 'grid' },
     }),
     defineField({
@@ -125,6 +117,6 @@ export const trip = defineType({
     }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'destination', media: 'heroImage' },
+    select: { title: 'title', subtitle: 'destination', media: 'heroImage.image' },
   },
 })

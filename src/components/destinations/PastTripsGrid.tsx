@@ -68,8 +68,8 @@ export function PastTripsGrid({ trips }: { trips: PastTrip[] }) {
                 </article>
               ))
             : trips.map((trip) => {
-                const imgSrc = trip.heroImage?.asset
-                  ? urlFor(trip.heroImage).width(700).height(500).url()
+                const imgSrc = trip.heroImage?.image?.asset
+                  ? urlFor(trip.heroImage.image).width(700).height(500).url()
                   : '/short-sleeve-travel/images/placeholder.jpg'
 
                 return (

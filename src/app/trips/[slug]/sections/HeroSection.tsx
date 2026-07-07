@@ -16,8 +16,8 @@ export function HeroSection({ trip }: { trip: Trip }) {
   const mediaWrapperRef = useRef<HTMLDivElement>(null)
   const isVideo = trip.slug.current === 'new-zealand-adventure'
 
-  const heroSrc = trip.heroImage?.asset
-    ? urlFor(trip.heroImage).width(1920).url()
+  const heroSrc = trip.heroImage?.image?.asset
+    ? urlFor(trip.heroImage.image).width(1920).url()
     : (FALLBACK_IMAGES[trip.slug.current] ?? '/short-sleeve-travel/images/placeholder.jpg')
 
   useEffect(() => {
@@ -79,7 +79,9 @@ export function HeroSection({ trip }: { trip: Trip }) {
           <span className="text-sst-white/20">·</span>
           <span>{trip.region}</span>
           <span className="text-sst-white/20">·</span>
-          <span className="text-sst-sand">From ${trip.priceFrom.toLocaleString()}</span>
+          <span className="text-sst-sand">
+            {trip.priceFrom != null ? `From $${trip.priceFrom.toLocaleString()}` : 'Price TBD'}
+          </span>
         </div>
       </div>
 

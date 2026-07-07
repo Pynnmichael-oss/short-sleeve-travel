@@ -14,14 +14,14 @@ export interface TripInclusions {
   meals: string[]
 }
 
-export interface GalleryImage {
-  _key: string
-  asset: any
-  hotspot?: any
-  crop?: any
-  caption?: string
+export interface PhotoRef {
+  _id?: string
+  image: any
   alt?: string
+  caption?: string
 }
+
+export type GalleryImage = PhotoRef
 
 export interface Trip {
   _id: string
@@ -29,7 +29,7 @@ export interface Trip {
   slug: { current: string }
   tagline: string
   description: string
-  heroImage: any
+  heroImage: PhotoRef
   durationDays: number
   priceFrom: number
   deposit: number

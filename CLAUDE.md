@@ -13,7 +13,7 @@ npm run build   # static export → ./out/
 npm run lint    # ESLint
 ```
 
-Build output goes to `./out/` and is deployed via GitHub Actions on push to `main`.
+There is no test suite in this repo. Build output goes to `./out/` and is deployed via GitHub Actions on push to `main`.
 
 ## Deployment
 - Platform: GitHub Pages
@@ -24,17 +24,14 @@ Build output goes to `./out/` and is deployed via GitHub Actions on push to `mai
 - IMPORTANT: `basePath` is `/short-sleeve-travel` — all public asset paths must start with `/short-sleeve-travel/`
 
 ## Tech Stack
-- Next.js 16.2.9 (App Router, static export mode)
+- Next.js 16.2.9 (App Router, static export mode) — **this Next.js version has breaking API changes from older versions that predate your training data.** Check `node_modules/next/dist/docs/` before writing routing or config code (see `AGENTS.md`).
 - TypeScript (strict mode)
 - Tailwind CSS v4 with @tailwindcss/postcss
 - next/font for Playfair Display + Inter
 - next/image with `unoptimized: true` (GitHub Pages constraint)
-- mapbox-gl v3 for the interactive globe on `/recent-destinations`
+- mapbox-gl v3 for the interactive globe on `/where-we-ve-been`
 - Sanity CMS (project `g80ygq4l`, dataset `production`) for all trip content
 - @sanity/client + @sanity/image-url for data fetching and image transforms
-- Contact form is static UI only — no backend
-
-> **Note:** This Next.js version may have breaking API changes from older versions. If in doubt, check `node_modules/next/dist/docs/` before writing routing or config code.
 
 ## next.config.ts Settings (DO NOT CHANGE)
 - `output: 'export'`
@@ -44,7 +41,7 @@ Build output goes to `./out/` and is deployed via GitHub Actions on push to `mai
 
 ## Tailwind v4 Notes
 - Config loaded via `@config "../../tailwind.config.ts"` in `globals.css`
-- Colors **also** declared in `globals.css` `@theme` block — required for opacity modifier support (e.g. `bg-sst-nav/50`)
+- Colors **also** declared in `globals.css` `@theme` block — required for opacity modifier support (e.g. `bg-sst-nav/50`). Keep both files in sync when changing a color.
 - Custom keyframe `sst-kenburns` defined in `globals.css`
 - `tailwind.config.ts` defines color tokens and font families only
 
@@ -69,39 +66,41 @@ Typography:
 - `generateStaticParams` goes in the server component (`page.tsx`)
 - Pass resolved data to a separate `'use client'` component for animations
 
-## Pages
-1. `/` — Home (async server component; calls `getUpcomingTrips()`)
-2. `/experiences` — Trip index; async server component calling `getActiveTrips()`
-3. `/experiences/[slug]` — Detail page; async server component calling `getTripBySlug()`; `generateStaticParams` fetches slugs from Sanity
-4. `/about` — Kat featured + values
-5. `/contact` — Static form UI only
-6. `/recent-destinations` — Async server component calling `getPastTrips()`; Mapbox globe + past trip cards
+## Pages (`src/app`)
+1. `/` — Home (async server component; calls `getUpcomingTrips()` and `getHomeGallery()`)
+2. `/trips` — Trip index; async server component calling `getActiveTrips()` and `getUpcomingTrips()`
+3. `/trips/[slug]` — Detail page; async server component calling `getTripBySlug()`; `generateStaticParams` fetches all slugs directly via `client.fetch`
+4. `/about` — Kat's bio, favorite trips, social links
+5. `/contact` — Static form UI only, no backend
+6. `/where-we-ve-been` — Async server component calling `getPastTrips()`; Mapbox globe + stats + past trip cards
 7. `/studio/[[...tool]]` — Embedded Sanity Studio (static export compatible)
 
 ## Sanity CMS
 - Project ID: `g80ygq4l` · Dataset: `production`
-- Schema: `src/sanity/schemaTypes/trip.ts` — single `trip` document type
+- Schema: `src/sanity/schemaTypes/trip.ts` (main content type) and `homeGallery.ts` (singleton for the homepage photo carousel) — registered in `schemaTypes/index.ts`
 - Studio config: `sanity.config.ts` (hardcoded project/dataset, no env vars)
 - CLI config: `sanity.cli.ts` (reads env vars for local dev, has `appId` for deploy)
 - Studio deploy: `npx sanity login` then `npx sanity deploy` (requires authenticated CLI session — Editor API token is NOT sufficient)
 - Sanity client + urlFor: `src/lib/sanity.ts`
 - GROQ queries: `src/lib/queries.ts`
+- The `trip` schema groups fields into Studio tabs (`content`, `media`, `pricing`, `scheduling`, `settings`) — put new fields in the matching group
 
 ### Trip Status Values
-- `active` — shown on `/experiences` page (bookable now)
-- `upcoming` — shown in "Where We're Going Next" section on homepage
-- `past` — shown on `/recent-destinations`
+- `active` — shown on `/trips` (bookable now)
+- `upcoming` — shown in "Where We're Going Next" section on homepage and on `/trips`
+- `past` — shown on `/where-we-ve-been`
 
 ### Trip Type (`src/types/index.ts`)
 The `Trip` interface matches the Sanity schema:
 ```
 _id, title, slug: { current: string }, tagline, description,
-heroImage (Sanity image object), gallery (GalleryImage[]),
+heroImage (Sanity image object), gallery? (GalleryImage[]),
 durationDays, priceFrom, deposit, bookingUrl,
 destination, region, departureDates (DepartureDate[]),
 inclusions (TripInclusions), featured, order,
-status: 'active' | 'upcoming' | 'past'
+status?: 'active' | 'upcoming' | 'past'
 ```
+Query functions return partial projections of this shape (e.g. `getUpcomingTrips`/`getFeaturedTrips` omit `gallery`/`inclusions`) — don't assume every field is populated on every fetch, check `src/lib/queries.ts` for what a given query actually selects.
 
 ### Image Handling
 - Always use `urlFor()` from `src/lib/sanity.ts` for Sanity images
@@ -110,36 +109,38 @@ status: 'active' | 'upcoming' | 'past'
   src={trip.heroImage?.asset ? urlFor(trip.heroImage).width(1200).url() : FALLBACK}
   ```
 - Gallery images: `if (!img?.asset) return null` at top of map
-- Fallback URLs are Unsplash images keyed by slug in a `FALLBACK_IMAGES` record in each component
+- Fallback URLs are Unsplash images or local `/short-sleeve-travel/images/*` assets keyed by slug in a `FALLBACK_IMAGES`/`FALLBACK_PHOTOS` record in each component
+- Never call `urlFor()` without first checking `?.asset` — incomplete Sanity references crash the build
 
 ## Queries (`src/lib/queries.ts`)
 ```
 getAllTrips()       — all trips regardless of status
-getActiveTrips()    — status == "active", used on /experiences
-getUpcomingTrips()  — status == "upcoming", used on homepage
-getPastTrips()      — status == "past", used on /recent-destinations
+getActiveTrips()    — status == "active", used on /trips
+getUpcomingTrips()  — status == "upcoming", used on homepage and /trips
+getPastTrips()      — status == "past", used on /where-we-ve-been
 getTripBySlug(slug) — single trip for detail page
-getFeaturedTrips()  — featured == true, used in homepage FeaturedTrips section
+getFeaturedTrips()  — featured == true (currently unused by any page)
+getHomeGallery()    — singleton homeGallery document for the homepage PhotoCarousel
 ```
 
-## Experience Detail Page Sections (in render order)
-1. `HeroSection` — full-screen hero with parallax; NZ trip uses video
-2. `PhotoGallery` — masonry grid from `trip.gallery`; renders nothing if empty
-3. `StatsBar` — duration, region, price, deposit
-4. `StickyHook` — large pull-quote using `trip.description`
-5. `IncludedSection` — builds included list from `trip.inclusions` object
-6. `DepartureDates` — departure rows with "Book Now" → `trip.bookingUrl` in new tab; empty state → /contact
-7. `BookingCTA` — "Check Dates & Book" → `trip.bookingUrl` in new tab
+## Homepage Section Order (`src/app/page.tsx`)
+`Hero` → `WhyWeExist` → `PhotoCarousel` (from `getHomeGallery()`, falls back to `FALLBACK_PHOTOS`) → `Testimonials` → `HowItWorks` → `UpcomingTrips` → `Pricing` → `CommunityCloser` → `FooterCTA`
 
-## Mapbox Globe (`/recent-destinations`)
-`GlobeMap.tsx` is a `'use client'` component with hardcoded destination coordinates (no coordinates in Sanity schema). Hardcoded hex values inside `INJECTED_STYLES` are intentional — these style third-party Mapbox elements. `GlobeMapWrapper.tsx` handles the dynamic import with `ssr: false`.
+## Trip Detail Page Sections (`src/app/trips/[slug]/ExperiencePage.tsx`, in render order)
+`HeroSection` → `PhotoGallery` → `StatsBar` → `StickyHook` → `IncludedSection` → `DepartureDates` → `BookingCTA`
+
+`ExperiencePage` is `'use client'`; `page.tsx` (server) resolves `params`/fetches the trip and passes it down. Additional section components exist in `sections/` (`ItineraryTimeline`, `GalleryStrip`, `WhoItsFor`) but are not currently wired into `ExperiencePage` — check before assuming they render.
+
+## Mapbox Globe (`/where-we-ve-been`)
+`GlobeMap.tsx` is a `'use client'` component with hardcoded destination coordinates (no coordinates in Sanity schema). Hardcoded hex values inside `INJECTED_STYLES` (and the `bg-[#1a1a1a]` on the map container) are intentional — these style third-party Mapbox popup/marker elements that Tailwind classes can't reach. `GlobeMapWrapper.tsx` handles the dynamic import with `ssr: false`.
 
 ## Navbar
-Always-solid `bg-sst-nav`. Links are `uppercase tracking-widest text-xs`. Logo uses Playfair Display. "LOGIN" link has a user SVG icon. "View Trips" CTA uses `bg-sst-amber`. No transparent-on-scroll behaviour.
+Always-solid `bg-sst-nav`. Links: Trips (`/trips`), Where We've Been (`/where-we-ve-been`), About, Contact. Links are `uppercase tracking-widest text-xs`. Logo uses Playfair Display. "Login" link has a user SVG icon and currently points to `/trips`. "View Trips" CTA uses `bg-sst-amber`. No transparent-on-scroll behaviour.
 
 ## Seed / Migration Scripts (`scripts/`)
-- `seed-sanity.ts` — creates the three initial trip documents
+- `seed-sanity.ts` — creates the initial trip documents
 - `update-trip-status.ts` — patches all trips to `status: 'active'`
+- `seed-home-gallery.ts` — seeds the `homeGallery` singleton
 - Run with: `SANITY_API_TOKEN=<editor_token> npx tsx scripts/<file>.ts`
 
 ## Required GitHub Secrets
@@ -150,7 +151,7 @@ Always-solid `bg-sst-nav`. Links are `uppercase tracking-widest text-xs`. Logo u
 ## Conventions
 - Named exports only — no default exports except `page.tsx` files
 - PascalCase component filenames
-- All colors via Tailwind custom tokens — never hardcode hex in JSX (exception: Mapbox-injected HTML in `GlobeMap.tsx`)
+- All colors via Tailwind custom tokens — never hardcode hex in JSX (exception: Mapbox-injected HTML/styles in `GlobeMap.tsx`)
 - Semantic HTML throughout (`main`, `section`, `article`, `nav`)
 - Every image uses `next/image` with `alt` text
 - Tailwind classes for layout/color/spacing; inline styles for dynamic values only (parallax `translateY`, `transition-delay` by index, `font-size` with `clamp()`)
@@ -162,7 +163,7 @@ Always-solid `bg-sst-nav`. Links are `uppercase tracking-widest text-xs`. Logo u
 
 ## Do Not
 - No API routes or server actions (not supported in static export)
-- No hardcoded hex values in JSX (Mapbox popup HTML in `GlobeMap.tsx` is the only exception)
+- No hardcoded hex values in JSX (Mapbox popup/marker styling in `GlobeMap.tsx` is the only exception)
 - No lorem ipsum — use real brand copy
 - No default exports except `page.tsx` files
 - No resort, cruise, or luxury aesthetics

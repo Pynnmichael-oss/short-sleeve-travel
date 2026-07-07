@@ -14,11 +14,11 @@ export function PhotoGallery({ trip }: { trip: Trip }) {
         </p>
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
           {images.map((img, i) => {
-            if (!img?.asset) return null
-            const src = urlFor(img).width(900).url()
+            if (!img?.image?.asset) return null
+            const src = urlFor(img.image).width(900).url()
             const alt = img.alt ?? `${trip.destination} photo ${i + 1}`
             return (
-              <figure key={img._key ?? i} className="break-inside-avoid">
+              <figure key={img._id ?? i} className="break-inside-avoid">
                 <div className="relative overflow-hidden">
                   <Image
                     src={src}

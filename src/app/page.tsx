@@ -25,9 +25,9 @@ export default async function Home() {
 
   const photos = gallery?.photos?.length
     ? gallery.photos
-        .filter((p: any) => p?.asset)
+        .filter((p: any) => p?.image?.asset)
         .map((p: any, i: number) => ({
-          src: urlFor(p).width(900).height(900).url(),
+          src: urlFor(p.image).width(900).height(900).url(),
           alt: p.alt ?? `Trip photo ${i + 1}`,
         }))
     : FALLBACK_PHOTOS

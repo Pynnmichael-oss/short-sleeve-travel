@@ -26,8 +26,8 @@ export function StatsBar({ trip }: { trip: Trip }) {
   const stats = [
     { value: `${trip.durationDays}`, unit: 'Days' },
     { value: trip.region, unit: 'Region' },
-    { value: `$${trip.priceFrom.toLocaleString()}`, unit: 'Starting from' },
-    { value: `$${trip.deposit.toLocaleString()}`, unit: 'Deposit' },
+    { value: trip.priceFrom != null ? `$${trip.priceFrom.toLocaleString()}` : 'TBD', unit: 'Starting from' },
+    { value: trip.deposit != null ? `$${trip.deposit.toLocaleString()}` : 'TBD', unit: 'Deposit' },
   ]
 
   return (

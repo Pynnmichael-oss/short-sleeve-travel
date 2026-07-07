@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { IntroAnimation } from "@/components/IntroAnimation";
+// import { IntroAnimation } from "@/components/IntroAnimation";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -37,7 +37,7 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col bg-sst-surface text-sst-navy font-body">
-        <IntroAnimation />
+        {/* <IntroAnimation /> */}
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

@@ -25,8 +25,8 @@ export async function FeaturedTrips() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {trips.map((trip: any) => {
-            const imgSrc = trip.heroImage?.asset
-              ? urlFor(trip.heroImage).width(800).height(576).url()
+            const imgSrc = trip.heroImage?.image?.asset
+              ? urlFor(trip.heroImage.image).width(800).height(576).url()
               : (FALLBACK_IMAGES[trip.slug.current] ?? '/short-sleeve-travel/images/placeholder.jpg')
 
             return (

@@ -8,16 +8,9 @@ export const homeGallery = defineType({
     defineField({
       name: 'photos',
       title: 'Carousel Photos',
-      description: 'Add, remove, or reorder photos that appear in the homepage carousel strip. Aim for 4-6 square-crop photos showing real trip moments.',
+      description: 'Pick photos from the pool that appear in the homepage carousel strip. Aim for 4-6 square-crop photos showing real trip moments.',
       type: 'array',
-      of: [{
-        type: 'image',
-        options: { hotspot: true },
-        fields: [
-          defineField({ name: 'caption', title: 'Caption', type: 'string' }),
-          defineField({ name: 'alt', title: 'Alt text', type: 'string' }),
-        ]
-      }],
+      of: [{ type: 'reference', to: [{ type: 'photo' }] }],
       options: { layout: 'grid' },
       validation: (R) => R.min(1).max(8),
     }),
