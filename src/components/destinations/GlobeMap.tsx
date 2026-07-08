@@ -9,6 +9,14 @@ const BASE_PATH = '/short-sleeve-travel'
 // Active trips — full popup with link
 const DESTINATIONS = [
   {
+    coordinates: [13.1892, 68.2094] as [number, number],
+    name: 'Lofoten Sailing',
+    destination: 'Norway',
+    duration: '8 Days',
+    price: 'From $2,295',
+    slug: 'norway',
+  },
+  {
     coordinates: [172.6362, -40.9006] as [number, number],
     name: 'New Zealand Adventure',
     destination: 'New Zealand',
@@ -32,17 +40,6 @@ const DESTINATIONS = [
     price: 'From $1,195',
     slug: 'morocco-uncovered',
   },
-]
-
-// Past destinations Kat has visited with the club — amber dot + hover tooltip
-const PAST_DESTINATIONS: { name: string; coordinates: [number, number] }[] = [
-  { name: 'Prague, Czech Republic', coordinates: [14.4378, 50.0755] },
-  { name: 'Jaipur, India',          coordinates: [75.7873, 26.9124] },
-  { name: 'Croatia',                coordinates: [16.4402, 45.5511] },
-  { name: 'Colombia',               coordinates: [-74.0721, 4.7110] },
-  { name: 'Morocco',                coordinates: [-7.0926, 31.7917] },
-  { name: 'Japan',                  coordinates: [138.2529, 36.2048] },
-  { name: 'New Zealand',            coordinates: [174.8860, -40.9006] },
 ]
 
 const INJECTED_STYLES = `
@@ -239,33 +236,6 @@ export function GlobeMap() {
           new mapboxgl.Marker({ element: el })
             .setLngLat(dest.coordinates)
             .setPopup(popup)
-            .addTo(map)
-        })
-
-        // Past destination markers — amber dot + hover tooltip
-        PAST_DESTINATIONS.forEach((dest) => {
-          if (!map) return
-
-          const el = document.createElement('div')
-          el.className = 'sst-past-marker'
-          el.innerHTML = `<div class="sst-past-marker-dot"></div>`
-
-          const tooltip = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false,
-            offset: 12,
-            anchor: 'bottom',
-          }).setHTML(`<div class="sst-tooltip">${dest.name}</div>`)
-
-          el.addEventListener('mouseenter', () => {
-            tooltip.setLngLat(dest.coordinates).addTo(map!)
-          })
-          el.addEventListener('mouseleave', () => {
-            tooltip.remove()
-          })
-
-          new mapboxgl.Marker({ element: el })
-            .setLngLat(dest.coordinates)
             .addTo(map)
         })
       })

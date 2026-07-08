@@ -94,7 +94,7 @@ Typography:
 The `Trip` interface matches the Sanity schema:
 ```
 _id, title, slug: { current: string }, tagline, description,
-heroImage (Sanity image object), gallery? (GalleryImage[]),
+heroImage (PhotoRef), gallery? (GalleryImage[]),
 durationDays, priceFrom, deposit, bookingUrl,
 destination, region, departureDates (DepartureDate[]),
 inclusions (TripInclusions), featured, order,
@@ -102,15 +102,19 @@ status?: 'active' | 'upcoming' | 'past'
 ```
 Query functions return partial projections of this shape (e.g. `getUpcomingTrips`/`getFeaturedTrips` omit `gallery`/`inclusions`) — don't assume every field is populated on every fetch, check `src/lib/queries.ts` for what a given query actually selects.
 
+`heroImage` and `gallery` items are **references** to standalone `photo` documents (schema: `src/sanity/schemaTypes/photo.ts`), not inline image fields. Queries dereference them with `->{ image, alt, caption }`, so the fetched shape is `PhotoRef = { image, alt, caption }` — the real Sanity image object lives one level deeper, at `.image`.
+
 ### Image Handling
 - Always use `urlFor()` from `src/lib/sanity.ts` for Sanity images
-- ALWAYS guard with `?.asset` check before calling `urlFor()`:
+- ALWAYS guard with `?.image?.asset` (not `?.asset`) before calling `urlFor()`, and pass `.image` (not the `PhotoRef` itself) to `urlFor()`:
   ```tsx
-  src={trip.heroImage?.asset ? urlFor(trip.heroImage).width(1200).url() : FALLBACK}
+  const imgSrc = trip.heroImage?.image?.asset
+    ? urlFor(trip.heroImage.image).width(1200).url()
+    : FALLBACK
   ```
-- Gallery images: `if (!img?.asset) return null` at top of map
+- Gallery images: `if (!img?.image?.asset) return null` at top of map, then `urlFor(img.image)`
 - Fallback URLs are Unsplash images or local `/short-sleeve-travel/images/*` assets keyed by slug in a `FALLBACK_IMAGES`/`FALLBACK_PHOTOS` record in each component
-- Never call `urlFor()` without first checking `?.asset` — incomplete Sanity references crash the build
+- Never call `urlFor()` on a `PhotoRef` without first checking `?.image?.asset` — incomplete Sanity references crash the build
 
 ## Queries (`src/lib/queries.ts`)
 ```
