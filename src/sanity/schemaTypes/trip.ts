@@ -58,6 +58,13 @@ export const trip = defineType({
       options: { layout: 'grid' },
     }),
     defineField({
+      name: 'location',
+      title: 'Trip Location (for globe)',
+      type: 'geopoint',
+      group: 'media',
+      description: 'Search for the destination city/region. Places this trip on the Where We\'ve Been globe.',
+    }),
+    defineField({
       name: 'priceFrom', title: 'Price From (USD)', type: 'number', group: 'pricing',
       description: 'The lowest available price for this trip. Used for display only — actual prices are set per departure date.',
     }),
@@ -93,13 +100,12 @@ export const trip = defineType({
       name: 'status', title: 'Trip Status', type: 'string', group: 'settings',
       options: {
         list: [
-          { title: '🟡 Coming Soon — show in "Where We\'re Going Next"', value: 'upcoming' },
-          { title: '🟢 Active — show in Experiences, bookable now', value: 'active' },
-          { title: '⚫ Past — show in Recent Destinations', value: 'past' },
+          { title: '🟡 Upcoming — show on Trips page', value: 'upcoming' },
+          { title: '⚫ Past — show on Where We\'ve Been globe', value: 'past' },
         ],
         layout: 'radio',
       },
-      initialValue: 'active',
+      initialValue: 'upcoming',
       validation: R => R.required(),
     }),
     defineField({

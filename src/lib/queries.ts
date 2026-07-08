@@ -24,24 +24,13 @@ export async function getTripBySlug(slug: string) {
   `, { slug })
 }
 
-export async function getActiveTrips() {
-  return client.fetch(`
-    *[_type == "trip" && status == "active"] | order(order asc) {
-      _id, title, slug, tagline, description,
-      heroImage->{ image, alt, caption },
-      gallery[]->{ _id, image, alt, caption },
-      durationDays, priceFrom, deposit, bookingUrl,
-      destination, region, departureDates, inclusions, featured, order
-    }
-  `)
-}
-
 export async function getUpcomingTrips() {
   return client.fetch(`
     *[_type == "trip" && status == "upcoming"] | order(order asc) {
-      _id, title, slug, tagline,
+      _id, title, slug, tagline, description,
       heroImage->{ image, alt, caption },
-      durationDays, priceFrom, deposit, bookingUrl, destination, region
+      gallery[]->{ _id, image, alt, caption },
+      durationDays, priceFrom, deposit, bookingUrl, destination, region, inclusions
     }
   `)
 }

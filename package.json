@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@sanity/client": "^7.23.0",
+    "@sanity/google-maps-input": "^6.1.2",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.31.1",
     "mapbox-gl": "^3.25.0",

@@ -66,7 +66,7 @@ export function TripCard({ trip }: { trip: Trip }) {
           <span>{trip.durationDays} days</span>
           <span className="text-sst-navy/20">·</span>
           <span className="text-sst-navy font-medium">
-            From ${trip.priceFrom.toLocaleString()}
+            {trip.priceFrom ? `From $${trip.priceFrom.toLocaleString()}` : 'Price TBD'}
           </span>
         </div>
 

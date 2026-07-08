@@ -15,7 +15,7 @@ interface UpcomingTrip {
   tagline: string
   heroImage: any
   durationDays: number
-  priceFrom: number
+  priceFrom: number | null
   destination: string
   region: string
 }
@@ -42,14 +42,18 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
               : (FALLBACK_IMAGES[trip.slug.current] ?? '/short-sleeve-travel/images/placeholder.jpg')
 
             return (
-              <article key={trip._id} className="flex flex-col bg-sst-nav">
+              <Link
+                key={trip._id}
+                href={`/trips/${trip.slug.current}`}
+                className="group flex flex-col bg-sst-nav transition-transform duration-300 hover:-translate-y-1"
+              >
                 <div className="relative h-60 overflow-hidden">
                   {imgSrc && (
                     <Image
                       src={imgSrc}
                       alt={trip.destination}
                       fill
-                      className="object-cover opacity-70 hover:opacity-90 transition-opacity duration-500"
+                      className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500"
                     />
                   )}
                   <div className="absolute top-4 left-4">
@@ -67,16 +71,12 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
                     {trip.tagline}
                   </h3>
                   <p className="font-body text-sm text-sst-white/50">
-                    {trip.durationDays} days · From ${trip.priceFrom.toLocaleString()}
+                    {trip.priceFrom
+                      ? `${trip.durationDays} days · From $${trip.priceFrom.toLocaleString()}`
+                      : `${trip.durationDays} days · Price TBD`}
                   </p>
-                  <Link
-                    href="/contact"
-                    className="mt-2 self-start bg-sst-amber text-white text-xs font-body uppercase tracking-widest px-6 py-3 hover:bg-amber-600 transition-colors duration-200"
-                  >
-                    Join the Waitlist
-                  </Link>
                 </div>
-              </article>
+              </Link>
             )
           })}
         </div>

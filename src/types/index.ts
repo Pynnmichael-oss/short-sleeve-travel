@@ -31,7 +31,7 @@ export interface Trip {
   description: string
   heroImage: PhotoRef
   durationDays: number
-  priceFrom: number
+  priceFrom: number | null
   deposit: number
   bookingUrl: string
   destination: string
@@ -40,6 +40,7 @@ export interface Trip {
   inclusions: TripInclusions
   featured: boolean
   order: number
-  status?: 'active' | 'upcoming' | 'past'
+  status?: 'upcoming' | 'past'
   gallery?: GalleryImage[]
+  location?: { lat: number; lng: number; alt?: number }
 }
