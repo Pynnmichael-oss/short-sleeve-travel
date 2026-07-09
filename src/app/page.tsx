@@ -4,7 +4,6 @@ import { PhotoCarousel } from '@/components/PhotoCarousel'
 import { Pricing } from '@/components/home/Pricing'
 import { UpcomingTrips } from '@/components/home/UpcomingTrips'
 import { HowItWorks } from '@/components/home/HowItWorks'
-import { Testimonials } from '@/components/home/Testimonials'
 import { CommunityCloser } from '@/components/home/CommunityCloser'
 import { FooterCTA } from '@/components/home/FooterCTA'
 import { getUpcomingTrips, getHomeGallery } from '@/lib/queries'
@@ -39,7 +38,6 @@ export default async function Home() {
       <Hero />
       <WhyWeExist />
       <PhotoCarousel photos={photos} caption={caption} />
-      <Testimonials />
       <HowItWorks />
       <UpcomingTrips trips={upcomingTrips} />
       <Pricing />
