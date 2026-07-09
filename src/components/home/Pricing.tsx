@@ -3,7 +3,7 @@ import { SectionLabel } from '@/components/ui/SectionLabel'
 
 export function Pricing() {
   return (
-    <section className="bg-sst-surface py-24 md:py-32">
+    <section className="bg-sst-surface border-t border-sst-navy/8 py-24 md:py-32">
       <div className="max-w-3xl mx-auto px-6 flex flex-col gap-6">
         <SectionLabel className="text-sst-sand">Pricing</SectionLabel>
         <h2 className="font-display text-3xl md:text-4xl text-sst-navy leading-tight">

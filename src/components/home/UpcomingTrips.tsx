@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { urlFor } from '@/lib/sanity'
+import { SectionLabel } from '@/components/ui/SectionLabel'
 
 const FALLBACK_IMAGES: Record<string, string> = {
   'new-zealand-adventure': 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800',
@@ -24,13 +25,11 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
   if (!trips || trips.length === 0) return null
 
   return (
-    <section className="bg-sst-navy py-24 md:py-32">
+    <section className="bg-sst-surface py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col gap-4 mb-14">
-          <p className="font-body text-xs uppercase tracking-widest text-sst-sand/70">
-            On the Horizon
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl text-sst-white">
+          <SectionLabel className="text-sst-sand">On the Horizon</SectionLabel>
+          <h2 className="font-display text-4xl md:text-5xl text-sst-navy">
             Where We&apos;re Going Next
           </h2>
         </div>
@@ -45,7 +44,7 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
               <Link
                 key={trip._id}
                 href={`/trips/${trip.slug.current}`}
-                className="group flex flex-col bg-sst-nav transition-transform duration-300 hover:-translate-y-1"
+                className="group flex flex-col bg-white transition-transform duration-300 hover:-translate-y-1"
               >
                 <div className="relative h-60 overflow-hidden">
                   {imgSrc && (
@@ -53,7 +52,7 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
                       src={imgSrc}
                       alt={trip.destination}
                       fill
-                      className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-500"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   )}
                   <div className="absolute top-4 left-4">
@@ -64,16 +63,16 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
                 </div>
 
                 <div className="flex flex-col gap-3 p-7">
-                  <p className="font-body text-xs uppercase tracking-widest text-sst-sand/70">
+                  <p className="font-body text-xs uppercase tracking-widest text-sst-sand">
                     {trip.title}
                   </p>
-                  <h3 className="font-display text-2xl text-sst-white leading-snug">
+                  <h3 className="font-display text-2xl text-sst-navy leading-snug">
                     {trip.tagline}
                   </h3>
-                  <p className="font-body text-xs text-sst-white/40">
+                  <p className="font-body text-xs text-sst-navy/40">
                     {trip.destination}
                   </p>
-                  <p className="font-body text-sm text-sst-white/50">
+                  <p className="font-body text-sm text-sst-navy/60">
                     {trip.priceFrom
                       ? `${trip.durationDays} days · From $${trip.priceFrom.toLocaleString()}`
                       : `${trip.durationDays} days · Price TBD`}

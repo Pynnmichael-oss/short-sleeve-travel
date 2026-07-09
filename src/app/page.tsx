@@ -1,5 +1,4 @@
 import { Hero } from '@/components/home/Hero'
-import { WhyWeExist } from '@/components/home/WhyWeExist'
 import { PhotoCarousel } from '@/components/PhotoCarousel'
 import { Pricing } from '@/components/home/Pricing'
 import { UpcomingTrips } from '@/components/home/UpcomingTrips'
@@ -36,7 +35,6 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <WhyWeExist />
       <PhotoCarousel photos={photos} caption={caption} />
       <HowItWorks />
       <UpcomingTrips trips={upcomingTrips} />
