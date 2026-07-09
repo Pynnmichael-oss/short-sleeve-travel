@@ -5,8 +5,8 @@ export function CommunityCloser() {
   return (
     <section className="relative py-32 md:py-48">
       <Image
-        src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=1600"
-        alt="Group of friends hiking together"
+        src="/short-sleeve-travel/images/329-DSC00380.jpg"
+        alt="Group watching a double rainbow from a rocky ridge in Norway"
         fill
         className="object-cover"
       />
