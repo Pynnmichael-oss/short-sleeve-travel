@@ -1,0 +1,14 @@
+name = "contact-form-handler"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+[vars]
+SANITY_PROJECT_ID = "g80ygq4l"
+SANITY_DATASET = "production"
+NOTIFY_EMAIL = "pynnmichael@outlook.com"
+RESEND_FROM_EMAIL = "onboarding@resend.dev"
+ALLOWED_ORIGIN = "https://pynnmichael-oss.github.io"
+
+# Secrets (never put these here — set via `wrangler secret put`):
+#   SANITY_WRITE_TOKEN
+#   RESEND_API_KEY

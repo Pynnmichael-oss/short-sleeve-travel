@@ -1,0 +1,4 @@
+# Copy to .dev.vars (gitignored) for local `wrangler dev` testing.
+# In production these are set via `wrangler secret put` — see README/task notes.
+SANITY_WRITE_TOKEN=
+RESEND_API_KEY=

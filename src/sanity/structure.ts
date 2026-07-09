@@ -4,4 +4,16 @@ import type {StructureResolver} from 'sanity/structure'
 export const structure: StructureResolver = (S) =>
   S.list()
     .title('Content')
-    .items(S.documentTypeListItems())
+    .items([
+      ...S.documentTypeListItems().filter(
+        (item) => item.getId() !== 'contactSubmission'
+      ),
+      S.divider(),
+      S.listItem()
+        .title('Inquiries')
+        .child(
+          S.documentTypeList('contactSubmission')
+            .title('Inquiries')
+            .defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])
+        ),
+    ])

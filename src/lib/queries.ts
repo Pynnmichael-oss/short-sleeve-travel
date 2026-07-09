@@ -63,3 +63,14 @@ export async function getFeaturedTrips() {
     }
   `)
 }
+
+// Dedicated, unsliced query for the contact form's trip dropdown — kept
+// separate from getUpcomingTrips so changes to homepage/trips-page display
+// logic (slicing, featured-first ordering, etc.) never affect the dropdown.
+export async function getTripsForContactForm() {
+  return client.fetch(`
+    *[_type == "trip" && status == "upcoming"] | order(order asc) {
+      _id, title
+    }
+  `)
+}
