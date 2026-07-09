@@ -38,12 +38,15 @@ export function TripCard({ trip }: { trip: Trip }) {
       {/* Content */}
       <div className="flex flex-col gap-4 p-7">
         <div>
-          <p className="text-xs uppercase tracking-widest text-sst-navy/40 font-body mb-2">
-            {trip.destination}
+          <p className="text-xs uppercase tracking-widest text-sst-sand font-body mb-2">
+            {trip.title}
           </p>
           <h2 className="font-display text-2xl text-sst-navy leading-snug">
             {trip.tagline}
           </h2>
+          <p className="text-sm text-sst-navy/50 font-body mt-2">
+            {trip.destination}
+          </p>
         </div>
 
         <p className="font-body text-sm text-sst-navy/60 leading-relaxed">

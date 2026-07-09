@@ -65,11 +65,14 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
 
                 <div className="flex flex-col gap-3 p-7">
                   <p className="font-body text-xs uppercase tracking-widest text-sst-sand/70">
-                    {trip.destination}
+                    {trip.title}
                   </p>
                   <h3 className="font-display text-2xl text-sst-white leading-snug">
                     {trip.tagline}
                   </h3>
+                  <p className="font-body text-xs text-sst-white/40">
+                    {trip.destination}
+                  </p>
                   <p className="font-body text-sm text-sst-white/50">
                     {trip.priceFrom
                       ? `${trip.durationDays} days · From $${trip.priceFrom.toLocaleString()}`
