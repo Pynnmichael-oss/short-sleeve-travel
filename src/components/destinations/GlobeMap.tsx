@@ -6,41 +6,12 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 const BASE_PATH = '/short-sleeve-travel'
 
-// Active trips — full popup with link
-const DESTINATIONS = [
-  {
-    coordinates: [13.1892, 68.2094] as [number, number],
-    name: 'Lofoten Sailing',
-    destination: 'Norway',
-    duration: '8 Days',
-    price: 'From $2,295',
-    slug: 'norway',
-  },
-  {
-    coordinates: [172.6362, -40.9006] as [number, number],
-    name: 'New Zealand Adventure',
-    destination: 'New Zealand',
-    duration: '13 Days',
-    price: 'From $2,595',
-    slug: 'new-zealand-adventure',
-  },
-  {
-    coordinates: [138.2529, 36.2048] as [number, number],
-    name: 'Spirit of Japan',
-    destination: 'Japan',
-    duration: '7 Days',
-    price: 'From $1,595',
-    slug: 'spirit-of-japan',
-  },
-  {
-    coordinates: [-7.0926, 31.7917] as [number, number],
-    name: 'Morocco Uncovered',
-    destination: 'Morocco',
-    duration: '9 Days',
-    price: 'From $1,195',
-    slug: 'morocco-uncovered',
-  },
-]
+export interface GlobeTrip {
+  _id: string
+  title: string
+  slug: { current: string }
+  location?: { lat: number; lng: number } | null
+}
 
 const INJECTED_STYLES = `
   @keyframes sst-globe-pulse {
@@ -163,7 +134,7 @@ const INJECTED_STYLES = `
   }
 `
 
-export function GlobeMap() {
+export function GlobeMap({ trips }: { trips: GlobeTrip[] }) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -204,40 +175,45 @@ export function GlobeMap() {
           'star-intensity': 0.55,
         })
 
-        // Active trip markers — pulsing + popup with link
-        DESTINATIONS.forEach((dest) => {
-          if (!map) return
-          const el = document.createElement('div')
-          el.className = 'sst-marker'
-          el.innerHTML = `
-            <div class="sst-marker-outer"></div>
-            <div class="sst-marker-inner"></div>
-          `
+        // Past trip markers — pulsing + popup linking to the trip detail page
+        trips
+          .filter(
+            (trip): trip is GlobeTrip & { location: { lat: number; lng: number } } =>
+              trip.location?.lat != null && trip.location?.lng != null
+          )
+          .forEach((trip) => {
+            if (!map) return
+            const coordinates: [number, number] = [trip.location.lng, trip.location.lat]
 
-          const popup = new mapboxgl.Popup({
-            closeButton: true,
-            closeOnClick: false,
-            offset: 18,
-            maxWidth: '300px',
-            anchor: 'bottom',
-          }).setHTML(`
-            <div class="sst-popup">
-              <h3 class="sst-popup-title">${dest.name}</h3>
-              <p class="sst-popup-dest">${dest.destination}</p>
-              <p class="sst-popup-meta">${dest.duration} &middot; ${dest.price}</p>
-              <a class="sst-popup-link" href="${BASE_PATH}/trips/${dest.slug}">View Trip &rarr;</a>
-            </div>
-          `)
+            const el = document.createElement('div')
+            el.className = 'sst-marker'
+            el.innerHTML = `
+              <div class="sst-marker-outer"></div>
+              <div class="sst-marker-inner"></div>
+            `
 
-          el.addEventListener('click', () => {
-            map?.flyTo({ center: dest.coordinates, zoom: 5, duration: 1800, essential: true })
+            const popup = new mapboxgl.Popup({
+              closeButton: true,
+              closeOnClick: false,
+              offset: 18,
+              maxWidth: '300px',
+              anchor: 'bottom',
+            }).setHTML(`
+              <div class="sst-popup">
+                <h3 class="sst-popup-title">${trip.title}</h3>
+                <a class="sst-popup-link" href="${BASE_PATH}/trips/${trip.slug.current}">View Trip &rarr;</a>
+              </div>
+            `)
+
+            el.addEventListener('click', () => {
+              map?.flyTo({ center: coordinates, zoom: 5, duration: 1800, essential: true })
+            })
+
+            new mapboxgl.Marker({ element: el })
+              .setLngLat(coordinates)
+              .setPopup(popup)
+              .addTo(map)
           })
-
-          new mapboxgl.Marker({ element: el })
-            .setLngLat(dest.coordinates)
-            .setPopup(popup)
-            .addTo(map)
-        })
       })
     } catch {
       document.getElementById('sst-globe-styles')?.remove()
@@ -248,7 +224,7 @@ export function GlobeMap() {
       map?.remove()
       document.getElementById('sst-globe-styles')?.remove()
     }
-  }, [])
+  }, [trips])
 
   return (
     <div className="relative bg-[#1a1a1a]">

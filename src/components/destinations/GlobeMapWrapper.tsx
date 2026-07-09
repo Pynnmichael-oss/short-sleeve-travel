@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import type { GlobeTrip } from './GlobeMap'
 
 const GlobeMap = dynamic(
   () => import('./GlobeMap').then((m) => m.GlobeMap),
@@ -12,6 +13,6 @@ const GlobeMap = dynamic(
   }
 )
 
-export function GlobeMapWrapper() {
-  return <GlobeMap />
+export function GlobeMapWrapper({ trips }: { trips: GlobeTrip[] }) {
+  return <GlobeMap trips={trips} />
 }

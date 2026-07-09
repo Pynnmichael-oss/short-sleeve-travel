@@ -74,3 +74,15 @@ export async function getTripsForContactForm() {
     }
   `)
 }
+
+// Dedicated query for the Where We've Been globe pins — kept separate from
+// getPastTrips() (which feeds the photo grid on the same page with a very
+// different field set). Only trips with a location set will actually plot;
+// GlobeMap filters out any without one.
+export async function getGlobeTrips() {
+  return client.fetch(`
+    *[_type == "trip" && status == "past"] {
+      _id, title, slug, location
+    }
+  `)
+}

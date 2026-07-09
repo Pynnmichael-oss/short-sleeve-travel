@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { GlobeMapWrapper } from '@/components/destinations/GlobeMapWrapper'
 import { DestStatsBar } from '@/components/destinations/DestStatsBar'
 import { PastTripsGrid } from '@/components/destinations/PastTripsGrid'
-import { getPastTrips } from '@/lib/queries'
+import { getPastTrips, getGlobeTrips } from '@/lib/queries'
 
 export const metadata = {
   title: "Where We've Been | Short Sleeve Travel",
@@ -11,7 +11,7 @@ export const metadata = {
 }
 
 export default async function WhereWeveBeenPage() {
-  const pastTrips = await getPastTrips()
+  const [pastTrips, globeTrips] = await Promise.all([getPastTrips(), getGlobeTrips()])
 
   return (
     <main>
@@ -29,7 +29,7 @@ export default async function WhereWeveBeenPage() {
       </section>
 
       {/* Interactive Globe */}
-      <GlobeMapWrapper />
+      <GlobeMapWrapper trips={globeTrips} />
 
       {/* Stats Bar */}
       <DestStatsBar />
