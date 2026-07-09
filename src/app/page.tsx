@@ -1,6 +1,5 @@
 import { Hero } from '@/components/home/Hero'
 import { PhotoCarousel } from '@/components/PhotoCarousel'
-import { Pricing } from '@/components/home/Pricing'
 import { UpcomingTrips } from '@/components/home/UpcomingTrips'
 import { HowItWorks } from '@/components/home/HowItWorks'
 import { CommunityCloser } from '@/components/home/CommunityCloser'
@@ -35,10 +34,9 @@ export default async function Home() {
   return (
     <>
       <Hero />
-      <PhotoCarousel photos={photos} caption={caption} />
-      <HowItWorks />
       <UpcomingTrips trips={upcomingTrips} />
-      <Pricing />
+      <HowItWorks />
+      <PhotoCarousel photos={photos} caption={caption} />
       <CommunityCloser />
       <FooterCTA />
     </>

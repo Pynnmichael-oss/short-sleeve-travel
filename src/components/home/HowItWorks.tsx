@@ -24,7 +24,7 @@ export function HowItWorks() {
     <section className="bg-sst-nav py-24 md:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="font-display text-4xl md:text-5xl text-sst-white mb-16">
-          How a Short Sleeve trip works
+          How a Shortsleeve trip works
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
