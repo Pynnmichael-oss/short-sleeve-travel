@@ -9,7 +9,7 @@ const values = [
   {
     name: 'Community',
     description:
-      'You will leave every Short Sleeve trip with people you actually want to stay in touch with. We design for connection, not just sightseeing.',
+      'You will leave every Shortsleeve trip with people you actually want to stay in touch with. We design for connection, not just sightseeing.',
   },
   {
     name: 'Honest',

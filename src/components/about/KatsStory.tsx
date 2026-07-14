@@ -37,7 +37,7 @@ export function KatsStory() {
             free.
           </p>
           <p>
-            Short Sleeve Travel launched with one trip to Oaxaca and eight
+            Shortsleeve Travel launched with one trip to Oaxaca and eight
             strangers who flew in from four different countries. By day three,
             they were finishing each other's sentences. They all still have a
             group chat. It's still active. That, honestly, is the whole point.

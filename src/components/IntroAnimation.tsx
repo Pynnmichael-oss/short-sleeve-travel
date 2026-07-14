@@ -103,7 +103,7 @@ export function IntroAnimation() {
             transition: 'opacity 1s ease-in',
           }}
         >
-          Short Sleeve Travel
+          The Shortsleeve Travel Club
         </p>
 
         <p

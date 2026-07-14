@@ -8,7 +8,7 @@ export function FounderHero() {
       <div className="relative min-h-[50vh] md:min-h-0">
         <Image
           src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800"
-          alt="Kat Shortsleeve, founder of Short Sleeve Travel"
+          alt="Kat Shortsleeve, founder of Shortsleeve Travel"
           fill
           className="object-cover object-top"
           priority
@@ -23,7 +23,7 @@ export function FounderHero() {
             Built by someone who needed this trip too.
           </h1>
           <p className="font-body text-sst-white/70 leading-relaxed">
-            Kat Shortsleeve started Short Sleeve Travel after one too many solo
+            Kat Shortsleeve started Shortsleeve Travel after one too many solo
             trips that felt lonelier than they should have. She believed there
             was a better way to see the world — and the right people to see it
             with.

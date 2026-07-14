@@ -17,7 +17,7 @@ export async function generateMetadata({
   const trip = await getTripBySlug(slug)
   if (!trip) return {}
   return {
-    title: `${trip.tagline} — ${trip.destination} | Short Sleeve Travel`,
+    title: `${trip.tagline} — ${trip.destination} | The Shortsleeve Travel Club`,
     description: trip.description?.slice(0, 160),
   }
 }

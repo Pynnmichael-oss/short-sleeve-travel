@@ -4,7 +4,7 @@ import { CustomRequest } from '@/components/experiences/CustomRequest'
 import { getUpcomingTrips } from '@/lib/queries'
 
 export const metadata = {
-  title: 'Trips — Short Sleeve Travel',
+  title: 'Trips — The Shortsleeve Travel Club',
   description:
     'Browse our curated group adventures. New Zealand, Japan, Morocco — find the trip that calls to you.',
 }

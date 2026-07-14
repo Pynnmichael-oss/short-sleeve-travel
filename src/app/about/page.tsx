@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'About Kat — Short Sleeve Travel',
+  title: 'About Kat — The Shortsleeve Travel Club',
   description:
-    'Founded by Kat Shortsleeve in 2023, Shortsleeve Travel Club creates curated small-group adventures for curious travelers in their 20s and 30s.',
+    'Founded by Kat Shortsleeve in 2023, Shortsleeve Travel creates curated small-group adventures for curious travelers in their 20s and 30s.',
 }
 
 export default function AboutPage() {
@@ -29,7 +29,7 @@ export default function AboutPage() {
               </h1>
               <div className="flex flex-col gap-5 font-body text-lg text-sst-navy/70 leading-relaxed">
                 <p>
-                  Founded in 2023 by Kat Shortsleeve, Shortsleeve Travel Club was born after Kat graduated from
+                  Founded in 2023 by Kat Shortsleeve, Shortsleeve Travel was born after Kat graduated from
                   Columbia Business School, where she studied entrepreneurship and private equity. Originally from
                   Boston, Kat moved to DC for her undergraduate studies at Georgetown University.
                 </p>
@@ -43,10 +43,10 @@ export default function AboutPage() {
                   influencers traveling the world. Inspired, Kat started her first business sewing and selling
                   purses to save for her first international trip — a volunteer adventure group to Fiji with a high
                   school program. This life-changing experience of connecting with people from around the world
-                  solidified her love for travel and sparked the concept for Shortsleeve Travel Club.
+                  solidified her love for travel and sparked the concept for Shortsleeve Travel.
                 </p>
                 <p>
-                  Shortsleeve Travel Club is all about building connections and creating a community of like-minded,
+                  Shortsleeve Travel is all about building connections and creating a community of like-minded,
                   curious travelers eager to explore the world together.
                 </p>
               </div>

@@ -33,7 +33,7 @@ export function Navbar() {
           href="/"
           className="font-display text-lg text-white tracking-wide hover:text-sst-sand transition-colors duration-200"
         >
-          Short Sleeve Travel
+          The Shortsleeve Travel Club
         </Link>
 
         {/* Desktop links */}
