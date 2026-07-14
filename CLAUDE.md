@@ -32,6 +32,7 @@ There is no test suite in this repo. Build output goes to `./out/` and is deploy
 - mapbox-gl v3 for the interactive globe on `/where-we-ve-been`
 - Sanity CMS (project `g80ygq4l`, dataset `production`) for all trip content
 - @sanity/client + @sanity/image-url for data fetching and image transforms
+- Cloudflare Worker (`workers/contact-form/`) as the contact form backend — the only server-side code in the repo
 
 ## next.config.ts Settings (DO NOT CHANGE)
 - `output: 'export'`
@@ -68,17 +69,17 @@ Typography:
 
 ## Pages (`src/app`)
 1. `/` — Home (async server component; calls `getUpcomingTrips()` and `getHomeGallery()`)
-2. `/trips` — Trip index; async server component calling `getActiveTrips()` and `getUpcomingTrips()`
+2. `/trips` — Trip index; async server component calling `getUpcomingTrips()`; sections come from `src/components/experiences/`
 3. `/trips/[slug]` — Detail page; async server component calling `getTripBySlug()`; `generateStaticParams` fetches all slugs directly via `client.fetch`
 4. `/about` — Kat's bio, favorite trips, social links
-5. `/contact` — Static form UI only, no backend
-6. `/where-we-ve-been` — Async server component calling `getPastTrips()`; Mapbox globe + stats + past trip cards
+5. `/contact` — Async server component calling `getTripsForContactForm()` for the trip-interest dropdown; the form POSTs to a Cloudflare Worker (see "Contact Form Worker" below)
+6. `/where-we-ve-been` — Async server component calling `getPastTrips()` and `getGlobeTrips()`; Mapbox globe + stats + past trip cards
 7. `/studio/[[...tool]]` — Embedded Sanity Studio (static export compatible)
 
 ## Sanity CMS
 - Project ID: `g80ygq4l` · Dataset: `production`
-- Schema: `src/sanity/schemaTypes/trip.ts` (main content type) and `homeGallery.ts` (singleton for the homepage photo carousel) — registered in `schemaTypes/index.ts`
-- Studio config: `sanity.config.ts` (hardcoded project/dataset, no env vars)
+- Schema types (registered in `schemaTypes/index.ts`): `trip.ts` (main content type), `photo.ts` (standalone photo pool), `homeGallery.ts` (singleton for the homepage photo carousel), `contactSubmission.ts` (created by the contact form Worker, read-only in practice)
+- Studio config: `sanity.config.ts` (hardcoded project/dataset; the `googleMapsInput` plugin reads `SANITY_STUDIO_GOOGLE_MAPS_API_KEY` for the geopoint location picker)
 - CLI config: `sanity.cli.ts` (reads env vars for local dev, has `appId` for deploy)
 - Studio deploy: `npx sanity login` then `npx sanity deploy` (requires authenticated CLI session — Editor API token is NOT sufficient)
 - Sanity client + urlFor: `src/lib/sanity.ts`
@@ -86,9 +87,9 @@ Typography:
 - The `trip` schema groups fields into Studio tabs (`content`, `media`, `pricing`, `scheduling`, `settings`) — put new fields in the matching group
 
 ### Trip Status Values
-- `active` — shown on `/trips` (bookable now)
-- `upcoming` — shown in "Where We're Going Next" section on homepage and on `/trips`
-- `past` — shown on `/where-we-ve-been`
+Only two values (the old `active` status was removed — don't reintroduce it):
+- `upcoming` — shown on `/trips`, in the homepage `UpcomingTrips` section, and in the contact form dropdown
+- `past` — shown on `/where-we-ve-been` (photo grid + globe pins)
 
 ### Trip Type (`src/types/index.ts`)
 The `Trip` interface matches the Sanity schema:
@@ -98,9 +99,10 @@ heroImage (PhotoRef), gallery? (GalleryImage[]),
 durationDays, priceFrom, deposit, bookingUrl,
 destination, region, departureDates (DepartureDate[]),
 inclusions (TripInclusions), featured, order,
-status?: 'active' | 'upcoming' | 'past'
+status?: 'upcoming' | 'past',
+location?: { lat, lng, alt? }   // geopoint, drives the globe pins
 ```
-Query functions return partial projections of this shape (e.g. `getUpcomingTrips`/`getFeaturedTrips` omit `gallery`/`inclusions`) — don't assume every field is populated on every fetch, check `src/lib/queries.ts` for what a given query actually selects.
+Query functions return partial projections of this shape (e.g. `getPastTrips` omits `gallery`/`inclusions`, `getGlobeTrips` selects almost nothing) — don't assume every field is populated on every fetch, check `src/lib/queries.ts` for what a given query actually selects.
 
 `heroImage` and `gallery` items are **references** to standalone `photo` documents (schema: `src/sanity/schemaTypes/photo.ts`), not inline image fields. Queries dereference them with `->{ image, alt, caption }`, so the fetched shape is `PhotoRef = { image, alt, caption }` — the real Sanity image object lives one level deeper, at `.image`.
 
@@ -118,17 +120,20 @@ Query functions return partial projections of this shape (e.g. `getUpcomingTrips
 
 ## Queries (`src/lib/queries.ts`)
 ```
-getAllTrips()       — all trips regardless of status
-getActiveTrips()    — status == "active", used on /trips
-getUpcomingTrips()  — status == "upcoming", used on homepage and /trips
-getPastTrips()      — status == "past", used on /where-we-ve-been
-getTripBySlug(slug) — single trip for detail page
-getFeaturedTrips()  — featured == true (currently unused by any page)
-getHomeGallery()    — singleton homeGallery document for the homepage PhotoCarousel
+getAllTrips()             — all trips regardless of status
+getUpcomingTrips()        — status == "upcoming", used on homepage and /trips
+getPastTrips()            — status == "past", feeds the photo grid on /where-we-ve-been
+getGlobeTrips()           — status == "past", minimal projection (_id/title/slug/location) for globe pins; kept separate from getPastTrips on purpose
+getTripBySlug(slug)       — single trip for detail page
+getTripsForContactForm()  — upcoming trips, _id/title only, for the contact dropdown; deliberately decoupled from getUpcomingTrips
+getFeaturedTrips()        — featured == true (currently unused by any page)
+getHomeGallery()          — singleton homeGallery document for the homepage PhotoCarousel
 ```
 
 ## Homepage Section Order (`src/app/page.tsx`)
-`Hero` → `WhyWeExist` → `PhotoCarousel` (from `getHomeGallery()`, falls back to `FALLBACK_PHOTOS`) → `Testimonials` → `HowItWorks` → `UpcomingTrips` → `Pricing` → `CommunityCloser` → `FooterCTA`
+`Hero` → `UpcomingTrips` → `HowItWorks` → `PhotoCarousel` (from `getHomeGallery()`, falls back to `FALLBACK_PHOTOS`) → `CommunityCloser` → `FooterCTA`
+
+`FeaturedTrips` and `SocialProofStrip` exist in `src/components/home/` but are not currently rendered — check before assuming they're live.
 
 ## Trip Detail Page Sections (`src/app/trips/[slug]/ExperiencePage.tsx`, in render order)
 `HeroSection` → `PhotoGallery` → `StatsBar` → `StickyHook` → `IncludedSection` → `DepartureDates` → `BookingCTA`
@@ -136,14 +141,21 @@ getHomeGallery()    — singleton homeGallery document for the homepage PhotoCar
 `ExperiencePage` is `'use client'`; `page.tsx` (server) resolves `params`/fetches the trip and passes it down. Additional section components exist in `sections/` (`ItineraryTimeline`, `GalleryStrip`, `WhoItsFor`) but are not currently wired into `ExperiencePage` — check before assuming they render.
 
 ## Mapbox Globe (`/where-we-ve-been`)
-`GlobeMap.tsx` is a `'use client'` component with hardcoded destination coordinates (no coordinates in Sanity schema). Hardcoded hex values inside `INJECTED_STYLES` (and the `bg-[#1a1a1a]` on the map container) are intentional — these style third-party Mapbox popup/marker elements that Tailwind classes can't reach. `GlobeMapWrapper.tsx` handles the dynamic import with `ssr: false`.
+`GlobeMap.tsx` (`'use client'`, in `src/components/destinations/`) plots pins dynamically from Sanity: `getGlobeTrips()` fetches past trips and the pin position comes from each trip's `location` geopoint (set in Studio via the Google Maps input). Trips without a `location` are silently filtered out — if a pin is "missing", check the Sanity document first. Hardcoded hex values inside `INJECTED_STYLES` (and the `bg-[#1a1a1a]` on the map container) are intentional — these style third-party Mapbox popup/marker elements that Tailwind classes can't reach. `GlobeMapWrapper.tsx` handles the dynamic import with `ssr: false`.
 
 ## Navbar
 Always-solid `bg-sst-nav`. Links: Trips (`/trips`), Where We've Been (`/where-we-ve-been`), About, Contact. Links are `uppercase tracking-widest text-xs`. Logo uses Playfair Display. "Login" link has a user SVG icon and currently points to `/trips`. "View Trips" CTA uses `bg-sst-amber`. No transparent-on-scroll behaviour.
 
+## Contact Form Worker (`workers/contact-form/`)
+The contact form's backend — a Cloudflare Worker (`wrangler.toml`, `src/index.ts`), separate from the Next.js app and deployed separately with wrangler. It validates the payload, creates a `contactSubmission` document in Sanity, then sends a notification email via Resend (email failure is logged but doesn't fail the request — the submission is already saved).
+- The frontend calls it via `NEXT_PUBLIC_CONTACT_WORKER_URL`; if that env var is missing the form shows a generic error without ever fetching
+- CORS is locked to `ALLOWED_ORIGIN` (`https://pynnmichael-oss.github.io`) in `wrangler.toml`
+- Worker secrets (`SANITY_WRITE_TOKEN`, `RESEND_API_KEY`) are set with `wrangler secret put`, never in `wrangler.toml`
+- It has its own `package.json`/`node_modules` — run wrangler commands from `workers/contact-form/`
+
 ## Seed / Migration Scripts (`scripts/`)
 - `seed-sanity.ts` — creates the initial trip documents
-- `update-trip-status.ts` — patches all trips to `status: 'active'`
+- `update-trip-status.ts` — legacy: patches all trips to `status: 'active'`, a status that no longer exists in the schema. Do not run as-is.
 - `seed-home-gallery.ts` — seeds the `homeGallery` singleton
 - Run with: `SANITY_API_TOKEN=<editor_token> npx tsx scripts/<file>.ts`
 
@@ -151,6 +163,7 @@ Always-solid `bg-sst-nav`. Links: Trips (`/trips`), Where We've Been (`/where-we
 - `NEXT_PUBLIC_MAPBOX_TOKEN`
 - `NEXT_PUBLIC_SANITY_PROJECT_ID`
 - `NEXT_PUBLIC_SANITY_DATASET`
+- `NEXT_PUBLIC_CONTACT_WORKER_URL`
 
 ## Conventions
 - Named exports only — no default exports except `page.tsx` files
@@ -166,7 +179,7 @@ Always-solid `bg-sst-nav`. Links: Trips (`/trips`), Where We've Been (`/where-we
 - External booking links: `target="_blank" rel="noopener noreferrer"`
 
 ## Do Not
-- No API routes or server actions (not supported in static export)
+- No API routes or server actions (not supported in static export) — backend needs go in the Cloudflare Worker instead
 - No hardcoded hex values in JSX (Mapbox popup/marker styling in `GlobeMap.tsx` is the only exception)
 - No lorem ipsum — use real brand copy
 - No default exports except `page.tsx` files
