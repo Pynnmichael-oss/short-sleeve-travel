@@ -18,7 +18,7 @@ export function Footer() {
               href="/"
               className="font-display text-xl text-sst-white hover:text-sst-sand transition-colors duration-200"
             >
-              The Shortsleeve Travel Club
+              Shortsleeve Travel Club
             </Link>
           </div>
 
@@ -52,7 +52,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-sst-white/10 pt-6 text-xs text-sst-white/30 text-center">
-          © 2025 The Shortsleeve Travel Club. All rights reserved.
+          © 2025 Shortsleeve Travel Club. All rights reserved.
         </div>
       </div>
     </footer>

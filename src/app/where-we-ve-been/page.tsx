@@ -5,7 +5,7 @@ import { PastTripsGrid } from '@/components/destinations/PastTripsGrid'
 import { getPastTrips, getGlobeTrips } from '@/lib/queries'
 
 export const metadata = {
-  title: "Where We've Been | The Shortsleeve Travel Club",
+  title: "Where We've Been | Shortsleeve Travel Club",
   description:
     'Three trips. Thirty-three travelers. Stories that are still being told.',
 }

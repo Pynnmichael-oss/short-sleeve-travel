@@ -18,7 +18,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "The Shortsleeve Travel Club",
+  title: "Shortsleeve Travel Club",
   description:
     "Adventure group travel for young professionals. Small groups, big landscapes, real connections.",
   icons: {
