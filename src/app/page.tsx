@@ -1,4 +1,5 @@
 import { Hero } from '@/components/home/Hero'
+import { InstagramFeed } from '@/components/InstagramFeed'
 import { PhotoCarousel } from '@/components/PhotoCarousel'
 import { UpcomingTrips } from '@/components/home/UpcomingTrips'
 import { HowItWorks } from '@/components/home/HowItWorks'
@@ -36,7 +37,9 @@ export default async function Home() {
       <Hero />
       <UpcomingTrips trips={upcomingTrips} />
       <HowItWorks />
-      <PhotoCarousel photos={photos} caption={caption} />
+      {/* TEMP: carousel swapped out for live Instagram feed demo — restore or reformat later. */}
+      {/* <PhotoCarousel photos={photos} caption={caption} /> */}
+      <InstagramFeed />
       <CommunityCloser />
       <FooterCTA />
     </>
