@@ -24,7 +24,7 @@ export default async function WhereWeveBeenPage() {
           Where We&apos;ve Been
         </h1>
         <p className="font-body text-lg text-sst-white/70 max-w-md mx-auto leading-relaxed">
-          Three trips. Thirty-three travelers. Stories that are still being told.
+          Dozens of trips. Hundreds of travelers. Stories that are still being told.
         </p>
       </section>
 
@@ -38,7 +38,7 @@ export default async function WhereWeveBeenPage() {
       <PastTripsGrid trips={pastTrips} />
 
       {/* Bottom CTA */}
-      <section className="bg-sst-navy py-24 px-6 text-center border-b border-sst-white/10">
+      <section className="bg-sst-nav py-24 px-6 text-center">
         <h2 className="font-display text-4xl md:text-5xl text-sst-white mb-5">
           The next destination is being planned now.
         </h2>
