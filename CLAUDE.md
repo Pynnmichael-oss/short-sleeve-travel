@@ -131,9 +131,15 @@ getHomeGallery()          — singleton homeGallery document for the homepage Ph
 ```
 
 ## Homepage Section Order (`src/app/page.tsx`)
-`Hero` → `UpcomingTrips` → `HowItWorks` → `PhotoCarousel` (from `getHomeGallery()`, falls back to `FALLBACK_PHOTOS`) → `CommunityCloser` → `FooterCTA`
+`Hero` → `UpcomingTrips` → `HowItWorks` → `InstagramFeed` → `CommunityCloser` → `FooterCTA`
 
-`FeaturedTrips` and `SocialProofStrip` exist in `src/components/home/` but are not currently rendered — check before assuming they're live.
+- TEMP: `PhotoCarousel` (from `getHomeGallery()`, falls back to `FALLBACK_PHOTOS`) is commented out in `page.tsx`, not deleted, and `InstagramFeed` renders in its old slot instead — see "Instagram Feed" below. The `photos`/`caption` values are still computed in `page.tsx` (unused for now) so restoring is a one-line uncomment.
+- `FeaturedTrips` and `SocialProofStrip` exist in `src/components/home/` but are not currently rendered — check before assuming they're live.
+
+## Instagram Feed (`src/components/InstagramFeed.tsx`)
+Client component wrapping a Mirror app iframe embed (`app.mirror-app.com/feed-instagram/...`) with Mirror's auto-resize bridge script loaded via `next/script` (`strategy="afterInteractive"`). `MIRROR_FEED_SRC`/`MIRROR_BRIDGE_SRC` are top-level constants — swap the feed ID there, not in JSX.
+- Stopgap on Mirror's free/trial tier. Once the site migrates to Netlify, this is meant to be replaced with a self-hosted Netlify Function pulling directly from the Instagram Graph API for full styling control.
+- Currently swapped into the homepage in place of `PhotoCarousel` (see above) — this is a temporary demo arrangement, not the intended permanent layout.
 
 ## Trip Detail Page Sections (`src/app/trips/[slug]/ExperiencePage.tsx`, in render order)
 `HeroSection` → `PhotoGallery` → `StatsBar` → `StickyHook` → `IncludedSection` → `DepartureDates` → `BookingCTA`

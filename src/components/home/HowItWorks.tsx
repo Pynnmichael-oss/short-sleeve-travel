@@ -3,13 +3,13 @@ const steps = [
     number: '01',
     title: 'Who joins us',
     description:
-      'Our travelers come from all walks of life — consultants, entrepreneurs, doctors, lawyers, nurses, finance professionals, and creatives. Most join solo, but we\'ve had friends, siblings, and couples join too. What unites everyone is the desire to explore the world in ways that are truly out of the ordinary.',
+      'Our travelers come from all walks of life: consultants, doctors, nurses, lawyers, entrepreneurs, and creatives. Most come solo, some bring a friend or partner. Everyone\'s here to explore in a way that\'s out of the ordinary.',
   },
   {
     number: '02',
     title: 'Why we\'re different',
     description:
-      'Unlike typical group trips, Shortsleeve Travel focuses on high-end adventure and unique experiences. It\'s about meeting like-minded people and creating authentic, life-changing experiences.',
+      'This isn\'t a typical group tour. We focus on high-end adventure and experiences you won\'t find in a brochure. It\'s as much about who you meet as where you go.',
   },
   {
     number: '03',

@@ -75,7 +75,7 @@ export function ContactSection({ trips }: { trips: TripOption[] }) {
               <div className="flex flex-col gap-3">
                 <h2 className="font-display text-2xl text-sst-navy">Message sent.</h2>
                 <p className="font-body text-sm text-sst-navy/60 leading-relaxed">
-                  Kat reads every one of these herself — expect a reply within 24 hours.
+                  Kat reads every one of these herself, so expect a real reply, not an autoresponder.
                 </p>
               </div>
             ) : (
@@ -159,9 +159,6 @@ export function ContactSection({ trips }: { trips: TripOption[] }) {
                     {status === 'error' && (
                       <p className="text-xs font-body text-red-600 text-center">{errorMessage}</p>
                     )}
-                    <p className="text-xs font-body text-sst-navy/40 text-center">
-                      We reply to every message within 24 hours.
-                    </p>
                   </div>
                 </div>
               </form>
@@ -176,7 +173,7 @@ export function ContactSection({ trips }: { trips: TripOption[] }) {
               </h2>
               <p className="font-body text-sm text-sst-white/65 leading-relaxed">
                 Whether you have questions about a specific trip, want to know if
-                group travel is right for you, or just want to say hello — drop
+                group travel is right for you, or just want to say hello, drop
                 us a message.
               </p>
             </div>
@@ -184,10 +181,10 @@ export function ContactSection({ trips }: { trips: TripOption[] }) {
             <div className="flex flex-col gap-7">
               <div className="flex flex-col gap-1.5">
                 <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
-                  Response Time
+                  Prefer Instagram?
                 </span>
                 <p className="font-body text-sm text-sst-white/80">
-                  Within 24 hours, always.
+                  DM us @shortsleevetravel, we check that daily too.
                 </p>
               </div>
 
@@ -205,19 +202,21 @@ export function ContactSection({ trips }: { trips: TripOption[] }) {
                   Follow Along
                 </span>
                 <a
-                  href="https://instagram.com/shortsleeveltravel"
+                  href="https://instagram.com/shortsleevetravel"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-body text-sm text-sst-white/80 hover:text-sst-sand transition-colors duration-200"
                 >
-                  @shortsleeveltravel
+                  @shortsleevetravel
                 </a>
               </div>
             </div>
 
             <div className="mt-auto pt-8 border-t border-sst-white/10">
               <p className="font-display text-xl text-sst-white/80 italic">
-                "Looking forward to hearing from you. — Kat"
+                "Looking forward to hearing from you.
+                <br />
+                Kat"
               </p>
             </div>
           </div>

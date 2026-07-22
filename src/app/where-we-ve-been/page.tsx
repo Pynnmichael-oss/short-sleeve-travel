@@ -7,7 +7,7 @@ import { getPastTrips, getGlobeTrips } from '@/lib/queries'
 export const metadata = {
   title: "Where We've Been | Shortsleeve Travel Club",
   description:
-    'Three trips. Thirty-three travelers. Stories that are still being told.',
+    'Dozens of trips. Hundreds of travelers. Stories that are still being told.',
 }
 
 export default async function WhereWeveBeenPage() {
@@ -38,7 +38,7 @@ export default async function WhereWeveBeenPage() {
       <PastTripsGrid trips={pastTrips} />
 
       {/* Bottom CTA */}
-      <section className="bg-sst-navy py-24 px-6 text-center">
+      <section className="bg-sst-navy py-24 px-6 text-center border-b border-sst-white/10">
         <h2 className="font-display text-4xl md:text-5xl text-sst-white mb-5">
           The next destination is being planned now.
         </h2>

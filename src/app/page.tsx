@@ -40,8 +40,8 @@ export default async function Home() {
       {/* TEMP: carousel swapped out for live Instagram feed demo — restore or reformat later. */}
       {/* <PhotoCarousel photos={photos} caption={caption} /> */}
       <InstagramFeed />
-      <CommunityCloser />
       <FooterCTA />
+      <CommunityCloser />
     </>
   )
 }

@@ -14,12 +14,12 @@ const faqs = [
   {
     question: 'What\'s the group dynamic like?',
     answer:
-      'Groups range from 8–12 people. A mix of solo travelers, remote workers, and the occasional couple. Everyone is there for the same reason — to have a real experience with real people.',
+      'Groups range from 8–12 people. A mix of solo travelers, remote workers, and the occasional couple. Everyone\'s there for the same reason: to have a real experience with real people.',
   },
   {
     question: 'How far in advance should I book?',
     answer:
-      'Our trips fill up 6–8 weeks out. If a trip catches your eye, don\'t wait too long. We don\'t do waitlists — first come, first served.',
+      'Our trips fill up 6–8 weeks out. If a trip catches your eye, don\'t wait too long. We don\'t do waitlists. It\'s first come, first served.',
   },
 ]
 

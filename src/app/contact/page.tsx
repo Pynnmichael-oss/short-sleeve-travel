@@ -5,9 +5,9 @@ import { ContactCTA } from '@/components/contact/ContactCTA'
 import { getTripsForContactForm } from '@/lib/queries'
 
 export const metadata = {
-  title: 'Contact — Shortsleeve Travel Club',
+  title: 'Contact | Shortsleeve Travel Club',
   description:
-    'Get in touch with the Shortsleeve Travel team. Questions about a trip? Ready to book? We reply within 24 hours.',
+    "Get in touch with the Shortsleeve Travel team. Questions about a trip? Ready to book? We'd love to hear from you.",
 }
 
 export default async function ContactPage() {
