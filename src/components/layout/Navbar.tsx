@@ -4,20 +4,10 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const navLinks = [
-  { href: '/trips', label: 'Trips' },
   { href: '/where-we-ve-been', label: "Where We've Been" },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ]
-
-function UserIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-    </svg>
-  )
-}
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
@@ -47,13 +37,6 @@ export function Navbar() {
               {label}
             </Link>
           ))}
-          <Link
-            href="/trips"
-            className="flex items-center gap-1.5 text-xs font-body uppercase tracking-widest text-white/80 hover:text-white transition-colors duration-200"
-          >
-            <UserIcon />
-            Login
-          </Link>
           <Link
             href="/trips"
             className="text-xs font-body uppercase tracking-widest bg-sst-amber text-white px-5 py-2.5 hover:bg-amber-600 transition-colors duration-200"
@@ -97,14 +80,6 @@ export function Navbar() {
               {label}
             </Link>
           ))}
-          <Link
-            href="/trips"
-            className="flex items-center gap-1.5 text-xs font-body uppercase tracking-widest text-white/80 hover:text-white transition-colors"
-            onClick={() => setOpen(false)}
-          >
-            <UserIcon />
-            Login
-          </Link>
           <Link
             href="/trips"
             className="text-xs font-body uppercase tracking-widest bg-sst-amber text-white px-5 py-3 text-center hover:bg-amber-600 transition-colors"
