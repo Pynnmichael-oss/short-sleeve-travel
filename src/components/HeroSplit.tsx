@@ -15,6 +15,7 @@ interface HeroReelVideoItem {
   _type: 'heroReelVideo'
   asset?: { url: string }
   alt?: string
+  poster?: { image: any; alt?: string }
 }
 
 type HeroReelItem = HeroReelImageItem | HeroReelVideoItem
@@ -72,6 +73,9 @@ function HeroCopyDesktop() {
 }
 
 // Renders one reel slot, branching on the Sanity `_type` discriminant.
+// Used by the mobile full-bleed layout only — kept exactly as originally
+// built (eagerly mounts every reel item, toggling opacity). The desktop
+// carousel below uses its own, more selective media components instead.
 function ReelSlot({ item, active, priority }: { item: HeroReelItem; active: boolean; priority: boolean }) {
   if (item._type === 'heroReelVideo') {
     const src = item.asset?.url
@@ -111,6 +115,102 @@ function ReelSlot({ item, active, priority }: { item: HeroReelItem; active: bool
   )
 }
 
+// ── Desktop/tablet 3-slot carousel ──────────────────────────────────────
+// These components are only ever mounted for the current active/prev/next
+// indices — never for the rest of the reel array — so media loading stays
+// bounded regardless of how many items are in heroReel.
+
+// Centered slot. Video items actually play (muted/looped); preload is
+// "metadata" rather than "auto" since this is background content, not
+// something a visitor scrubs.
+function ActiveMedia({ item }: { item: HeroReelItem }) {
+  if (item._type === 'heroReelVideo') {
+    const src = item.asset?.url
+    if (!src) return null
+    return (
+      <video
+        src={src}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={item.alt}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+    )
+  }
+
+  const imgSrc = item.photo?.image?.asset ? urlFor(item.photo.image).width(700).height(1244).url() : null
+  if (!imgSrc) return null
+  return (
+    <Image
+      src={imgSrc}
+      alt={item.photo?.alt ?? ''}
+      fill
+      loading="lazy"
+      className="object-cover"
+      sizes="(max-width: 1024px) 260px, 320px"
+    />
+  )
+}
+
+// Peeking prev/next slot. Always a static image — a video item shows its
+// `poster` still (never mounts a <video>), falling back to a solid
+// brand-color block if no poster has been uploaded yet.
+function PeekMedia({ item }: { item: HeroReelItem }) {
+  const posterOrPhoto = item._type === 'heroReelVideo' ? item.poster?.image : item.photo?.image
+  const alt = item._type === 'heroReelVideo' ? (item.poster?.alt ?? item.alt ?? '') : (item.photo?.alt ?? '')
+  const imgSrc = posterOrPhoto?.asset ? urlFor(posterOrPhoto).width(500).height(889).url() : null
+
+  if (!imgSrc) return <div className="absolute inset-0 bg-sst-navy" />
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      fill
+      loading="lazy"
+      className="object-cover"
+      sizes="260px"
+    />
+  )
+}
+
+const CROSSFADE_MS = 700
+
+// Wraps a carousel position (prev/active/next) so swapping to a new item
+// crossfades instead of cutting instantly. Only ever holds the current
+// item plus the one it's transitioning away from — the outgoing layer
+// unmounts once the fade finishes, so this never accumulates media for
+// items outside the current position.
+function CrossfadeSlot({ item, render }: { item: HeroReelItem; render: (item: HeroReelItem) => React.ReactNode }) {
+  const [outgoing, setOutgoing] = useState<HeroReelItem | null>(null)
+  const prevItemRef = useRef(item)
+
+  useEffect(() => {
+    if (prevItemRef.current !== item) {
+      setOutgoing(prevItemRef.current)
+      prevItemRef.current = item
+      const t = setTimeout(() => setOutgoing(null), CROSSFADE_MS)
+      return () => clearTimeout(t)
+    }
+  }, [item])
+
+  return (
+    <>
+      {outgoing && (
+        <div className="absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0">
+          {render(outgoing)}
+        </div>
+      )}
+      <div className="absolute inset-0 transition-opacity duration-700 ease-in-out opacity-100">
+        {render(item)}
+      </div>
+    </>
+  )
+}
+
 export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
   const reel = (heroReel ?? []).filter((item) =>
     item?._type === 'heroReelVideo' ? !!item.asset?.url : !!item?.photo?.image?.asset
@@ -131,6 +231,10 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
     return <Hero />
   }
 
+  const prevIndex = (active - 1 + n) % n
+  const nextIndex = (active + 1) % n
+  const hasPeers = n > 1 // with exactly 2 items, prev and next both point at the same other item — expected
+
   return (
     <section className="relative overflow-hidden">
       {/* ── Mobile: full-bleed reel with bottom gradient + overlaid copy ── */}
@@ -144,20 +248,57 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
         </div>
       </div>
 
-      {/* ── Desktop/tablet: two-column split, centered in a 1280px container
-          so both columns feel intentional at wide viewports instead of
-          stretching edge to edge. The media panel is capped at 480px so it
-          reads as a contained framed panel next to the copy, not a second
-          full-bleed image; its own 9:16 ratio still sets its height. ── */}
+      {/* ── Desktop/tablet: two-column split, centered in a 1280px container.
+          The media side is a 3-slot carousel: a centered, bordered active
+          item with the previous/next items peeking at reduced scale/opacity
+          on either side, clipped by the stage's overflow-hidden. Only the
+          active/prev/next indices are ever mounted. ── */}
       <div className="hidden md:block bg-sst-nav">
         <div className="max-w-[1280px] mx-auto px-8 lg:px-16 py-20 lg:py-24 flex items-center gap-12 lg:gap-20">
           <div className="flex-1 min-w-0">
             <HeroCopyDesktop />
           </div>
-          <div className="relative w-full max-w-[480px] aspect-[9/16] shrink-0 overflow-hidden rounded-2xl shadow-2xl">
-            {reel.map((item, i) => (
-              <ReelSlot key={i} item={item} active={i === active} priority={i === 0} />
-            ))}
+
+          <div className="flex flex-col items-center gap-5 shrink-0">
+            <div className="relative w-full max-w-[380px] aspect-[9/16] overflow-hidden">
+              {hasPeers && (
+                <div
+                  className="absolute inset-0 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
+                  style={{ transform: 'translateX(-62%) scale(0.82)', opacity: 0.4, zIndex: 1 }}
+                >
+                  <CrossfadeSlot item={reel[prevIndex]} render={(item) => <PeekMedia item={item} />} />
+                </div>
+              )}
+
+              <div
+                className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-sst-white/25 transition-transform duration-700 ease-in-out"
+                style={{ transform: 'translateX(0) scale(1)', zIndex: 2 }}
+              >
+                <CrossfadeSlot item={reel[active]} render={(item) => <ActiveMedia item={item} />} />
+              </div>
+
+              {hasPeers && (
+                <div
+                  className="absolute inset-0 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
+                  style={{ transform: 'translateX(62%) scale(0.82)', opacity: 0.4, zIndex: 1 }}
+                >
+                  <CrossfadeSlot item={reel[nextIndex]} render={(item) => <PeekMedia item={item} />} />
+                </div>
+              )}
+            </div>
+
+            {hasPeers && (
+              <div className="flex justify-center gap-2">
+                {reel.map((_, i) => (
+                  <span
+                    key={i}
+                    className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                      i === active ? 'bg-sst-amber' : 'bg-sst-white/30'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -88,7 +88,8 @@ export async function getHeroReel() {
         },
         _type == "heroReelVideo" => {
           "asset": video.asset->{ url },
-          alt
+          alt,
+          poster->{ image, alt }
         }
       }
     }

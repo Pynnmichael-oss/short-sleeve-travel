@@ -24,7 +24,7 @@ export const homeGallery = defineType({
     defineField({
       name: 'heroReel',
       title: 'Hero Reel (split hero demo)',
-      description: 'Images and/or video clips that auto-rotate in the split hero design (/hero-demo). Aim for tall/portrait-friendly crops since the desktop panel is 9:16.',
+      description: 'Images and/or video clips that auto-rotate in the split hero design (/hero-demo). Aim for tall/portrait-friendly crops since the desktop panel is 9:16. Compress video clips before uploading — aim for under ~10MB per clip (H.264 video, AAC audio, MP4 container) to keep bandwidth usage low on the free Sanity plan.',
       type: 'array',
       of: [{ type: 'heroReelImage' }, { type: 'heroReelVideo' }],
       validation: (R) => R.min(2).max(6),
