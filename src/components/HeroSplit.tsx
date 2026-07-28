@@ -180,37 +180,55 @@ function PeekMedia({ item }: { item: HeroReelItem }) {
   )
 }
 
-const CROSSFADE_MS = 700
+const TRANSITION_MS = 600 // slide + opacity transition duration; also gates when the
+// newly-centered item swaps from its static peek look to the live, autoplaying
+// <video> — the video "restarts cleanly once settled" rather than starting
+// mid-slide (see HeroSplit's `isTransitioning`).
 
-// Wraps a carousel position (prev/active/next) so swapping to a new item
-// crossfades instead of cutting instantly. Only ever holds the current
-// item plus the one it's transitioning away from — the outgoing layer
-// unmounts once the fade finishes, so this never accumulates media for
-// items outside the current position.
-function CrossfadeSlot({ item, render }: { item: HeroReelItem; render: (item: HeroReelItem) => React.ReactNode }) {
-  const [outgoing, setOutgoing] = useState<HeroReelItem | null>(null)
-  const prevItemRef = useRef(item)
+const SLOT_W = 240 // px — each slot's box width; height follows from aspect-ratio 9:16
+const SLOT_H = Math.round((SLOT_W * 16) / 9)
+const STAGE_W = 560 // px — wide enough that peek slots read as mostly visible and the
+// off-canvas "entering" slot (offset 2) is fully clipped until it slides inward
+const STEP = 190 // px — horizontal offset per position step (estimate; a visual pass
+// may want to tune this against the real 9:16 footage)
 
-  useEffect(() => {
-    if (prevItemRef.current !== item) {
-      setOutgoing(prevItemRef.current)
-      prevItemRef.current = item
-      const t = setTimeout(() => setOutgoing(null), CROSSFADE_MS)
-      return () => clearTimeout(t)
-    }
-  }, [item])
+// Renders one item at a signed offset from center (-2..2: exit-buffer, prev,
+// active, next, entry-buffer). Position/scale/opacity are driven by inline
+// style plus a CSS transition, and the item is keyed by its own *virtual
+// carousel position* (see HeroSplit) rather than by a "prev/active/next"
+// role — so advancing the carousel just changes an existing DOM node's
+// style (offset 1 -> 0, 0 -> -1, etc.), and the browser animates a real
+// slide instead of swapping content in place.
+function SlidingSlot({
+  item,
+  offset,
+  showActiveMedia,
+}: {
+  item: HeroReelItem
+  offset: number
+  showActiveMedia: boolean
+}) {
+  const visible = offset >= -1 && offset <= 1
+  const scale = offset === 0 ? 1 : 0.82
+  const opacity = offset === 0 ? 1 : visible ? 0.4 : 0
+  const zIndex = offset === 0 ? 2 : visible ? 1 : 0
 
   return (
-    <>
-      {outgoing && (
-        <div className="absolute inset-0 transition-opacity duration-700 ease-in-out opacity-0">
-          {render(outgoing)}
-        </div>
-      )}
-      <div className="absolute inset-0 transition-opacity duration-700 ease-in-out opacity-100">
-        {render(item)}
-      </div>
-    </>
+    <div
+      className={`absolute top-1/2 left-1/2 rounded-2xl overflow-hidden ${
+        offset === 0 ? 'shadow-2xl ring-1 ring-sst-white/25' : ''
+      }`}
+      style={{
+        width: SLOT_W,
+        aspectRatio: '9/16',
+        transform: `translate(-50%, -50%) translateX(${offset * STEP}px) scale(${scale})`,
+        opacity,
+        zIndex,
+        transition: `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`,
+      }}
+    >
+      {showActiveMedia ? <ActiveMedia item={item} /> : <PeekMedia item={item} />}
+    </div>
   )
 }
 
@@ -219,14 +237,31 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
     item?._type === 'heroReelVideo' ? !!item.asset?.url : !!item?.photo?.image?.asset
   )
   const n = reel.length
-  const [active, setActive] = useState(0)
+
+  // `tick` is a monotonic virtual carousel position — it only ever counts up.
+  // The reel item shown at virtual position `p` is `reel[p % n]`; an item's
+  // on-screen offset is `p - tick`. Because `tick` never wraps, an item's
+  // offset always changes by exactly ±1 per rotation, even when the reel
+  // itself wraps from the last item back to the first — so nothing ever has
+  // to "teleport" across the middle of the carousel to re-enter from the
+  // other side.
+  const [tick, setTick] = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current)
     if (n < 2) return
-    intervalRef.current = setInterval(() => setActive((p) => (p + 1) % n), ROTATE_MS)
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current) }
+    intervalRef.current = setInterval(() => {
+      setIsTransitioning(true)
+      setTick((t) => t + 1)
+      if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current)
+      transitionTimeoutRef.current = setTimeout(() => setIsTransitioning(false), TRANSITION_MS)
+    }, ROTATE_MS)
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current)
+    }
   }, [n])
 
   if (n === 0) {
@@ -234,9 +269,15 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
     return <Hero />
   }
 
-  const prevIndex = (active - 1 + n) % n
-  const nextIndex = (active + 1) % n
+  const active = ((tick % n) + n) % n
   const hasPeers = n > 1 // with exactly 2 items, prev and next both point at the same other item — expected
+
+  // A small, constant-size render window around the active position — never
+  // the whole reel — so media loading stays bounded regardless of how many
+  // items are in heroReel. The two outermost offsets (-2/+2) are always
+  // invisible; they exist only so an entering/exiting item can transition
+  // smoothly instead of popping in/out at the edge of visibility.
+  const windowOffsets = hasPeers ? [-2, -1, 0, 1, 2] : [0]
 
   return (
     <section className="relative overflow-hidden">
@@ -252,10 +293,11 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
       </div>
 
       {/* ── Desktop/tablet: two-column split, centered in a 1280px container.
-          The media side is a 3-slot carousel: a centered, bordered active
-          item with the previous/next items peeking at reduced scale/opacity
-          on either side, clipped by the stage's overflow-hidden. Only the
-          active/prev/next indices are ever mounted. ── */}
+          The media side is a sliding carousel: the active item, previous/next
+          peeking on either side, and (invisibly) the items just about to
+          enter/exit — all positioned via a single virtual-position window so
+          advancing genuinely animates a slide rather than crossfading two
+          static positions. ── */}
       <div className="hidden md:block bg-sst-nav">
         <div className="max-w-[1280px] mx-auto px-8 lg:px-16 py-20 lg:py-24 flex items-center gap-12 lg:gap-20">
           <div className="flex-1 min-w-0">
@@ -263,37 +305,19 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
           </div>
 
           <div className="flex flex-col items-center gap-5 shrink-0">
-            {/* Each slot is a real flex item with its own fixed width — not
-                an absolute inset-0 box transformed on top of the others.
-                The active box only occupies its own ~240px column, so the
-                peek boxes (slightly overlapped via negative margin) have
-                genuine, unobscured screen space instead of sitting entirely
-                underneath the active layer's full-stage footprint. */}
-            <div className="relative flex items-center justify-center overflow-hidden py-2">
-              {hasPeers && (
-                <div
-                  className="relative shrink-0 -mr-9 lg:-mr-12 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
-                  style={{ width: 240, aspectRatio: '9/16', transform: 'scale(0.82)', opacity: 0.4, zIndex: 1 }}
-                >
-                  <CrossfadeSlot item={reel[prevIndex]} render={(item) => <PeekMedia item={item} />} />
-                </div>
-              )}
-
-              <div
-                className="relative shrink-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-sst-white/25"
-                style={{ width: 240, aspectRatio: '9/16', zIndex: 2 }}
-              >
-                <CrossfadeSlot item={reel[active]} render={(item) => <ActiveMedia item={item} />} />
-              </div>
-
-              {hasPeers && (
-                <div
-                  className="relative shrink-0 -ml-9 lg:-ml-12 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
-                  style={{ width: 240, aspectRatio: '9/16', transform: 'scale(0.82)', opacity: 0.4, zIndex: 1 }}
-                >
-                  <CrossfadeSlot item={reel[nextIndex]} render={(item) => <PeekMedia item={item} />} />
-                </div>
-              )}
+            <div className="relative overflow-hidden" style={{ width: STAGE_W, height: SLOT_H }}>
+              {windowOffsets.map((offset) => {
+                const pos = tick + offset
+                const item = reel[((pos % n) + n) % n]
+                return (
+                  <SlidingSlot
+                    key={pos}
+                    item={item}
+                    offset={offset}
+                    showActiveMedia={offset === 0 && !isTransitioning}
+                  />
+                )
+              })}
             </div>
 
             {hasPeers && (
