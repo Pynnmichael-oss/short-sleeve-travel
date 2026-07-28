@@ -259,8 +259,8 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
             <HeroCopyDesktop />
           </div>
 
-          <div className="flex flex-col items-center gap-5 shrink-0">
-            <div className="relative w-full max-w-[380px] aspect-[9/16] overflow-hidden">
+          <div className="w-full max-w-[380px] flex flex-col items-center gap-5 shrink-0">
+            <div className="relative w-full aspect-[9/16] overflow-hidden">
               {hasPeers && (
                 <div
                   className="absolute inset-0 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
