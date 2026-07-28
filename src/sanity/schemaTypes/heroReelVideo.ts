@@ -9,7 +9,6 @@ export const heroReelVideo = defineType({
       name: 'video',
       title: 'Video Clip',
       type: 'file',
-      options: { accept: 'video/*,video/quicktime' },
       validation: (R) => R.required(),
     }),
     defineField({
