@@ -19,7 +19,7 @@ There is no test suite in this repo. Build output goes to `./out/` and is deploy
 - Platform: GitHub Pages
 - URL: https://pynnmichael-oss.github.io/short-sleeve-travel/
 - Method: `next build` (static export) → `.github/workflows/deploy.yml`
-- Triggers: push to `main`, nightly cron at 02:00 UTC, manual `workflow_dispatch`
+- Triggers: push to `main`, manual `workflow_dispatch` (no cron trigger)
 - IMPORTANT: All internal links must use Next.js `<Link>` — never bare `<a>` tags
 - IMPORTANT: `basePath` is `/short-sleeve-travel` — all public asset paths must start with `/short-sleeve-travel/`
 
@@ -131,15 +131,15 @@ getHomeGallery()          — singleton homeGallery document for the homepage Ph
 ```
 
 ## Homepage Section Order (`src/app/page.tsx`)
-`Hero` → `UpcomingTrips` → `HowItWorks` → `InstagramFeed` → `CommunityCloser` → `FooterCTA`
+`Hero` → `UpcomingTrips` → `HowItWorks` → `FooterCTA` → `CommunityCloser` → `InstagramFeed`
 
-- TEMP: `PhotoCarousel` (from `getHomeGallery()`, falls back to `FALLBACK_PHOTOS`) is commented out in `page.tsx`, not deleted, and `InstagramFeed` renders in its old slot instead — see "Instagram Feed" below. The `photos`/`caption` values are still computed in `page.tsx` (unused for now) so restoring is a one-line uncomment.
-- `FeaturedTrips` and `SocialProofStrip` exist in `src/components/home/` but are not currently rendered — check before assuming they're live.
+- TEMP: `PhotoCarousel` (from `getHomeGallery()`, falls back to `FALLBACK_PHOTOS`) is commented out in `page.tsx`, not deleted. `InstagramFeed` was originally swapped into its old slot but has since been moved to the very bottom of the page (below `CommunityCloser`) — see "Instagram Feed" below. The `photos`/`caption` values are still computed in `page.tsx` (unused for now) so restoring `PhotoCarousel` is a one-line uncomment.
+- `FeaturedTrips` no longer exists (deleted as unused dead code — had an un-guarded `.toLocaleString()` call that would crash the build if ever wired back in). `SocialProofStrip` still exists in `src/components/home/` but is not currently rendered — check before assuming it's live.
 
 ## Instagram Feed (`src/components/InstagramFeed.tsx`)
 Client component wrapping a Mirror app iframe embed (`app.mirror-app.com/feed-instagram/...`) with Mirror's auto-resize bridge script loaded via `next/script` (`strategy="afterInteractive"`). `MIRROR_FEED_SRC`/`MIRROR_BRIDGE_SRC` are top-level constants — swap the feed ID there, not in JSX.
 - Stopgap on Mirror's free/trial tier. Once the site migrates to Netlify, this is meant to be replaced with a self-hosted Netlify Function pulling directly from the Instagram Graph API for full styling control.
-- Currently swapped into the homepage in place of `PhotoCarousel` (see above) — this is a temporary demo arrangement, not the intended permanent layout.
+- Currently renders at the bottom of the homepage, below `CommunityCloser` (see above) — this placement has moved a couple of times as a temporary demo arrangement, not necessarily the final layout.
 
 ## Trip Detail Page Sections (`src/app/trips/[slug]/ExperiencePage.tsx`, in render order)
 `HeroSection` → `PhotoGallery` → `StatsBar` → `StickyHook` → `IncludedSection` → `DepartureDates` → `BookingCTA`
@@ -150,7 +150,7 @@ Client component wrapping a Mirror app iframe embed (`app.mirror-app.com/feed-in
 `GlobeMap.tsx` (`'use client'`, in `src/components/destinations/`) plots pins dynamically from Sanity: `getGlobeTrips()` fetches past trips and the pin position comes from each trip's `location` geopoint (set in Studio via the Google Maps input). Trips without a `location` are silently filtered out — if a pin is "missing", check the Sanity document first. Hardcoded hex values inside `INJECTED_STYLES` (and the `bg-[#1a1a1a]` on the map container) are intentional — these style third-party Mapbox popup/marker elements that Tailwind classes can't reach. `GlobeMapWrapper.tsx` handles the dynamic import with `ssr: false`.
 
 ## Navbar
-Always-solid `bg-sst-nav`. Links: Trips (`/trips`), Where We've Been (`/where-we-ve-been`), About, Contact. Links are `uppercase tracking-widest text-xs`. Logo uses Playfair Display. "Login" link has a user SVG icon and currently points to `/trips`. "View Trips" CTA uses `bg-sst-amber`. No transparent-on-scroll behaviour.
+Always-solid `bg-sst-nav`. Links: Where We've Been (`/where-we-ve-been`), About, Contact — no standalone "Trips" link or "Login" link (both removed; the amber "View Trips" CTA already covers `/trips`, and there's no auth system). Links are `uppercase tracking-widest text-xs`. Logo uses Playfair Display. "View Trips" CTA uses `bg-sst-amber`. No transparent-on-scroll behaviour.
 
 ## Contact Form Worker (`workers/contact-form/`)
 The contact form's backend — a Cloudflare Worker (`wrangler.toml`, `src/index.ts`), separate from the Next.js app and deployed separately with wrangler. It validates the payload, creates a `contactSubmission` document in Sanity, then sends a notification email via Resend (email failure is logged but doesn't fail the request — the submission is already saved).
@@ -183,6 +183,7 @@ The contact form's backend — a Cloudflare Worker (`wrangler.toml`, `src/index.
 - Scroll listeners added with `{ passive: true }`; remove in `useEffect` cleanup
 - All primary CTA buttons: `bg-sst-amber text-white hover:bg-amber-600`
 - External booking links: `target="_blank" rel="noopener noreferrer"`
+- No em dashes in copy — rephrase with a period, colon, or comma instead (numeric ranges like `8–12` use an en dash and are fine, that's not the pattern to avoid)
 
 ## Do Not
 - No API routes or server actions (not supported in static export) — backend needs go in the Cloudflare Worker instead

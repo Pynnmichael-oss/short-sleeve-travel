@@ -75,6 +75,26 @@ export async function getTripsForContactForm() {
   `)
 }
 
+// Dedicated query for the /hero-demo split hero — kept separate from
+// getHomeGallery() even though both read the homeGallery singleton, since
+// this route is disposable and shouldn't couple to the live carousel query.
+export async function getHeroReel() {
+  return client.fetch(`
+    *[_type == "homeGallery"][0] {
+      heroReel[]{
+        _type,
+        _type == "heroReelImage" => {
+          photo->{ image, alt, caption }
+        },
+        _type == "heroReelVideo" => {
+          "asset": video.asset->{ url },
+          alt
+        }
+      }
+    }
+  `)
+}
+
 // Dedicated query for the Where We've Been globe pins — kept separate from
 // getPastTrips() (which feeds the photo grid on the same page with a very
 // different field set). Only trips with a location set will actually plot;

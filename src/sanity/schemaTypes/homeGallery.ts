@@ -21,6 +21,14 @@ export const homeGallery = defineType({
       description: 'The caption shown below the photo strip.',
       initialValue: 'Real trips. Real people. Real memories.',
     }),
+    defineField({
+      name: 'heroReel',
+      title: 'Hero Reel (split hero demo)',
+      description: 'Images and/or video clips that auto-rotate in the split hero design (/hero-demo). Aim for tall/portrait-friendly crops since the desktop panel is 9:16.',
+      type: 'array',
+      of: [{ type: 'heroReelImage' }, { type: 'heroReelVideo' }],
+      validation: (R) => R.min(2).max(6),
+    }),
   ],
   preview: {
     prepare() {
