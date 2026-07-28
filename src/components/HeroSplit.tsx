@@ -25,6 +25,7 @@ type HeroReelItem = HeroReelImageItem | HeroReelVideoItem
 // to guarantee at least one full playthrough.
 const ROTATE_MS = 4000
 
+// Mobile full-bleed copy block — unchanged from the original split-hero pass.
 function HeroCopy({ align }: { align: 'left' | 'center' }) {
   const wrap = align === 'left' ? 'items-start text-left' : 'items-center text-center'
   return (
@@ -38,6 +39,31 @@ function HeroCopy({ align }: { align: 'left' | 'center' }) {
       <Link
         href="/trips"
         className="mt-2 bg-sst-amber text-white px-8 py-4 text-sm tracking-wide hover:bg-amber-600 transition-colors duration-200"
+      >
+        See Our Trips
+      </Link>
+    </div>
+  )
+}
+
+// Desktop/tablet copy block — same headline/subhead/CTA copy as HeroCopy,
+// with an eyebrow label and tighter internal spacing so the block reads as
+// one unit next to the framed media panel.
+function HeroCopyDesktop() {
+  return (
+    <div className="relative z-10 flex flex-col items-start text-left gap-3">
+      <span className="font-body text-xs tracking-[0.2em] uppercase text-sst-sand">
+        Small Group Adventure Travel
+      </span>
+      <h1 className="font-display text-4xl md:text-5xl lg:text-6xl text-sst-white leading-tight">
+        Adventure is better together.
+      </h1>
+      <p className="font-body text-lg md:text-xl text-sst-white/80 max-w-xl leading-relaxed">
+        The travel club for your 20s and 30s. Small groups. Big adventures. Lifelong friends.
+      </p>
+      <Link
+        href="/trips"
+        className="mt-3 bg-sst-amber text-white px-8 py-4 text-sm tracking-wide hover:bg-amber-600 transition-colors duration-200"
       >
         See Our Trips
       </Link>
@@ -78,7 +104,7 @@ function ReelSlot({ item, active, priority }: { item: HeroReelItem; active: bool
         alt={item.photo?.alt ?? ''}
         fill
         className="object-cover"
-        sizes="(max-width: 768px) 100vw, 50vw"
+        sizes="(max-width: 768px) 100vw, 480px"
         priority={priority}
       />
     </div>
@@ -118,16 +144,21 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
         </div>
       </div>
 
-      {/* ── Desktop/tablet: two-column split. Right column's 9:16 aspect
-          ratio sets the row height; the left column stretches to match. ── */}
-      <div className="hidden md:grid md:grid-cols-2">
-        <div className="flex items-center bg-sst-nav px-12 lg:px-20 py-16">
-          <HeroCopy align="left" />
-        </div>
-        <div className="relative w-full aspect-[9/16]">
-          {reel.map((item, i) => (
-            <ReelSlot key={i} item={item} active={i === active} priority={i === 0} />
-          ))}
+      {/* ── Desktop/tablet: two-column split, centered in a 1280px container
+          so both columns feel intentional at wide viewports instead of
+          stretching edge to edge. The media panel is capped at 480px so it
+          reads as a contained framed panel next to the copy, not a second
+          full-bleed image; its own 9:16 ratio still sets its height. ── */}
+      <div className="hidden md:block bg-sst-nav">
+        <div className="max-w-[1280px] mx-auto px-8 lg:px-16 py-20 lg:py-24 flex items-center gap-12 lg:gap-20">
+          <div className="flex-1 min-w-0">
+            <HeroCopyDesktop />
+          </div>
+          <div className="relative w-full max-w-[480px] aspect-[9/16] shrink-0 overflow-hidden rounded-2xl shadow-2xl">
+            {reel.map((item, i) => (
+              <ReelSlot key={i} item={item} active={i === active} priority={i === 0} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
