@@ -150,7 +150,7 @@ function ActiveMedia({ item }: { item: HeroReelItem }) {
       fill
       loading="lazy"
       className="object-cover"
-      sizes="(max-width: 1024px) 260px, 320px"
+      sizes="240px"
     />
   )
 }
@@ -163,7 +163,10 @@ function PeekMedia({ item }: { item: HeroReelItem }) {
   const alt = item._type === 'heroReelVideo' ? (item.poster?.alt ?? item.alt ?? '') : (item.photo?.alt ?? '')
   const imgSrc = posterOrPhoto?.asset ? urlFor(posterOrPhoto).width(500).height(889).url() : null
 
-  if (!imgSrc) return <div className="absolute inset-0 bg-sst-navy" />
+  // sst-sand rather than a darker navy: at 0.4 opacity against the section's
+  // bg-sst-nav backdrop, a dark placeholder is nearly indistinguishable from
+  // the background — this needs to read as a visible block with no poster.
+  if (!imgSrc) return <div className="absolute inset-0 bg-sst-sand" />
 
   return (
     <Image
@@ -172,7 +175,7 @@ function PeekMedia({ item }: { item: HeroReelItem }) {
       fill
       loading="lazy"
       className="object-cover"
-      sizes="260px"
+      sizes="240px"
     />
   )
 }
@@ -259,28 +262,34 @@ export function HeroSplit({ heroReel }: { heroReel?: HeroReelItem[] }) {
             <HeroCopyDesktop />
           </div>
 
-          <div className="w-full max-w-[380px] flex flex-col items-center gap-5 shrink-0">
-            <div className="relative w-full aspect-[9/16] overflow-hidden">
+          <div className="flex flex-col items-center gap-5 shrink-0">
+            {/* Each slot is a real flex item with its own fixed width — not
+                an absolute inset-0 box transformed on top of the others.
+                The active box only occupies its own ~240px column, so the
+                peek boxes (slightly overlapped via negative margin) have
+                genuine, unobscured screen space instead of sitting entirely
+                underneath the active layer's full-stage footprint. */}
+            <div className="relative flex items-center justify-center overflow-hidden py-2">
               {hasPeers && (
                 <div
-                  className="absolute inset-0 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
-                  style={{ transform: 'translateX(-62%) scale(0.82)', opacity: 0.4, zIndex: 1 }}
+                  className="relative shrink-0 -mr-9 lg:-mr-12 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
+                  style={{ width: 240, aspectRatio: '9/16', transform: 'scale(0.82)', opacity: 0.4, zIndex: 1 }}
                 >
                   <CrossfadeSlot item={reel[prevIndex]} render={(item) => <PeekMedia item={item} />} />
                 </div>
               )}
 
               <div
-                className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-sst-white/25 transition-transform duration-700 ease-in-out"
-                style={{ transform: 'translateX(0) scale(1)', zIndex: 2 }}
+                className="relative shrink-0 rounded-2xl overflow-hidden shadow-2xl ring-1 ring-sst-white/25"
+                style={{ width: 240, aspectRatio: '9/16', zIndex: 2 }}
               >
                 <CrossfadeSlot item={reel[active]} render={(item) => <ActiveMedia item={item} />} />
               </div>
 
               {hasPeers && (
                 <div
-                  className="absolute inset-0 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
-                  style={{ transform: 'translateX(62%) scale(0.82)', opacity: 0.4, zIndex: 1 }}
+                  className="relative shrink-0 -ml-9 lg:-ml-12 rounded-2xl overflow-hidden transition-all duration-700 ease-in-out"
+                  style={{ width: 240, aspectRatio: '9/16', transform: 'scale(0.82)', opacity: 0.4, zIndex: 1 }}
                 >
                   <CrossfadeSlot item={reel[nextIndex]} render={(item) => <PeekMedia item={item} />} />
                 </div>
