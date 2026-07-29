@@ -190,6 +190,21 @@ export function ContactSection({ trips }: { trips: TripOption[] }) {
 
               <div className="flex flex-col gap-1.5">
                 <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
+                  Prefer Email?
+                </span>
+                <p className="font-body text-sm text-sst-white/80">
+                  Reach Kat directly at{' '}
+                  <a
+                    href="mailto:katshortsleeve@gmail.com"
+                    className="hover:text-sst-sand transition-colors duration-200"
+                  >
+                    katshortsleeve@gmail.com
+                  </a>
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
                   No Pressure
                 </span>
                 <p className="font-body text-sm text-sst-white/80">

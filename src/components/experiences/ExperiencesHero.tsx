@@ -13,12 +13,10 @@ export function ExperiencesHero() {
       <div className="absolute inset-0 bg-sst-nav/50" />
       <div className="relative z-10 max-w-3xl mx-auto px-6 flex flex-col items-center gap-5">
         <h1 className="font-display text-4xl md:text-6xl text-sst-white leading-tight">
-          Every trip, a story.
-          <br />
-          Every group, a reason to go.
+          Where are we going next?
         </h1>
         <p className="font-body text-lg text-sst-white/80">
-          Three curated adventures. Unlimited possibilities.
+          Explore our upcoming departures around the world.
         </p>
       </div>
     </section>

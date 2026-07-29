@@ -29,25 +29,39 @@ export default function AboutPage() {
               </h1>
               <div className="flex flex-col gap-5 font-body text-lg text-sst-navy/70 leading-relaxed">
                 <p>
-                  Founded in 2023 by Kat Shortsleeve, Shortsleeve Travel was born after Kat graduated from
-                  Columbia Business School, where she studied entrepreneurship and private equity. Originally from
-                  Boston, Kat moved to DC for her undergraduate studies at Georgetown University.
+                  Shortsleeve Travel was founded by Kat Shortsleeve, a lifelong traveler, entrepreneur, and creator
+                  who believes travel should be adventurous, deeply memorable, and accessible enough to become part
+                  of your lifestyle, not just a once-in-a-lifetime experience.
                 </p>
                 <p>
-                  Having traveled to over 50 countries, including dozens of solo trips, her love for travel began
-                  at just 10 years old when she flew solo from Boston to Florida to visit her grandparents during
-                  Easter break.
+                  Kat&apos;s love for travel began at age 10, when she started flying solo from Boston to Florida
+                  to visit her grandparents every school break. Those early adventures sparked a lifelong sense of
+                  curiosity and independence.
                 </p>
                 <p>
-                  Her passion for travel truly ignited in 2011 when she downloaded Instagram and discovered
-                  influencers traveling the world. Inspired, Kat started her first business sewing and selling
-                  purses to save for her first international trip — a volunteer adventure group to Fiji with a high
-                  school program. This life-changing experience of connecting with people from around the world
-                  solidified her love for travel and sparked the concept for Shortsleeve Travel.
+                  In high school Kat started her first business sewing and selling purses to save for her first
+                  international trip, a volunteer adventure group to Fiji. This life-changing experience of
+                  connecting with people from around the world solidified her love for travel and sparked the
+                  concept for Shortsleeve Travel.
                 </p>
                 <p>
-                  Shortsleeve Travel is all about building connections and creating a community of like-minded,
-                  curious travelers eager to explore the world together.
+                  For undergrad, she chose Georgetown University to be surrounded by international students, later
+                  earned her MBA from Columbia Business School, and has since explored more than 50 countries while
+                  building a career in private equity in New York City.
+                </p>
+                <p>
+                  She founded Shortsleeve Travel with one simple mission: to create the kinds of trips she was
+                  always searching for. Small groups. Iconic and off-the-beaten-path destinations. Incredible
+                  adventures. Thoughtfully curated itineraries that encourage you to disconnect from your daily
+                  routine, connect with local cultures and fellow travelers, and return home with a fresh
+                  perspective on the world.
+                </p>
+                <p>
+                  The people are just as important as the places. Shortsleeve Travel is built for curious, kind,
+                  open-minded travelers who are excited to explore, eager to step outside their comfort zone, and
+                  generous in what they bring to the group. Every trip is designed to foster a welcoming community
+                  where strangers quickly become friends and everyone leaves with stories they&apos;ll be telling
+                  for years.
                 </p>
               </div>
             </div>

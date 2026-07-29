@@ -7,7 +7,7 @@ import { getPastTrips, getGlobeTrips } from '@/lib/queries'
 export const metadata = {
   title: "Where We've Been | Shortsleeve Travel Club",
   description:
-    'Dozens of trips. Hundreds of travelers. Stories that are still being told.',
+    "Explore where we've traveled.",
 }
 
 export default async function WhereWeveBeenPage() {
@@ -24,7 +24,7 @@ export default async function WhereWeveBeenPage() {
           Where We&apos;ve Been
         </h1>
         <p className="font-body text-lg text-sst-white/70 max-w-md mx-auto leading-relaxed">
-          Dozens of trips. Hundreds of travelers. Stories that are still being told.
+          Explore where we&apos;ve traveled.
         </p>
       </section>
 

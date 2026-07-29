@@ -35,13 +35,13 @@ function HeroCopy({ align }: { align: 'left' | 'center' }) {
         Adventure is better together.
       </h1>
       <p className="font-body text-lg md:text-xl text-sst-white/80 max-w-xl leading-relaxed">
-        The travel club for your 20s and 30s. Small groups. Big adventures. Lifelong friends.
+        The travel club for people in their 20s and 30s. Small groups. Extraordinary adventures. Lifelong friendships.
       </p>
       <Link
         href="/trips"
         className="mt-2 bg-sst-amber text-white px-8 py-4 text-sm tracking-wide hover:bg-amber-600 transition-colors duration-200"
       >
-        See Our Trips
+        Explore Upcoming Trips
       </Link>
     </div>
   )
@@ -60,13 +60,13 @@ function HeroCopyDesktop() {
         Adventure is better together.
       </h1>
       <p className="font-body text-lg md:text-xl text-sst-white/80 max-w-xl leading-relaxed">
-        The travel club for your 20s and 30s. Small groups. Big adventures. Lifelong friends.
+        The travel club for people in their 20s and 30s. Small groups. Extraordinary adventures. Lifelong friendships.
       </p>
       <Link
         href="/trips"
         className="mt-3 bg-sst-amber text-white px-8 py-4 text-sm tracking-wide hover:bg-amber-600 transition-colors duration-200"
       >
-        See Our Trips
+        Explore Upcoming Trips
       </Link>
     </div>
   )

@@ -3,7 +3,7 @@ const steps = [
     number: '01',
     title: 'Who joins us',
     description:
-      'Our travelers come from all walks of life: consultants, doctors, nurses, lawyers, entrepreneurs, and creatives. Most come solo, some bring a friend or partner. Everyone\'s here to explore in a way that\'s out of the ordinary.',
+      "Our travelers are typically in their 20s and 30s, professionals, entrepreneurs, creatives, and adventurers looking to explore the world with like-minded people. While you're welcome to bring a friend or partner, most people come solo, and we highly recommend it. It's the best way to fully immerse yourself in the experience and connect with the group. On many trips, Kat's friends and siblings join too, and Kat is often there participating alongside the group.",
   },
   {
     number: '02',
@@ -15,7 +15,7 @@ const steps = [
     number: '03',
     title: 'Pricing',
     description:
-      'Our trips range from $1k to $3k per person, with everything taken care of — from accommodations to itinerary planning. All you have to do is relax and enjoy.',
+      "The best trips aren't defined by where you go, they're defined by who you experience them with. Every Shortsleeve itinerary is thoughtfully curated to balance adventure, connection, and authentic local experiences. We keep our groups intentionally small because the memories you'll cherish most often come from the people you meet along the way.",
   },
 ]
 
