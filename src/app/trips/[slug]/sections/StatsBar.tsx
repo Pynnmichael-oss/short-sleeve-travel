@@ -24,7 +24,6 @@ export function StatsBar({ trip }: { trip: Trip }) {
   }, [])
 
   const stats = [
-    { value: `${trip.durationDays}`, unit: 'Days' },
     { value: trip.region, unit: 'Region' },
     { value: trip.priceFrom != null ? `$${trip.priceFrom.toLocaleString()}` : 'TBD', unit: 'Starting from' },
     { value: trip.deposit != null ? `$${trip.deposit.toLocaleString()}` : 'TBD', unit: 'Deposit' },
@@ -35,7 +34,7 @@ export function StatsBar({ trip }: { trip: Trip }) {
       <div
         className={`
           max-w-5xl mx-auto px-6
-          grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-0 md:divide-x md:divide-sst-white/10
+          grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-0 md:divide-x md:divide-sst-white/10
           transition-all duration-700 ease-out
           ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}
         `}

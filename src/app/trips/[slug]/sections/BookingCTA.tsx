@@ -5,7 +5,7 @@ export function BookingCTA({ trip }: { trip: Trip }) {
     <section className="bg-sst-nav py-28">
       <div className="max-w-lg mx-auto px-6 text-center">
         <h2 className="font-display text-4xl md:text-5xl text-sst-white leading-tight">
-          Ready for {trip.destination}?
+          Ready for {trip.title}?
         </h2>
         <p className="font-body text-sst-white/50 mt-4 text-sm leading-relaxed">
           Spots fill fast. Secure your place with a ${trip.deposit?.toLocaleString() ?? '280'} deposit.

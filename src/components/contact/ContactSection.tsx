@@ -181,15 +181,6 @@ export function ContactSection({ trips }: { trips: TripOption[] }) {
             <div className="flex flex-col gap-7">
               <div className="flex flex-col gap-1.5">
                 <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
-                  Prefer Instagram?
-                </span>
-                <p className="font-body text-sm text-sst-white/80">
-                  DM us @shortsleevetravel, we check that daily too.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
                   Prefer Email?
                 </span>
                 <p className="font-body text-sm text-sst-white/80">
@@ -211,27 +202,13 @@ export function ContactSection({ trips }: { trips: TripOption[] }) {
                   Ask us anything. We're not here to hard sell you on anything.
                 </p>
               </div>
-
-              <div className="flex flex-col gap-1.5">
-                <span className="text-xs uppercase tracking-widest font-body text-sst-sand">
-                  Follow Along
-                </span>
-                <a
-                  href="https://instagram.com/shortsleevetravel"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body text-sm text-sst-white/80 hover:text-sst-sand transition-colors duration-200"
-                >
-                  @shortsleevetravel
-                </a>
-              </div>
             </div>
 
             <div className="mt-auto pt-8 border-t border-sst-white/10">
               <p className="font-display text-xl text-sst-white/80 italic">
-                "Looking forward to hearing from you.
+                Looking forward to hearing from you.
                 <br />
-                Kat"
+                Kat
               </p>
             </div>
           </div>

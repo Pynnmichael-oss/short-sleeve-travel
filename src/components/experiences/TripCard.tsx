@@ -23,7 +23,7 @@ export function TripCard({ trip }: { trip: Trip }) {
         {imgSrc && (
           <Image
             src={imgSrc}
-            alt={trip.destination}
+            alt={trip.title}
             fill
             className="object-cover hover:scale-105 transition-transform duration-500"
           />
@@ -44,9 +44,6 @@ export function TripCard({ trip }: { trip: Trip }) {
           <h2 className="font-display text-2xl text-sst-navy leading-snug">
             {trip.tagline}
           </h2>
-          <p className="text-sm text-sst-navy/50 font-body mt-2">
-            {trip.destination}
-          </p>
         </div>
 
         <p className="font-body text-sm text-sst-navy/60 leading-relaxed">
@@ -66,8 +63,6 @@ export function TripCard({ trip }: { trip: Trip }) {
 
         {/* Info row */}
         <div className="flex items-center gap-2 text-sm font-body text-sst-navy/50 border-t border-sst-navy/8 pt-4 flex-wrap">
-          <span>{trip.durationDays} days</span>
-          <span className="text-sst-navy/20">·</span>
           <span className="text-sst-navy font-medium">
             {trip.priceFrom ? `From $${trip.priceFrom.toLocaleString()}` : 'Price TBD'}
           </span>

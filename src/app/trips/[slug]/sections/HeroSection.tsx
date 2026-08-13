@@ -50,7 +50,7 @@ export function HeroSection({ trip }: { trip: Trip }) {
         ) : heroSrc ? (
           <Image
             src={heroSrc}
-            alt={trip.destination}
+            alt={trip.title}
             fill
             className="object-cover"
             priority
@@ -64,7 +64,7 @@ export function HeroSection({ trip }: { trip: Trip }) {
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
         <p className="font-body text-sst-sand/80 text-xs uppercase tracking-[0.35em] mb-6">
-          {trip.destination}
+          {trip.region}
         </p>
 
         <h1
@@ -75,8 +75,6 @@ export function HeroSection({ trip }: { trip: Trip }) {
         </h1>
 
         <div className="flex items-center gap-4 mt-8 font-body text-sst-white/50 text-sm">
-          <span>{trip.durationDays} days</span>
-          <span className="text-sst-white/20">·</span>
           <span>{trip.region}</span>
           <span className="text-sst-white/20">·</span>
           <span className="text-sst-sand">

@@ -6,8 +6,8 @@ export async function getAllTrips() {
       _id, title, slug, tagline, description,
       heroImage->{ image, alt, caption },
       gallery[]->{ _id, image, alt, caption },
-      durationDays, priceFrom, deposit, bookingUrl,
-      destination, region, departureDates, inclusions, featured, order, status
+      priceFrom, deposit, bookingUrl,
+      region, departureDates, inclusions, featured, order, status
     }
   `)
 }
@@ -18,8 +18,8 @@ export async function getTripBySlug(slug: string) {
       _id, title, slug, tagline, description,
       heroImage->{ image, alt, caption },
       gallery[]->{ _id, image, alt, caption },
-      durationDays, priceFrom, deposit, bookingUrl,
-      destination, region, departureDates, inclusions, featured, status
+      priceFrom, deposit, bookingUrl,
+      region, departureDates, inclusions, featured, status
     }
   `, { slug })
 }
@@ -30,7 +30,7 @@ export async function getUpcomingTrips() {
       _id, title, slug, tagline, description,
       heroImage->{ image, alt, caption },
       gallery[]->{ _id, image, alt, caption },
-      durationDays, priceFrom, deposit, bookingUrl, destination, region, inclusions
+      priceFrom, deposit, bookingUrl, region, inclusions
     }
   `)
 }
@@ -40,7 +40,7 @@ export async function getPastTrips() {
     *[_type == "trip" && status == "past"] | order(order desc) {
       _id, title, slug, tagline,
       heroImage->{ image, alt, caption },
-      durationDays, priceFrom, destination, region, departureDates
+      priceFrom, region, departureDates
     }
   `)
 }
@@ -59,7 +59,7 @@ export async function getFeaturedTrips() {
     *[_type == "trip" && featured == true] | order(order asc) {
       _id, title, slug, tagline,
       heroImage->{ image, alt, caption },
-      durationDays, priceFrom, deposit, bookingUrl, destination
+      priceFrom, deposit, bookingUrl
     }
   `)
 }

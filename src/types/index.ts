@@ -2,7 +2,6 @@ export interface DepartureDate {
   _key: string
   startDate: string
   endDate: string
-  price: number
   spotsRemaining?: number
   available: boolean
 }
@@ -30,11 +29,9 @@ export interface Trip {
   tagline: string
   description: string
   heroImage: PhotoRef
-  durationDays: number
   priceFrom: number | null
   deposit: number
   bookingUrl: string
-  destination: string
   region: string
   departureDates: DepartureDate[]
   inclusions: TripInclusions

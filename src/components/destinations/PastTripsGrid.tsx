@@ -7,7 +7,6 @@ interface PastTrip {
   title: string
   slug: { current: string }
   heroImage: any
-  destination: string
   departureDates?: Array<{ startDate?: string }>
 }
 
@@ -78,14 +77,14 @@ export function PastTripsGrid({ trips }: { trips: PastTrip[] }) {
                       <div className="relative h-64 overflow-hidden">
                         <Image
                           src={imgSrc}
-                          alt={trip.destination}
+                          alt={trip.title}
                           fill
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
                       </div>
                       <div className="flex flex-col gap-1 px-6 py-5">
-                        <p className="font-display text-lg text-sst-navy leading-snug">{trip.destination}</p>
+                        <p className="font-display text-lg text-sst-navy leading-snug">{trip.title}</p>
                         <p className="font-body text-xs text-sst-navy/40 uppercase tracking-widest">{getYear(trip)}</p>
                       </div>
                     </Link>

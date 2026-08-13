@@ -16,7 +16,7 @@ export function PhotoGallery({ trip }: { trip: Trip }) {
           {images.map((img, i) => {
             if (!img?.image?.asset) return null
             const src = urlFor(img.image).width(900).url()
-            const alt = img.alt ?? `${trip.destination} photo ${i + 1}`
+            const alt = img.alt ?? `${trip.title} photo ${i + 1}`
             return (
               <figure key={img._id ?? i} className="break-inside-avoid">
                 <div className="relative overflow-hidden">

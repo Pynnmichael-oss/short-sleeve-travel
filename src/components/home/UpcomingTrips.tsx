@@ -15,9 +15,7 @@ interface UpcomingTrip {
   slug: { current: string }
   tagline: string
   heroImage: any
-  durationDays: number
   priceFrom: number | null
-  destination: string
   region: string
 }
 
@@ -50,7 +48,7 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
                   {imgSrc && (
                     <Image
                       src={imgSrc}
-                      alt={trip.destination}
+                      alt={trip.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
@@ -69,13 +67,10 @@ export function UpcomingTrips({ trips }: { trips: UpcomingTrip[] }) {
                   <h3 className="font-display text-2xl text-sst-navy leading-snug">
                     {trip.tagline}
                   </h3>
-                  <p className="font-body text-xs text-sst-navy/40">
-                    {trip.destination}
-                  </p>
                   <p className="font-body text-sm text-sst-navy/60">
                     {trip.priceFrom
-                      ? `${trip.durationDays} days · From $${trip.priceFrom.toLocaleString()}`
-                      : `${trip.durationDays} days · Price TBD`}
+                      ? `From $${trip.priceFrom.toLocaleString()}`
+                      : 'Price TBD'}
                   </p>
                 </div>
               </Link>

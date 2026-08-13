@@ -26,9 +26,7 @@ export function DepartureDates({ trip }: { trip: Trip }) {
                     {d.startDate} — {d.endDate}
                   </p>
                   <p className="font-body text-sm text-sst-navy/50">
-                    {trip.durationDays} days
-                    {d.price != null ? ` · $${d.price.toLocaleString()} per person` : ' · Price TBD'}
-                    {trip.deposit ? ` · $${trip.deposit.toLocaleString()} deposit` : ''}
+                    {trip.deposit ? `$${trip.deposit.toLocaleString()} deposit` : null}
                   </p>
                 </div>
                 <a

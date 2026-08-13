@@ -17,9 +17,7 @@ interface PastTrip {
   slug: { current: string }
   tagline: string
   heroImage: any
-  durationDays: number
   priceFrom: number
-  destination: string
   region: string
 }
 
@@ -51,7 +49,7 @@ function TripCard({ trip, index }: { trip: PastTrip; index: number }) {
       {imgSrc && (
         <Image
           src={imgSrc}
-          alt={trip.destination}
+          alt={trip.title}
           fill
           className="object-cover transition-transform duration-700 hover:scale-105"
           sizes="(max-width: 768px) 100vw, 45vw"
@@ -63,7 +61,7 @@ function TripCard({ trip, index }: { trip: PastTrip; index: number }) {
   const contentEl = (
     <div className={`md:flex-1 flex flex-col justify-center px-10 py-12 md:py-16 ${darkBg ? 'bg-sst-nav' : 'bg-sst-white'}`}>
       <p className={`font-body text-xs tracking-widest mb-5 ${darkBg ? 'text-sst-sand/70' : 'text-sst-navy/50'}`}>
-        COMPLETED · {trip.durationDays} DAYS
+        COMPLETED
       </p>
 
       <h3 className={`font-display text-3xl md:text-4xl leading-tight mb-2 ${darkBg ? 'text-sst-white' : 'text-sst-navy'}`}>
@@ -71,7 +69,7 @@ function TripCard({ trip, index }: { trip: PastTrip; index: number }) {
       </h3>
 
       <p className={`font-body text-sm mb-6 ${darkBg ? 'text-sst-sand' : 'text-sst-navy/60'}`}>
-        {trip.destination}
+        {trip.title}
       </p>
 
       <p className={`font-body text-base leading-relaxed mb-8 max-w-md ${darkBg ? 'text-sst-white/80' : 'text-sst-navy/80'}`}>

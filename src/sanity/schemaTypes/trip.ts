@@ -22,10 +22,6 @@ export const trip = defineType({
       validation: R => R.required(),
     }),
     defineField({
-      name: 'destination', title: 'Destination', type: 'string', group: 'content',
-      description: 'Start and end point of the trip e.g. "Auckland to Queenstown"',
-    }),
-    defineField({
       name: 'region', title: 'Region', type: 'string', group: 'content',
       options: { list: ['Asia', 'Oceania', 'Africa', 'Europe', 'Americas'] },
       description: 'Used for filtering on the Experiences page.',
@@ -84,14 +80,13 @@ export const trip = defineType({
         fields: [
           defineField({ name: 'startDate', title: 'Start Date', type: 'date', description: 'First day of the trip.' }),
           defineField({ name: 'endDate', title: 'End Date', type: 'date', description: 'Last day of the trip.' }),
-          defineField({ name: 'price', title: 'Price (USD)', type: 'number', description: 'Price per person for this departure.' }),
           defineField({ name: 'spotsRemaining', title: 'Spots Remaining', type: 'number', description: 'Leave blank if unknown.' }),
           defineField({ name: 'available', title: 'Available for Booking', type: 'boolean', initialValue: true, description: 'Uncheck to hide this date from the booking section.' }),
         ],
         preview: {
-          select: { start: 'startDate', end: 'endDate', price: 'price' },
-          prepare({ start, end, price }: any) {
-            return { title: `${start || 'TBD'} → ${end || 'TBD'}`, subtitle: price ? `$${price} per person` : 'Price TBD' }
+          select: { start: 'startDate', end: 'endDate' },
+          prepare({ start, end }: any) {
+            return { title: `${start || 'TBD'} → ${end || 'TBD'}` }
           }
         }
       }],
@@ -114,15 +109,11 @@ export const trip = defineType({
       description: 'Toggle on to feature this trip in the homepage hero section.',
     }),
     defineField({
-      name: 'durationDays', title: 'Duration (Days)', type: 'number', group: 'settings',
-      description: 'Total number of days including travel days.',
-    }),
-    defineField({
       name: 'order', title: 'Display Order', type: 'number', group: 'settings',
       description: 'Lower numbers appear first on the Experiences page. Leave blank to use default ordering.',
     }),
   ],
   preview: {
-    select: { title: 'title', subtitle: 'destination', media: 'heroImage.image' },
+    select: { title: 'title', subtitle: 'region', media: 'heroImage.image' },
   },
 })
