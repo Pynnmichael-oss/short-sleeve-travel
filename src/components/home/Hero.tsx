@@ -11,11 +11,11 @@ export function Hero() {
         muted
         loop
         playsInline
-        poster="/short-sleeve-travel/images/lofoten-hero-poster.jpg"
+        poster="/short-sleeve-travel/images/hero-reel-poster.jpg"
         style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
       >
-        <source src="/short-sleeve-travel/video/lofoten-hero.webm" type="video/webm" />
-        <source src="/short-sleeve-travel/video/lofoten-hero.mp4" type="video/mp4" />
+        <source src="/short-sleeve-travel/video/hero-reel-mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
+        <source src="/short-sleeve-travel/video/hero-reel-desktop.mp4" type="video/mp4" media="(min-width: 768px)" />
       </video>
 
       {/* Dark overlay */}
