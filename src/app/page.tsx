@@ -5,7 +5,7 @@ import { UpcomingTrips } from '@/components/home/UpcomingTrips'
 import { HowItWorks } from '@/components/home/HowItWorks'
 import { CommunityCloser } from '@/components/home/CommunityCloser'
 import { FooterCTA } from '@/components/home/FooterCTA'
-import { getUpcomingTrips, getHomeGallery } from '@/lib/queries'
+import { getUpcomingTrips, getHomeGallery, getGlobeTrips } from '@/lib/queries'
 import { urlFor } from '@/lib/sanity'
 
 const FALLBACK_PHOTOS = [
@@ -16,9 +16,10 @@ const FALLBACK_PHOTOS = [
 ]
 
 export default async function Home() {
-  const [upcomingTrips, gallery] = await Promise.all([
+  const [upcomingTrips, gallery, globeTrips] = await Promise.all([
     getUpcomingTrips(),
     getHomeGallery(),
+    getGlobeTrips(),
   ])
 
   const photos = gallery?.photos?.length
@@ -39,7 +40,7 @@ export default async function Home() {
       <HowItWorks />
       {/* TEMP: carousel swapped out for live Instagram feed demo — restore or reformat later. */}
       {/* <PhotoCarousel photos={photos} caption={caption} /> */}
-      <FooterCTA />
+      <FooterCTA globeTrips={globeTrips} />
       <CommunityCloser />
       <InstagramFeed />
     </>

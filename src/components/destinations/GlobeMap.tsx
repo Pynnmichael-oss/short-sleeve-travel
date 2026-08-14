@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
@@ -41,6 +42,9 @@ const INJECTED_STYLES = `
     left: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 0 2px rgba(212, 98, 42, 0.5);
+  }
+  .sst-marker-teaser {
+    cursor: default;
   }
   .sst-past-marker {
     position: relative;
@@ -134,8 +138,33 @@ const INJECTED_STYLES = `
   }
 `
 
-export function GlobeMap({ trips }: { trips: GlobeTrip[] }) {
+// Teaser-only: mute the Mapbox attribution control's visual weight so it reads
+// as a faint legal footnote instead of obvious widget chrome. Scoped to
+// .sst-globe-teaser so 'full' mode (Where We've Been) keeps default styling.
+// Position/presence of the control itself is untouched — Mapbox ToS requires it.
+const TEASER_ATTRIBUTION_STYLES = `
+  .sst-globe-teaser .mapboxgl-ctrl-bottom-right {
+    font-size: 9px;
+    opacity: 0.35;
+    transition: opacity 0.2s ease;
+  }
+  .sst-globe-teaser .mapboxgl-ctrl-bottom-right:hover {
+    opacity: 0.55;
+  }
+  .sst-globe-teaser .mapboxgl-ctrl-attrib a {
+    font-size: 9px;
+  }
+`
+
+export function GlobeMap({
+  trips,
+  variant = 'full',
+}: {
+  trips: GlobeTrip[]
+  variant?: 'full' | 'teaser'
+}) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   useEffect(() => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
@@ -143,39 +172,96 @@ export function GlobeMap({ trips }: { trips: GlobeTrip[] }) {
 
     mapboxgl.accessToken = token
 
+    const isTeaser = variant === 'teaser'
+
     const styleEl = document.createElement('style')
     styleEl.id = 'sst-globe-styles'
-    styleEl.textContent = INJECTED_STYLES
+    styleEl.textContent = isTeaser ? INJECTED_STYLES + TEASER_ATTRIBUTION_STYLES : INJECTED_STYLES
     document.head.appendChild(styleEl)
 
     const isMobile = window.innerWidth < 768
 
     let map: mapboxgl.Map | null = null
+    let rotateFrame: number | null = null
+    let observer: IntersectionObserver | null = null
+
+    const goToGlobePage = () => {
+      // next/navigation's router auto-applies basePath, unlike the raw <a> tags
+      // used in the popup HTML below (which do need BASE_PATH prefixed manually).
+      router.push('/where-we-ve-been')
+    }
+
+    const stopRotation = () => {
+      if (rotateFrame != null) {
+        cancelAnimationFrame(rotateFrame)
+        rotateFrame = null
+      }
+    }
+
+    const startRotation = () => {
+      if (!map || rotateFrame != null) return
+      const rotate = () => {
+        if (!map) return
+        const center = map.getCenter()
+        center.lng -= 0.05
+        map.setCenter(center)
+        rotateFrame = requestAnimationFrame(rotate)
+      }
+      rotateFrame = requestAnimationFrame(rotate)
+    }
 
     try {
       map = new mapboxgl.Map({
         container: containerRef.current,
         style: 'mapbox://styles/mapbox/dark-v11',
         center: [0, 20],
-        zoom: 1.8,
+        // Teaser sits smaller and more zoomed-out than the full page's globe,
+        // so it reads as a floating orb with room to breathe, not a canvas
+        // that fills its box edge-to-edge.
+        zoom: isTeaser ? 1.05 : 1.8,
         scrollZoom: false,
-        dragRotate: !isMobile,
+        dragRotate: isTeaser ? false : !isMobile,
         pitchWithRotate: false,
+        interactive: !isTeaser,
         projection: { name: 'globe' },
       })
 
       map.on('load', () => {
         if (!map) return
 
-        map.setFog({
-          color: 'rgb(20, 20, 20)',
-          'high-color': 'rgb(44, 74, 62)',
-          'horizon-blend': 0.025,
-          'space-color': 'rgb(6, 6, 6)',
-          'star-intensity': 0.55,
-        })
+        // Teaser mode matches its fog/space color to the section's light
+        // background (sst-surface) so there's no dark rectangle behind the
+        // globe — just the sphere floating on white, no seam to soften.
+        map.setFog(
+          isTeaser
+            ? {
+                color: 'rgb(247, 248, 250)',
+                'high-color': 'rgb(247, 248, 250)',
+                'horizon-blend': 0.1,
+                'space-color': 'rgb(247, 248, 250)',
+                'star-intensity': 0,
+              }
+            : {
+                color: 'rgb(20, 20, 20)',
+                'high-color': 'rgb(44, 74, 62)',
+                'horizon-blend': 0.025,
+                'space-color': 'rgb(6, 6, 6)',
+                'star-intensity': 0.55,
+              }
+        )
 
-        // Past trip markers — pulsing + popup linking to the trip detail page
+        if (isTeaser) {
+          // Strip place-name labels (countries, states, settlements, etc.) —
+          // the teaser is meant to read as a quiet floating orb with just the
+          // pulsing trip markers, not a labeled reference map.
+          map.getStyle()?.layers?.forEach((layer) => {
+            if (layer.type === 'symbol' && layer.layout && 'text-field' in layer.layout) {
+              map?.setLayoutProperty(layer.id, 'visibility', 'none')
+            }
+          })
+        }
+
+        // Past trip markers — pulsing + (full mode) popup linking to the trip detail page
         trips
           .filter(
             (trip): trip is GlobeTrip & { location: { lat: number; lng: number } } =>
@@ -186,34 +272,64 @@ export function GlobeMap({ trips }: { trips: GlobeTrip[] }) {
             const coordinates: [number, number] = [trip.location.lng, trip.location.lat]
 
             const el = document.createElement('div')
-            el.className = 'sst-marker'
+            el.className = isTeaser ? 'sst-marker sst-marker-teaser' : 'sst-marker'
             el.innerHTML = `
               <div class="sst-marker-outer"></div>
               <div class="sst-marker-inner"></div>
             `
 
-            const popup = new mapboxgl.Popup({
-              closeButton: true,
-              closeOnClick: false,
-              offset: 18,
-              maxWidth: '300px',
-              anchor: 'bottom',
-            }).setHTML(`
-              <div class="sst-popup">
-                <h3 class="sst-popup-title">${trip.title}</h3>
-                <a class="sst-popup-link" href="${BASE_PATH}/trips/${trip.slug.current}">View Trip &rarr;</a>
-              </div>
-            `)
+            const marker = new mapboxgl.Marker({ element: el }).setLngLat(coordinates)
 
-            el.addEventListener('click', () => {
-              map?.flyTo({ center: coordinates, zoom: 5, duration: 1800, essential: true })
-            })
+            if (isTeaser) {
+              el.addEventListener('click', (e) => {
+                e.stopPropagation()
+                goToGlobePage()
+              })
+            } else {
+              const popup = new mapboxgl.Popup({
+                closeButton: true,
+                closeOnClick: false,
+                offset: 18,
+                maxWidth: '300px',
+                anchor: 'bottom',
+              }).setHTML(`
+                <div class="sst-popup">
+                  <h3 class="sst-popup-title">${trip.title}</h3>
+                  <a class="sst-popup-link" href="${BASE_PATH}/trips/${trip.slug.current}">View Trip &rarr;</a>
+                </div>
+              `)
 
-            new mapboxgl.Marker({ element: el })
-              .setLngLat(coordinates)
-              .setPopup(popup)
-              .addTo(map)
+              el.addEventListener('click', () => {
+                map?.flyTo({ center: coordinates, zoom: 5, duration: 1800, essential: true })
+              })
+
+              marker.setPopup(popup)
+            }
+
+            marker.addTo(map)
           })
+
+        if (isTeaser) {
+          // Whole canvas is a click target to the full globe page.
+          const canvas = map.getCanvas()
+          canvas.style.cursor = 'pointer'
+          canvas.addEventListener('click', goToGlobePage)
+
+          // Only start the slow auto-rotate once the section is meaningfully in view.
+          if (containerRef.current) {
+            observer = new IntersectionObserver(
+              ([entry]) => {
+                if (entry.isIntersecting) {
+                  startRotation()
+                } else {
+                  stopRotation()
+                }
+              },
+              { threshold: 0.4 }
+            )
+            observer.observe(containerRef.current)
+          }
+        }
       })
     } catch {
       document.getElementById('sst-globe-styles')?.remove()
@@ -221,20 +337,31 @@ export function GlobeMap({ trips }: { trips: GlobeTrip[] }) {
     }
 
     return () => {
+      stopRotation()
+      observer?.disconnect()
       map?.remove()
       document.getElementById('sst-globe-styles')?.remove()
     }
-  }, [trips])
+  }, [trips, variant, router])
+
+  const isTeaser = variant === 'teaser'
 
   return (
-    <div className="relative bg-[#1a1a1a]">
-      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-sst-navy to-transparent z-10 pointer-events-none" />
+    <div className={`relative h-full ${isTeaser ? 'bg-sst-surface' : 'bg-[#1a1a1a]'}`}>
+      {/* Full mode fades a dark canvas into the surrounding dark sections above/
+          below it. Teaser mode's canvas already matches the section's light
+          background (via setFog above), so there's no seam left to fade. */}
+      {!isTeaser && (
+        <>
+          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-sst-navy to-transparent z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-sst-nav to-transparent z-10 pointer-events-none" />
+        </>
+      )}
       <div
         ref={containerRef}
-        className="h-[400px] md:h-[600px] w-full"
+        className={isTeaser ? 'sst-globe-teaser h-full w-full' : 'h-[400px] md:h-[600px] w-full'}
         aria-label="Interactive globe showing past trip destinations"
       />
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-sst-nav to-transparent z-10 pointer-events-none" />
     </div>
   )
 }
