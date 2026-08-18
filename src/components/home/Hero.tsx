@@ -17,8 +17,24 @@ export function Hero() {
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/40" />
+      {/* Scrim — gradient rather than flat opacity so it reads as intentional
+          framing, not a muddy filter. Content here is vertically centered
+          (items-center, not bottom-anchored), so the dark band is shaped to
+          sit under the headline/CTA block (roughly the middle third of the
+          viewport) rather than a naive light-top/dark-bottom ramp that would
+          leave the actual text under the lightest part of the gradient. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `linear-gradient(
+            to bottom,
+            rgba(26, 43, 60, 0.20) 0%,
+            rgba(26, 43, 60, 0.55) 35%,
+            rgba(26, 43, 60, 0.62) 60%,
+            rgba(26, 43, 60, 0.50) 100%
+          )`,
+        }}
+      />
 
       {/* Content */}
       <div className="relative z-10 max-w-3xl mx-auto px-6 flex flex-col items-center gap-6">
