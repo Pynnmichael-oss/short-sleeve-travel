@@ -26,12 +26,20 @@ const HERO_CLIPS = [
 const ROTATE_MS = 1100
 const CROSSFADE_MS = 350
 
-// Two persistent <video> elements crossfaded via direct opacity/src control
-// (no React state driving re-renders) rather than mounting all ten clips at
-// once — keeps exactly two decoders alive at any time instead of ten, and
-// resetting `currentTime` + replaying on every swap guarantees each clip
-// always starts from its trimmed-in frame, not wherever a background loop
-// happened to be.
+// Two persistent <video> elements double-buffered and crossfaded via direct
+// opacity/src control (no React state driving re-renders) rather than
+// mounting all ten clips at once — keeps exactly two decoders alive at any
+// time instead of ten.
+//
+// The key fix over the previous version: the *next* clip is preloaded into
+// the hidden element as soon as the current one starts, not at the moment
+// it's needed. A transition only actually happens once that hidden element
+// fires `canplaythrough` (i.e. has enough buffered to play smoothly) AND the
+// display interval has elapsed — whichever finishes later. So on the (very
+// common, since these are small same-origin files) case where preload wins,
+// clips swap right on schedule; if a clip is ever slow to buffer, playback
+// just holds a beat longer on the current clip instead of crossfading into
+// a half-loaded, blank video.
 function HeroRotation() {
   const refA = useRef<HTMLVideoElement>(null)
   const refB = useRef<HTMLVideoElement>(null)
@@ -43,27 +51,71 @@ function HeroRotation() {
 
     let index = 0
     let topIsA = true
+    let cancelled = false
+    let timeoutId: ReturnType<typeof setTimeout> | null = null
+    let cleanupListener: (() => void) | null = null
+
     a.style.opacity = '1'
     b.style.opacity = '0'
     a.play().catch(() => {})
 
-    let timeoutId: ReturnType<typeof setTimeout>
-
-    const advance = () => {
-      index = (index + 1) % HERO_CLIPS.length
+    const crossfadeTo = (nextIndex: number) => {
       const showing = topIsA ? b : a
       const hiding = topIsA ? a : b
-      showing.src = HERO_CLIPS[index]
       showing.currentTime = 0
       showing.play().catch(() => {})
       showing.style.opacity = '1'
       hiding.style.opacity = '0'
+      hiding.pause()
+      index = nextIndex
       topIsA = !topIsA
-      timeoutId = setTimeout(advance, ROTATE_MS)
+      // The element that just faded out is now free to preload whatever
+      // comes after the clip we just revealed.
+      preloadAndSchedule((index + 1) % HERO_CLIPS.length, hiding)
     }
 
-    timeoutId = setTimeout(advance, ROTATE_MS)
-    return () => clearTimeout(timeoutId)
+    // Preload `nextIndex` into `target` (the currently-hidden element), then
+    // transition to it once both the min display time and buffering are done.
+    const preloadAndSchedule = (nextIndex: number, target: HTMLVideoElement) => {
+      let readyFired = false
+      let timerFired = false
+      let transitioned = false
+
+      const onCanPlayThrough = () => {
+        readyFired = true
+        tryCrossfade()
+      }
+
+      const tryCrossfade = () => {
+        if (transitioned || !readyFired || !timerFired || cancelled) return
+        transitioned = true
+        target.removeEventListener('canplaythrough', onCanPlayThrough)
+        crossfadeTo(nextIndex)
+      }
+
+      target.addEventListener('canplaythrough', onCanPlayThrough)
+      cleanupListener = () => target.removeEventListener('canplaythrough', onCanPlayThrough)
+
+      target.src = HERO_CLIPS[nextIndex]
+      target.load()
+      // Some browsers resolve readiness for tiny already-cached clips faster
+      // than the 'canplaythrough' event fires — treat HAVE_ENOUGH_DATA (4) or
+      // HAVE_FUTURE_DATA (3) as ready too, checked right after load() kicks off.
+      if (target.readyState >= 3) readyFired = true
+
+      timeoutId = setTimeout(() => {
+        timerFired = true
+        tryCrossfade()
+      }, ROTATE_MS)
+    }
+
+    preloadAndSchedule(1, b)
+
+    return () => {
+      cancelled = true
+      if (timeoutId) clearTimeout(timeoutId)
+      if (cleanupListener) cleanupListener()
+    }
   }, [])
 
   return (
@@ -72,7 +124,6 @@ function HeroRotation() {
         ref={refA}
         src={HERO_CLIPS[0]}
         muted
-        loop
         playsInline
         preload="auto"
         poster="/short-sleeve-travel/images/hero-reel-poster.jpg"
@@ -82,7 +133,6 @@ function HeroRotation() {
       <video
         ref={refB}
         muted
-        loop
         playsInline
         preload="auto"
         className="absolute inset-0 w-full h-full object-cover"
