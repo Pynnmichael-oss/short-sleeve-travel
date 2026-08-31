@@ -310,7 +310,6 @@ export function GlobeMap({
           .forEach((trip) => {
             if (!map) return
             const coordinates: [number, number] = [trip.location.lng, trip.location.lat]
-            console.log('[globe-debug]', trip.title, JSON.stringify(coordinates))
 
             const el = document.createElement('div')
             el.className = isTeaser ? 'sst-marker sst-marker-teaser' : 'sst-marker'
