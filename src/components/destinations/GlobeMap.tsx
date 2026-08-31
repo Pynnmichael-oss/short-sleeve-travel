@@ -193,7 +193,33 @@ export function GlobeMap({
     // instead of tracking the horizon. We track every marker's coordinates
     // here and toggle opacity on every 'move' event based on great-circle
     // angular distance from the current camera center.
-    const markerRecords: { marker: mapboxgl.Marker; lngLat: [number, number] }[] = []
+    //
+    // Separately, Marker's own internal position tracking drifts during the
+    // globe/mercator transition Standard style manages (a known open
+    // mapbox-gl-js bug, #12645) — markers can render dozens of degrees off
+    // from their true lng/lat. We keep the raw DOM element here too so we
+    // can bypass Marker's positioning entirely and recompute the correct
+    // screen position ourselves every render.
+    const markerRecords: {
+      marker: mapboxgl.Marker
+      el: HTMLDivElement
+      lngLat: [number, number]
+    }[] = []
+
+    // Manually project every marker's true lng/lat to screen space and
+    // write it directly, overriding whatever (possibly drifted) transform
+    // Marker's own internal 'move' handler set. Runs on every 'render'
+    // event since the drift is tied to the continuous globe/mercator
+    // transition, not just discrete camera moves. Kept intentionally cheap
+    // — no DOM reads, no allocations beyond the {x,y} point — since
+    // 'render' fires very frequently.
+    const updateAllMarkerPositions = () => {
+      if (!map) return
+      for (const { el, lngLat } of markerRecords) {
+        const point = map.project(lngLat)
+        el.style.transform = `translate(${point.x}px, ${point.y}px) translate(-50%, -50%)`
+      }
+    }
 
     const angularDistanceDeg = (
       lng1: number,
@@ -329,6 +355,12 @@ export function GlobeMap({
               <div class="sst-marker-outer"></div>
               <div class="sst-marker-inner"></div>
             `
+            // Marker sets these too, but pin them explicitly so our
+            // per-render transform (updateAllMarkerPositions) is the only
+            // thing ever moving this element.
+            el.style.position = 'absolute'
+            el.style.left = '0px'
+            el.style.top = '0px'
 
             const marker = new mapboxgl.Marker({ element: el }).setLngLat(coordinates)
 
@@ -359,7 +391,7 @@ export function GlobeMap({
             }
 
             marker.addTo(map)
-            markerRecords.push({ marker, lngLat: coordinates })
+            markerRecords.push({ marker, el, lngLat: coordinates })
           })
 
         // Prime opacity for the initial camera position, then keep it in
@@ -368,6 +400,12 @@ export function GlobeMap({
         // instead of popping or lagging behind the rotation.
         updateMarkerVisibility()
         map.on('move', updateMarkerVisibility)
+
+        // Prime correct screen position immediately (before the first
+        // 'render' fires) then keep overriding Marker's own positioning
+        // every render — see updateAllMarkerPositions above.
+        updateAllMarkerPositions()
+        map.on('render', updateAllMarkerPositions)
 
         if (isTeaser) {
           // Whole canvas is a click target to the full globe page.
