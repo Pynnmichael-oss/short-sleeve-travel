@@ -258,7 +258,7 @@ export function GlobeMap({
         // Teaser sits smaller and more zoomed-out than the full page's globe,
         // so it reads as a floating orb with room to breathe, not a canvas
         // that fills its box edge-to-edge.
-        zoom: isTeaser ? 1.05 : 1.8,
+        zoom: isTeaser ? 1 : 2,
         scrollZoom: false,
         dragRotate: isTeaser ? false : !isMobile,
         pitchWithRotate: false,
@@ -282,13 +282,46 @@ export function GlobeMap({
                 'star-intensity': 0,
               }
             : {
-                color: 'rgb(20, 20, 20)',
-                'high-color': 'rgb(44, 74, 62)',
-                'horizon-blend': 0.025,
-                'space-color': 'rgb(6, 6, 6)',
-                'star-intensity': 0.55,
+                color: 'rgb(26, 43, 60)', // sst-navy — matches the page header, removes the seam
+                'high-color': 'rgb(58, 82, 68)', // slightly warmed forest green, keeps the atmospheric-glow instinct
+                'horizon-blend': 0.05,
+                'space-color': 'rgb(26, 43, 60)', // same navy — globe feels like it floats in the header's space
+                'star-intensity': 0.35,
               }
         )
+
+        if (!isTeaser) {
+          // The fog change above softens the atmosphere/horizon, but the base
+          // dark-v11 style's water and land fills are still Mapbox's default
+          // cool blue-gray — retint them toward the brand's navy/charcoal so
+          // the globe reads as part of the page, not a separate dark panel.
+          // Exact layer ids can vary by style version, so guard each lookup
+          // and warn (with the real layer list) instead of throwing.
+          const layers = map.getStyle()?.layers
+          try {
+            if (map.getLayer('water')) {
+              map.setPaintProperty('water', 'fill-color', '#1A2B3C') // sst-navy
+            } else {
+              console.warn('[GlobeMap] "water" layer not found; style layers:', layers)
+            }
+          } catch (err) {
+            console.warn('[GlobeMap] failed to set water fill-color:', err, 'style layers:', layers)
+          }
+          try {
+            if (map.getLayer('background')) {
+              map.setPaintProperty('background', 'background-color', '#2D2D2D') // sst-body charcoal
+            } else {
+              console.warn('[GlobeMap] "background" layer not found; style layers:', layers)
+            }
+          } catch (err) {
+            console.warn(
+              '[GlobeMap] failed to set background-color:',
+              err,
+              'style layers:',
+              layers
+            )
+          }
+        }
 
         if (isTeaser) {
           // Strip place-name labels (countries, states, settlements, etc.) —
