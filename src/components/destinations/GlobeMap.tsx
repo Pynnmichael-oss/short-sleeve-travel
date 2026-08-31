@@ -308,10 +308,12 @@ export function GlobeMap({
             console.warn('[GlobeMap] failed to set water fill-color:', err, 'style layers:', layers)
           }
           try {
-            if (map.getLayer('background')) {
-              map.setPaintProperty('background', 'background-color', '#2D2D2D') // sst-body charcoal
+            // dark-v11's base fill is a type:"background" layer with id "land"
+            // (not "background") — confirmed via the style's own layer list.
+            if (map.getLayer('land')) {
+              map.setPaintProperty('land', 'background-color', '#2D2D2D') // sst-body charcoal
             } else {
-              console.warn('[GlobeMap] "background" layer not found; style layers:', layers)
+              console.warn('[GlobeMap] "land" layer not found; style layers:', layers)
             }
           } catch (err) {
             console.warn(
