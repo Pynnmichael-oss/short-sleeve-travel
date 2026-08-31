@@ -253,7 +253,7 @@ export function GlobeMap({
     try {
       map = new mapboxgl.Map({
         container: containerRef.current,
-        style: 'mapbox://styles/mapbox/dark-v11',
+        style: 'mapbox://styles/mapbox/standard',
         center: [0, 20],
         // Teaser sits smaller and more zoomed-out than the full page's globe,
         // so it reads as a floating orb with room to breathe, not a canvas
@@ -269,66 +269,43 @@ export function GlobeMap({
       map.on('load', () => {
         if (!map) return
 
-        // Teaser mode matches its fog/space color to the section's light
-        // background (sst-surface) so there's no dark rectangle behind the
-        // globe — just the sphere floating on white, no seam to soften.
-        map.setFog(
-          isTeaser
-            ? {
-                color: 'rgb(247, 248, 250)',
-                'high-color': 'rgb(247, 248, 250)',
-                'horizon-blend': 0.1,
-                'space-color': 'rgb(247, 248, 250)',
-                'star-intensity': 0,
-              }
-            : {
-                color: 'rgb(26, 43, 60)', // sst-navy — matches the page header, removes the seam
-                'high-color': 'rgb(58, 82, 68)', // slightly warmed forest green, keeps the atmospheric-glow instinct
-                'horizon-blend': 0.05,
-                'space-color': 'rgb(26, 43, 60)', // same navy — globe feels like it floats in the header's space
-                'star-intensity': 0.35,
-              }
-        )
-
-        if (!isTeaser) {
-          // The fog change above softens the atmosphere/horizon, but the base
-          // dark-v11 style's water and land fills are still Mapbox's default
-          // cool blue-gray — retint them toward the brand's navy/charcoal so
-          // the globe reads as part of the page, not a separate dark panel.
-          // Exact layer ids can vary by style version, so guard each lookup
-          // and warn (with the real layer list) instead of throwing.
-          const layers = map.getStyle()?.layers
-          try {
-            if (map.getLayer('water')) {
-              map.setPaintProperty('water', 'fill-color', '#1A2B3C') // sst-navy
-            } else {
-              console.warn('[GlobeMap] "water" layer not found; style layers:', layers)
-            }
-          } catch (err) {
-            console.warn('[GlobeMap] failed to set water fill-color:', err, 'style layers:', layers)
-          }
-          try {
-            // dark-v11's base fill is a type:"background" layer with id "land"
-            // (not "background") — confirmed via the style's own layer list.
-            if (map.getLayer('land')) {
-              map.setPaintProperty('land', 'background-color', '#2D2D2D') // sst-body charcoal
-            } else {
-              console.warn('[GlobeMap] "land" layer not found; style layers:', layers)
-            }
-          } catch (err) {
-            console.warn(
-              '[GlobeMap] failed to set background-color:',
-              err,
-              'style layers:',
-              layers
-            )
-          }
-        }
+        // Standard style's config properties (import id "basemap") replace
+        // dark-v11's raw paint-property tinting: Day light preset + Default
+        // theme already give the vivid blue ocean, green/tan land, and
+        // glowing atmospheric rim out of the box, matching Mapbox's own
+        // Globe View gallery demo — no manual water/land setPaintProperty
+        // overrides needed here anymore.
+        // https://docs.mapbox.com/map-styles/reference/standard/
+        map.setConfigProperty('basemap', 'lightPreset', 'day')
+        map.setConfigProperty('basemap', 'theme', 'default')
 
         if (isTeaser) {
-          // Strip place-name labels (countries, states, settlements, etc.) —
-          // the teaser is meant to read as a quiet floating orb with just the
-          // pulsing trip markers, not a labeled reference map.
+          // Teaser mode matches its fog/space color to the section's light
+          // background (sst-surface) so there's no dark rectangle behind the
+          // globe — just the sphere floating on white, no seam to soften.
+          // Standard manages its own atmosphere for the full-page globe, so
+          // this custom fog is now scoped to teaser mode only.
+          map.setFog({
+            color: 'rgb(247, 248, 250)',
+            'high-color': 'rgb(247, 248, 250)',
+            'horizon-blend': 0.1,
+            'space-color': 'rgb(247, 248, 250)',
+            'star-intensity': 0,
+          })
+
+          // Standard style exposes label visibility as config properties
+          // instead of individual symbol layers — the teaser is meant to
+          // read as a quiet floating orb with just the pulsing trip
+          // markers, not a labeled reference map.
+          map.setConfigProperty('basemap', 'showPlaceLabels', false)
+          map.setConfigProperty('basemap', 'showPointOfInterestLabels', false)
+          map.setConfigProperty('basemap', 'showRoadLabels', false)
+          map.setConfigProperty('basemap', 'showTransitLabels', false)
+
+          // Safety net: if any symbol layers with a text-field slip through
+          // the config properties above (e.g. a style variant that doesn't
+          // honor one of them), hide them directly too rather than relying
+          // solely on the config API.
           map.getStyle()?.layers?.forEach((layer) => {
             if (layer.type === 'symbol' && layer.layout && 'text-field' in layer.layout) {
               map?.setLayoutProperty(layer.id, 'visibility', 'none')
