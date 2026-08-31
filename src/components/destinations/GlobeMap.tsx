@@ -24,6 +24,7 @@ const INJECTED_STYLES = `
     width: 28px;
     height: 28px;
     cursor: pointer;
+    transition: opacity 0.15s linear;
   }
   .sst-marker-outer {
     position: absolute;
@@ -185,6 +186,45 @@ export function GlobeMap({
     let rotateFrame: number | null = null
     let observer: IntersectionObserver | null = null
 
+    // HTML markers (mapboxgl.Marker) are plain positioned DOM elements, not
+    // WebGL geometry, so the globe projection does not depth-cull them the
+    // way it would a GL circle/symbol layer. Without this, a pin on the
+    // far side of the sphere stays visible and lags into view/out of view
+    // instead of tracking the horizon. We track every marker's coordinates
+    // here and toggle opacity on every 'move' event based on great-circle
+    // angular distance from the current camera center.
+    const markerRecords: { marker: mapboxgl.Marker; lngLat: [number, number] }[] = []
+
+    const angularDistanceDeg = (
+      lng1: number,
+      lat1: number,
+      lng2: number,
+      lat2: number
+    ) => {
+      const rad = Math.PI / 180
+      const phi1 = lat1 * rad
+      const phi2 = lat2 * rad
+      const deltaPhi = (lat2 - lat1) * rad
+      const deltaLambda = (lng2 - lng1) * rad
+      const a =
+        Math.sin(deltaPhi / 2) ** 2 +
+        Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) ** 2
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      return c * (180 / Math.PI)
+    }
+
+    const updateMarkerVisibility = () => {
+      if (!map || markerRecords.length === 0) return
+      const center = map.getCenter()
+      markerRecords.forEach(({ marker, lngLat }) => {
+        const distance = angularDistanceDeg(center.lng, center.lat, lngLat[0], lngLat[1])
+        const onFarSide = distance > 90
+        const el = marker.getElement()
+        el.style.opacity = onFarSide ? '0' : '1'
+        el.style.pointerEvents = onFarSide ? 'none' : ''
+      })
+    }
+
     const goToGlobePage = () => {
       // next/navigation's router auto-applies basePath, unlike the raw <a> tags
       // used in the popup HTML below (which do need BASE_PATH prefixed manually).
@@ -307,7 +347,15 @@ export function GlobeMap({
             }
 
             marker.addTo(map)
+            markerRecords.push({ marker, lngLat: coordinates })
           })
+
+        // Prime opacity for the initial camera position, then keep it in
+        // sync on every subsequent frame of movement (drag, flyTo, or the
+        // teaser's auto-rotation) so pins fade in/out with the horizon
+        // instead of popping or lagging behind the rotation.
+        updateMarkerVisibility()
+        map.on('move', updateMarkerVisibility)
 
         if (isTeaser) {
           // Whole canvas is a click target to the full globe page.
