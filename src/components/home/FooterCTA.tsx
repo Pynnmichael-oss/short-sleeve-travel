@@ -25,7 +25,7 @@ export function FooterCTA({ globeTrips }: { globeTrips: GlobeTrip[] }) {
         </div>
 
         {/* Globe teaser — ~55-60%, zero padding, fills the row edge to edge */}
-        <div className="lg:col-span-3 h-full min-h-[320px] md:min-h-[420px]">
+        <div className="lg:col-span-3 h-[360px] md:h-[420px] lg:h-full">
           <GlobeMapWrapper trips={globeTrips} variant="teaser" />
         </div>
       </div>

@@ -284,7 +284,7 @@ export function GlobeMap({
         // Teaser sits smaller and more zoomed-out than the full page's globe,
         // so it reads as a floating orb with room to breathe, not a canvas
         // that fills its box edge-to-edge.
-        zoom: isTeaser ? 1 : 2,
+        zoom: isTeaser ? (isMobile ? 0.55 : 1) : 2,
         scrollZoom: false,
         dragRotate: isTeaser ? false : !isMobile,
         pitchWithRotate: false,
