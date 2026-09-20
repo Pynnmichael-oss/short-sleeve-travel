@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { BrandLogo } from '@/components/layout/BrandLogo'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -14,11 +15,8 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           {/* Logo */}
           <div className="md:w-48 shrink-0">
-            <Link
-              href="/"
-              className="font-display text-xl text-sst-white hover:text-sst-sand transition-colors duration-200"
-            >
-              Shortsleeve Travel Club
+            <Link href="/" className="inline-flex hover:opacity-80 transition-opacity duration-200">
+              <BrandLogo variant="white" className="h-10 w-auto" />
             </Link>
           </div>
 

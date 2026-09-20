@@ -3,7 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What This Is
-A complete redesign of shortsleeveltravel.com. Modern adventure group travel brand for young professionals aged 25–40. Deployed as a static site on GitHub Pages. Content is managed via Sanity CMS.
+A complete redesign of shortsleeveltravel.com. Modern adventure group travel brand for curious, adventure-seeking travelers. Deployed as a static site on GitHub Pages. Content is managed via Sanity CMS.
 
 ## Commands
 
@@ -56,6 +56,7 @@ Colors (`tailwind.config.ts` + `globals.css @theme`):
 - `sst-surface`: #F7F8FA — card/section backgrounds
 - `sst-sand`:    #C8A97E — dividers, accents, secondary text on dark
 - `sst-map`:     #4AABE8 — map accents, info elements
+- `sst-burnt`:   #A9461A — small eyebrow labels on light backgrounds (darker than amber for text contrast)
 
 Typography:
 - Headings: Playfair Display — class `font-display`

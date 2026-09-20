@@ -10,6 +10,7 @@
   --color-sst-surface: #F7F8FA;
   --color-sst-sand:    #C8A97E;
   --color-sst-map:     #4AABE8;
+  --color-sst-burnt:   #A9461A;
 }
 
 @keyframes sst-kenburns {

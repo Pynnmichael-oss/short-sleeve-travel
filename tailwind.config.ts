@@ -12,6 +12,7 @@ const config: Config = {
         'sst-surface': '#F7F8FA',
         'sst-sand':    '#C8A97E',
         'sst-map':     '#4AABE8',
+        'sst-burnt':   '#A9461A',
       },
       fontFamily: {
         display: ['var(--font-playfair)', 'Georgia', 'serif'],

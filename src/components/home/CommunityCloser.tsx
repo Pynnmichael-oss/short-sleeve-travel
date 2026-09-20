@@ -14,9 +14,8 @@ export function CommunityCloser() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center flex flex-col items-center gap-10">
         <p className="font-display text-4xl md:text-5xl text-sst-white italic leading-snug">
-          "Shortsleeve Travel is a one-of-a-kind travel club for people in their
-          20s and 30s seeking extraordinary experiences and like-minded
-          connections."
+          "Shortsleeve Travel is a one-of-a-kind travel club for people seeking
+          extraordinary experiences and like-minded connections."
         </p>
         <Link
           href="/trips"

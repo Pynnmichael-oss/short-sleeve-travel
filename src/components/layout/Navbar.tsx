@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import { BrandLogo } from '@/components/layout/BrandLogo'
 
 const navLinks = [
   { href: '/where-we-ve-been', label: "Where We've Been" },
@@ -18,12 +19,9 @@ export function Navbar() {
         className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16"
         aria-label="Main navigation"
       >
-        {/* Wordmark */}
-        <Link
-          href="/"
-          className="font-display text-lg text-white tracking-wide hover:text-sst-sand transition-colors duration-200"
-        >
-          Shortsleeve Travel Club
+        {/* Logo — nav is always solid dark, so the white wordmark */}
+        <Link href="/" className="flex items-center hover:opacity-80 transition-opacity duration-200">
+          <BrandLogo variant="white" priority className="h-8 md:h-10 w-auto" />
         </Link>
 
         {/* Desktop links */}

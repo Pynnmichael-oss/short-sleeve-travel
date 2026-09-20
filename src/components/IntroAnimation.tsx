@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { BrandLogo } from '@/components/layout/BrandLogo'
 
 const STORAGE_KEY = 'sst-intro-played'
 
@@ -94,17 +95,15 @@ export function IntroAnimation() {
 
       {/* Centered brand text */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 px-6 text-center">
-        <p
-          className="font-display text-sst-white"
+        <div
           style={{
-            fontSize: 'clamp(1.8rem, 5.5vw, 4.5rem)',
-            letterSpacing: '0.1em',
+            width: 'clamp(240px, 45vw, 560px)',
             opacity: logoVisible ? 1 : 0,
             transition: 'opacity 1s ease-in',
           }}
         >
-          Shortsleeve Travel Club
-        </p>
+          <BrandLogo variant="white" className="w-full h-auto" />
+        </div>
 
         <p
           className="font-body text-sst-sand uppercase"

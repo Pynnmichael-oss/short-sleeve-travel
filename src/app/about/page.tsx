@@ -3,7 +3,7 @@ import Link from 'next/link'
 export const metadata = {
   title: 'About Kat — Shortsleeve Travel Club',
   description:
-    'Founded by Kat Shortsleeve in 2023, Shortsleeve Travel creates curated small-group adventures for curious travelers in their 20s and 30s.',
+    'Founded by Kat Shortsleeve in 2023, Shortsleeve Travel creates curated small-group adventures for curious travelers.',
 }
 
 export default function AboutPage() {
