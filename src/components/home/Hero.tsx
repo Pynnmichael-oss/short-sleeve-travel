@@ -3,17 +3,18 @@ import Link from 'next/link'
 export function Hero() {
   return (
     <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
-      {/* Full-bleed video background — single pre-baked file with the 10-clip
-          rotation and crossfades (including the loop point) already rendered
-          in, rather than driving the rotation live in the browser. */}
+      {/* Full-bleed video background — single pre-baked file with the 8-shot
+          Lofoten cut (phone + drone) and crossfades (including the loop point)
+          already rendered in, rather than driving the rotation live in the
+          browser. */}
       <video
-        src="/short-sleeve-travel/video/hero-rotation.mp4"
+        src="/short-sleeve-travel/video/hero-lofoten.mp4"
         autoPlay
         loop
         muted
         playsInline
         preload="metadata"
-        poster="/short-sleeve-travel/images/hero-reel-poster.jpg"
+        poster="/short-sleeve-travel/images/hero-lofoten-poster.jpg"
         className="absolute inset-0 w-full h-full object-cover"
       />
 
